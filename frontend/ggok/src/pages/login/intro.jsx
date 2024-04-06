@@ -101,7 +101,7 @@ export default function Main() {
 
   const create_account = (e)=> {
     e.preventDefault();
-    navigate("/create_account")
+    navigate("/create-account")
   }
 
   const login = (e)=> {

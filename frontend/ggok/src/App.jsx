@@ -1,6 +1,6 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login/login";
-import Main from "./pages/main/main";
+import Map from "./pages/main/main_map";
 import CreateAccount from "./pages/login/create-account";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
@@ -10,6 +10,7 @@ import Protected_login from "./components/protected_login";
 import Layout from "./components/layout";
 import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
+import Feed from "./pages/main/main_feed";
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -28,14 +29,18 @@ const router = createBrowserRouter([
     children: [
       {
         path:"",
-        element: <Main/>,
+        element: <Map/>,
       },
       {
         path:"community",
         element: <Community/>,
 
       },
+      {
+        path:"feed",
+        element: <Feed/>,
 
+      },
     ]
   },
   {
