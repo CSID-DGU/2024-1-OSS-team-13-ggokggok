@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login/login";
 import Main from "./pages/main/main";
 import CreateAccount from "./pages/login/create-account";
+import SetRegion from "./pages/region/set-region";
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
@@ -50,6 +51,11 @@ const router = createBrowserRouter([
     path:"/intro",
     element: <Intro/>
   },
+  {
+    path:"/set-region",
+    element: <SetRegion/>
+  },
+
 
 ]);
 
