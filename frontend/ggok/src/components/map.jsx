@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
+import config from '../others/apikey';
 
-
-const MapComponent = ({lon, lat , apiKey = "AIzaSyAZCx7qChC0TFiJHlLaJn6Emy-Xn7AB5NQ"}) => {
+const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
   const mapRef = useRef();
 
   useEffect(() => {
