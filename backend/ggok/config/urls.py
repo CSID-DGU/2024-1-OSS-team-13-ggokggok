@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
+from ggok.api import QuestionList
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ggok/', include('ggok.urls')),
+    path('api/question_list', QuestionList.as_view(),name='question_list'),
+    path('api/answer_list', QuestionList.as_view(), name='answer_list'),
+
 ]
 

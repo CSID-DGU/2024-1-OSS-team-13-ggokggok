@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'ggok.apps.GgokConfig',
+    'rest_framework',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [

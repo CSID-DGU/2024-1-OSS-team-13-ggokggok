@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+'''
 # Create your views here.
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Question
@@ -16,7 +16,7 @@ def index(request):
     paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     context = {'question_list': page_obj}
-    return render(request, 'pybo/question_list.html', context)
+    return render(request, 'ggok/question_list.html', context)
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     context = {'question': question}
@@ -50,3 +50,4 @@ def question_create(request):
         form = QuestionForm()
     context = {'form': form}
     return render(request, 'ggok/question_form.html', context)
+'''
