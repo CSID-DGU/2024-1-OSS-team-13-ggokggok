@@ -55,6 +55,17 @@ const Switcher = styled.span`
   }
 `;
 
+const create_account = (e)=> {
+  e.preventDefault();
+  navigate("/create-account")
+}
+
+const login = (e)=> {
+  e.preventDefault();
+  navigate("/login")
+}
+
+
 export default function Login() {
   const navigate = useNavigate();
   const [isLoading, setLoading] = useState(false);

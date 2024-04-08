@@ -3,6 +3,8 @@ import Login from "./pages/login/login";
 import Main from "./pages/main/main";
 import CreateAccount from "./pages/login/create-account";
 import SetRegion from "./pages/region/set-region";
+import SearchRegion from "./pages/region/search-region";
+import InfoRegion from "./pages/region/info-region"
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
@@ -31,12 +33,13 @@ const router = createBrowserRouter([
         path:"",
         element: <Main/>,
       },
+
+    
       {
-        path:"community",
+        path:"/community",
         element: <Community/>,
 
       },
-
     ]
   },
   {
@@ -55,6 +58,16 @@ const router = createBrowserRouter([
     path:"/set-region",
     element: <SetRegion/>
   },
+
+  {
+    path:"/search-region",
+    element: <SearchRegion/>
+  },
+
+  {
+    path:"/info-region",
+    element: <InfoRegion/>
+  }
 
 
 ]);
