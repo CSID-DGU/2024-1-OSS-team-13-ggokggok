@@ -10,34 +10,38 @@ const Wrapper = styled.div`
   align-items: center;
   width: 393px;
   padding: 50px 0px;
-
+  font-family: "GeekbleMalang2TTF";
+}
+  
 
 `;
 
 
 
 const Title = styled.h1`
-  font-size: 50px;
+  font-size: 130px;
   @font-face {
-    font-family: "GeekbleMalang2";
-    src: local('../font/GeekbleMalang2');
+    font-family: "GeekbleMalang2TTF";
+    src: local('../font/GeekbleMalang2TTF.ttf');
     font-weight: 400;
   }
   color: #534340;
+ 
 `;
 
 const Subtitle = styled.h2`
   color: #534340;
-
+  margin-bottom: 200px;
 `;
 
 const Button = styled.button`
+    height: 46px;
     padding: 10px 20px;
     border-radius: 50px;
     border: none;
     margin: 10px;
-    width: 100%;
-    font-size: 16px;
+    width: 315px;
+    font-size: 17px;
     background-color : #A3CCAA;
     color: #FFFFFF;
     &[type="submit"] {
@@ -56,31 +60,6 @@ const Form = styled.form`
   width: 100%;
 `;
 
-const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  width: 100%;
-  font-size: 16px;
-  &[type="submit"] {
-    cursor: pointer;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-
-const Error = styled.span`
-  font-weight: 600;
-  color: tomato;
-`;
-
-const Switcher = styled.span`
-  margin-top: 20px;
-  a {
-    color: #1d9bf0;
-  }
-`;
 
 export default function Main() {
   const navigate = useNavigate();

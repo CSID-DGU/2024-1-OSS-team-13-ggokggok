@@ -2,6 +2,9 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login/login";
 import Map from "./pages/main/main_map";
 import CreateAccount from "./pages/login/create-account";
+import SetRegion from "./pages/region/set-region";
+import SearchRegion from "./pages/region/search-region";
+import InfoRegion from "./pages/region/info-region"
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
@@ -31,8 +34,10 @@ const router = createBrowserRouter([
         path:"",
         element: <Map/>,
       },
+
+    
       {
-        path:"community",
+        path:"/community",
         element: <Community/>,
 
       },
@@ -55,6 +60,21 @@ const router = createBrowserRouter([
     path:"/intro",
     element: <Intro/>
   },
+  {
+    path:"/set-region",
+    element: <SetRegion/>
+  },
+
+  {
+    path:"/search-region",
+    element: <SearchRegion/>
+  },
+
+  {
+    path:"/info-region",
+    element: <InfoRegion/>
+  }
+
 
 ]);
 
