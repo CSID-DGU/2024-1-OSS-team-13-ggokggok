@@ -3,44 +3,56 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
-export const Wrapper = styled.div`
+const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 420px;
+  width: 393px;
   padding: 50px 0px;
+  margin : 50px 0px;
 `;
 
-export const Title = styled.h1`
-  font-size: 42px;
+const Title = styled.h1`
+  font-size: 30px;
+  color: #534340;
   
 `;
 
-export const Form = styled.form`
+const Form = styled.form`
+  align-items: center;
   margin-top: 50px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   width: 100%;
+  text-align: center;
 `;
 
-export const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  width: 100%;
+
+const Input = styled.input`
+  padding: 0px 20px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  height: 50px;
+  width: 303px;
   font-size: 16px;
+  background-color: #F6F6F6;
+  
   &[type="submit"] {
+    width: 343px;
+    height: 51px;
     cursor: pointer;
+    border-radius: 50px;
+    color: white;
+    margin-top: 250px;
     &:hover {
       opacity: 0.8;
     }
   }
-  background-color: #E8E8E8;
-
 `;
+
+
 
 export const Error = styled.span`
   font-weight: 600;
@@ -76,7 +88,7 @@ export default function CreateAccount(){
             setEmail(value);
         }else if(name === "password"){
             setPassword(value);
-        }else if(name == "nick"){
+        }else if(name === "nick"){
             setNick(value);
         }
     };
@@ -94,6 +106,7 @@ export default function CreateAccount(){
 
         } catch (e) {
             //에러처리
+            console.error("Error occurred:", e);
         } finally {
           setLoading(false);
         }
@@ -101,6 +114,7 @@ export default function CreateAccount(){
     };
 
     return(
+      
         <Wrapper>
             <Title>회원가입</Title>
             <Form onSubmit={onSubmit}>
@@ -112,6 +126,6 @@ export default function CreateAccount(){
             </Form>
             {error !== "" ? <Error>{error}</Error> : null}
         </Wrapper>
-
+      
     );
 }
