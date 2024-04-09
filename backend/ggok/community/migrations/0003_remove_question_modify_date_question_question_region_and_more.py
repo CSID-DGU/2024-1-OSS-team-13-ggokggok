@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ggok', '0002_question_author_question_modify_date_question_voter_and_more'),
+        ('community', '0002_question_author_question_modify_date_question_voter_and_more'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('create_date', models.DateTimeField()),
                 ('modify_date', models.DateTimeField(blank=True, null=True)),
                 ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='author_answer', to=settings.AUTH_USER_MODEL)),
-                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='ggok.question')),
+                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='community.question')),
                 ('voter', models.ManyToManyField(related_name='voter_answer', to=settings.AUTH_USER_MODEL)),
             ],
         ),
