@@ -1,7 +1,7 @@
 from django.urls import path
 from . import api
 
-app_name = 'accounts'
+app_name = 'user'
 
 urlpatterns = [
     path('logout/', api.LogoutAPIView.as_view(), name='logout'),
