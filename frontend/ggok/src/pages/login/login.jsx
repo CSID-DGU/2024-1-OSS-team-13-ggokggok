@@ -13,35 +13,45 @@ const Wrapper = styled.div`
 `;
 
 const Title = styled.h1`
-  font-size: 42px;
+  font-size: 30px;
+  color: #534340;
   
 `;
 
 const Form = styled.form`
+  align-items: center;
   margin-top: 50px;
-  margin-bottom: 10px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   width: 100%;
   text-align: center;
-
 `;
 
+
 const Input = styled.input`
-  padding: 10px 20px;
-  border-radius: 50px;
-  border: none;
-  width: 420px;
+  padding:0px 20px;
+  border: 1px solid #E8E8E8;
+  border-radius: 8px;
+  height: 50px;
+  width: 303px;
   font-size: 16px;
-  background-color: #E8E8E8;
+  background-color: #F6F6F6;
+
   &[type="submit"] {
+    width: 343px;
+    height: 51px;
     cursor: pointer;
+    border-radius: 50px;
+    color: white;
+    margin-top: 370px;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
+
+
 
 const Error = styled.span`
   font-weight: 600;
@@ -97,9 +107,10 @@ export default function Login() {
           type="password"
           required
         />
+        
         <Link style={{ textDecoration: "none"}}><div color="A3CCAA">Forgot your passoword?</div></Link>
-        <button>로그인</button>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
+        
       </Form>
       {error !== "" ? <Error>{error}</Error> : null}
     </Wrapper>
