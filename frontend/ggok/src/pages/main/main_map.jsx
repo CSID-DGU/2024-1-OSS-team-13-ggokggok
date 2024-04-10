@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import MapComponent from "../../components/map";
 import { useEffect } from "react";
+import Get from "../../components/get_test";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -123,6 +124,7 @@ export default function main_map() {
       <MapComponent lon = {location.longitude} lat = {location.latitude}/>
       }
       <Btn>지역 등록하기</Btn>
+      <Get></Get>
     </Wrapper>
   );
 }
