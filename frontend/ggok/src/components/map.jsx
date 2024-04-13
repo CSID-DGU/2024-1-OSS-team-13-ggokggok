@@ -45,7 +45,7 @@ const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
     };
   }, [apiKey]);
 
-  return <div ref={mapRef} style={{ height: '400px', width: '100%' }} />;
+  return <div ref={mapRef} style={{ height: '500px', width: '100%' }} />;
 };
 
 export default MapComponent;
