@@ -1,6 +1,5 @@
 import { styled } from "styled-components";
 
-
 const Wrapper = styled.div`
   height: 100%;
   display: flex;
@@ -56,7 +55,6 @@ export default function main_feed(){
                 </div>
             </div>
             <h2>우리 지역 명소 모음</h2>  
-            <Test2></Test2>
 
         </Wrapper>
     );

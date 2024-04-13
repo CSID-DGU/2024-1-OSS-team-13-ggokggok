@@ -4,7 +4,6 @@ import { styled } from "styled-components";
 import MapComponent from "../../components/map";
 import { useEffect } from "react";
 import Get from "../../components/get_test";
-import "../../others/font/font.css";
 
 
 const Title = styled.h1`
