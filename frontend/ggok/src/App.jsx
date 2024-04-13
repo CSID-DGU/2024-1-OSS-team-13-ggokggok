@@ -5,7 +5,6 @@ import CreateAccount from "./pages/login/create-account";
 import SetRegion from "./pages/region/set-region";
 import SearchRegion from "./pages/region/search-region";
 import InfoRegion from "./pages/region/info-region"
-import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -14,16 +13,20 @@ import Layout from "./components/layout";
 import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
+import './others/font/font.css';
+
+
 
 const Wrapper = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
-
+    height: 860px;
+    align-items: center;  
+    font-family: "GeekbleMalang2";
+    color: #534340;
+    text-align: center;
+    
 `;
+
 
 const router = createBrowserRouter([
   {
@@ -33,6 +36,7 @@ const router = createBrowserRouter([
       {
         path:"",
         element: <Map/>,
+        
       },
 
     
@@ -78,29 +82,18 @@ const router = createBrowserRouter([
 
 ]);
 
-const GlobalStyles = createGlobalStyle`
-  ${reset};
-  *{
-    box-sizing: border-box;
-  }
-  body {
-    background-color: black;
-    color:white;
-    font-family: system-ui, -apple-system, 
-    BlinkMacSystemFont, 'Segoe UI', 
-    Roboto, Oxygen, Ubuntu, Cantarell, 
-    'Open Sans', 'Helvetica Neue', sans-serif;
-`;
 
 function App() {
 
-
-
   return(
+  
     <Wrapper>
       <RouterProvider router={router} />
     </Wrapper>
+    
+  
   );
+
 }
 
 export default App

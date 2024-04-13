@@ -1,8 +1,5 @@
 import { styled } from "styled-components";
-import Get from "../../components/get_test";
-import Get2 from "../../components/get_test2";
-import Test from "../../components/test";
-import Test2 from "../../components/test2";
+
 
 const Wrapper = styled.div`
   height: 100%;
