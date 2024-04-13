@@ -19,7 +19,7 @@ const Top = styled.div`
 `;
 
 const Out = styled.div`
-    width: 85%;
+    width: 100%;
     align-items: center;
     justify-content: center;
 
@@ -27,13 +27,12 @@ const Out = styled.div`
 
 
 const Menu = styled.div`
-  position : absolute;
-  bottom : 0;
   height: 120px;
   display: flex;
   flex-direction: rows;
   align-items: center;
   gap: 20px;
+  
 `;
 
 const MenuItem = styled.div`

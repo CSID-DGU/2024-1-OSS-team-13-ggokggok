@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import MapComponent from "../../components/map";
 import { useEffect } from "react";
-import Get from "../../components/get_test";
+
+
 
 
 const Title = styled.h1`
