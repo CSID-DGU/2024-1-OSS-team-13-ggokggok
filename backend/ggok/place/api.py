@@ -15,10 +15,10 @@ class PlacePostSerializer(serializers.ModelSerializer):
         model = PlacePost
         fields = '__all__'
 
-class PostViewSet(viewsets.ModelViewSet):
+class PlacePostViewSet(viewsets.ModelViewSet):
     queryset = PlacePost.objects.all()
     serializer_class = PlacePostSerializer
 
-class CommentViewSet(viewsets.ModelViewSet):
+class PlaceCommentViewSet(viewsets.ModelViewSet):
     queryset = PlaceComment.objects.all()
     serializer_class = PlaceCommentSerializer
