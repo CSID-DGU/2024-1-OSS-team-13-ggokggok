@@ -5,7 +5,6 @@ import CreateAccount from "./pages/login/create-account";
 import SetRegion from "./pages/region/set-region";
 import SearchRegion from "./pages/region/search-region";
 import InfoRegion from "./pages/region/info-region"
-import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Protected_login from "./components/protected_login";
