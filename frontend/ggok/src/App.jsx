@@ -5,7 +5,6 @@ import CreateAccount from "./pages/login/create-account";
 import SetRegion from "./pages/region/set-region";
 import SearchRegion from "./pages/region/search-region";
 import InfoRegion from "./pages/region/info-region"
-import reset from "styled-reset";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Protected_login from "./components/protected_login";
@@ -13,17 +12,16 @@ import Layout from "./components/layout";
 import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
-import './others/font/font.css';
-
+import Upload_form from "./pages/community/upload_feed/upload";
+import GlobalStyle from "./styles/GlobalStyle";
 
 
 const Wrapper = styled.div`
 
-    height: 860px;
-    align-items: center;  
-    font-family: "GeekbleMalang2";
-    color: #534340;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+
     
 `;
 
@@ -48,6 +46,11 @@ const router = createBrowserRouter([
       {
         path:"feed",
         element: <Feed/>,
+
+      },
+      {
+        path:"upload",
+        element: <Upload_form/>,
 
       },
     ]
@@ -86,11 +89,10 @@ const router = createBrowserRouter([
 function App() {
 
   return(
-  
     <Wrapper>
+      <GlobalStyle />
       <RouterProvider router={router} />
     </Wrapper>
-    
   
   );
 
