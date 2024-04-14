@@ -13,6 +13,7 @@ const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
     // Google Maps API 스크립트를 동적으로 추가
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
@@ -38,6 +39,8 @@ const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
         console.log(`Clicked Latitude: ${clickedLat}, Clicked Longitude: ${clickedLng}`);
       });
     };
+
+    
 
     return () => {
       // 컴포넌트 언마운트 시 Google Maps API 스크립트 제거
