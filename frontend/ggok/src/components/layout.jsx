@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 
 const Top = styled.div`
     
-    height: 40px;
+    height: 50px;
     align-items: center;
     justify-content: center;
 
@@ -27,7 +27,7 @@ const Out = styled.div`
 
 
 const Menu = styled.div`
-  height: 120px;
+  height: 110px;
   display: flex;
   flex-direction: rows;
   align-items: center;
@@ -42,8 +42,8 @@ const MenuItem = styled.div`
   justify-content: center;
   border: 2px solid white;
   height: 50px;
-  width: 50px;
-  margin: 5px;
+  width: 35px;
+  margin: 13px;
   svg {
     width: 45px;
     height: 55px;
