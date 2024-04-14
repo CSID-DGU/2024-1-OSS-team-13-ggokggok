@@ -27,6 +27,8 @@ const Out = styled.div`
 
 
 const Menu = styled.div`
+  bottom: 0;
+  position: fixed;
   height: 110px;
   display: flex;
   flex-direction: rows;
