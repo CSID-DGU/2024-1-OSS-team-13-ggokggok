@@ -1,13 +1,18 @@
 import { createGlobalStyle } from 'styled-components';
-import GeekbleMalang2OTF from '../font/GeekbleMalang2OTF.otf'
-import GeekbleMalang2TTF from '../font/GeekbleMalang2TTF.ttf'
+import reset from "styled-reset";
+
 
 const GlobalStyle = createGlobalStyle`
+    ${reset}
     @font-face {
-    font-family: 'GeekbleMalang2TTF';
-    src: url(${GeekbleMalang2TTF}) format('truetype');
-    font-style: normal;
-}
-
-export
+    font-family: "GeekbleMalang2";
+      font-style: normal;
+      font-weight: 100;
+      src: url("src/others/font/GeekbleMalang2TTF.ttf") format("truetype");
+    }
+    body {
+        font-family: "GeekbleMalang2";
+    }
 `;
+
+export default GlobalStyle;
