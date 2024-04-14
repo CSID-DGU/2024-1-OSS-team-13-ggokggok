@@ -11,15 +11,15 @@ from community.views.base_views import index
 app_name='community'
 # UserViewSet에 대한 URL
 user_router = routers.DefaultRouter()
-user_router.register('user', UserViewSet, basename='user')
+user_router.register('', UserViewSet, basename='user')
 
 # QuestionViewSet에 대한 URL
 post_router = routers.DefaultRouter()
-post_router.register('community/post', PostViewSet, basename='post')
+post_router.register('', PostViewSet, basename='post')
 
 # AnswerViewSet에 대한 URL 설정
 comment_router = routers.DefaultRouter()
-comment_router.register('community/comment', CommentViewSet, basename='comment')  # URL 경로 변경
+comment_router.register('', CommentViewSet, basename='comment')  # URL 경로 변경
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -32,10 +32,10 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('api/', include(user_router.urls)),
+    path('user/', include(user_router.urls)),
     path('admin/', admin.site.urls),
-    path('api/', include(post_router.urls)),
-    path('api/', include(comment_router.urls)),  # community/answer/에 대한 URL 변경
+    path('community/post/', include(post_router.urls)),
+    path('community/comment/', include(comment_router.urls)),  # community/answer/에 대한 URL 변경
     path('api/doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('', index, name='index'),
 ]
