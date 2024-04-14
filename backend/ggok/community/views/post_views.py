@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from community.forms import PostForm
 from community.models import Post
-from community.api import PostSerializer
+from community.serializers import PostSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
