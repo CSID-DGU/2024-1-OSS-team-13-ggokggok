@@ -1,5 +1,5 @@
 from django import forms
-from models import PlacePost, PlaceComment
+from .models import PlacePost, PlaceComment
 
 
 class PlacePostForm(forms.ModelForm):
