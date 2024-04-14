@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import MapComponent from "../../components/map";
+
 import axios from "axios";
 import config from "../../others/apikey";
 import "../../others/font/font.css";
@@ -30,10 +31,11 @@ const SubTitle = styled.h2`
   margin-left: 0px;
   text-align: left;
   display: flex;
+  padding: 20px 0;
 `;
 
 const Icon = styled.div`
-  padding: 3px 10px 0px 0px;
+  padding-right: 10px;
 `;
 
 const LocationInfo = styled.div`
@@ -45,11 +47,11 @@ const LocationInfo = styled.div`
 
 const Btn = styled.button`
   margin-top: 20px;
-  padding: 10px;
+  padding: 15px;
   border-radius: 50px;
   border: none;
   width: 95%;
-  font-size: 16px;
+  font-size: 18px;
   background-color : #A3CCAA;
   color: #FFFFFF;
   

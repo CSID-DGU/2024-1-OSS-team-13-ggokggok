@@ -12,14 +12,14 @@ const Wrapper = styled.div`
 
 const Top = styled.div`
     
-    height: 40px;
+    height: 50px;
     align-items: center;
     justify-content: center;
 
 `;
 
 const Out = styled.div`
-    width: 85%;
+    width: 100%;
     align-items: center;
     justify-content: center;
 
@@ -27,13 +27,12 @@ const Out = styled.div`
 
 
 const Menu = styled.div`
-  position : absolute;
-  bottom : 0;
-  height: 120px;
+  height: 110px;
   display: flex;
   flex-direction: rows;
   align-items: center;
   gap: 20px;
+  
 `;
 
 const MenuItem = styled.div`
