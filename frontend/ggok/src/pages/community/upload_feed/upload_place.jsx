@@ -73,12 +73,13 @@ const SubmitBtn = styled.input`
   }
 `;
 
-export default function upload() {
+export default function upload_place() {
   const [isLoading, setLoading] = useState(false);
   
   const [sub, setsub] = useState("");
   const [text, settext] = useState("");
-  
+  const [place, setplace] = useState("");
+
   
   const [file, setFile] = useState(null);
   
@@ -90,6 +91,9 @@ export default function upload() {
     setsub(e.target.value);
   };
 
+  const onPlace = (e) => {
+    setplace(e.target.value);
+  };
 
 
   const onFileChange = (e) => {
@@ -112,7 +116,7 @@ export default function upload() {
         "subject": sub,
         "content": text,
         "create_date": currentDate,
-        "post_region": "string",
+        "post_region": place,
         "modify_date": currentDate,
         "author": 0,
         "voter": [
@@ -132,7 +136,7 @@ export default function upload() {
 
   return (
     <>
-        <Title>게시물 등록</Title>
+        <Title>명소 등록</Title>
         <Form onSubmit={onSubmit}>
            <SubArea
            required
@@ -141,13 +145,20 @@ export default function upload() {
            value={sub}
            placeholder="제목"
            />
+          <SubArea
+           required
+           maxLength={10}
+           onChange={onPlace}
+           value={place}
+           placeholder="명소 주소를 입력해주세요!"
+           />
             <TextArea
             required
             rows={5}
             maxLength={180}
             onChange={onChange}
             value={text}
-            placeholder="자유롭게 게시물을 등록해주세요!"
+            placeholder="장소에 대한 솔직한 글을 작성해주세요!"
             />
             <AttachFileButton htmlFor="file">
             {file ? "Photo added ✅" : "Add photo"}

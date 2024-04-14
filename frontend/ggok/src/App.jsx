@@ -12,9 +12,10 @@ import Layout from "./components/layout";
 import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
-import Upload_form from "./pages/community/upload_feed/upload";
+import Upload from "./pages/community/upload_feed/upload";
+import Upload_place from "./pages/community/upload_feed/upload_place";
+
 import GlobalStyle from "./styles/GlobalStyle";
-import './others/font/font.css'; 
 
 
 
@@ -22,13 +23,11 @@ const Wrapper = styled.div`
 
     height: 860px;
     align-items: center;  
-    font-family: "TTLaundryGothicB", "sans-serif", "GeekbleMalang2";
     color: #534340;
     text-align: center;
     display: flex;
     justify-content: center;
     height: 100vh;
-
     
 `;
 
@@ -57,7 +56,12 @@ const router = createBrowserRouter([
       },
       {
         path:"upload",
-        element: <Upload_form/>,
+        element: <Upload/>,
+
+      },
+      {
+        path:"upload-place",
+        element: <Upload_place/>,
 
       },
     ]
