@@ -13,6 +13,7 @@ const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
     // Google Maps API 스크립트를 동적으로 추가
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
+    
     script.async = true;
     script.defer = true;
     document.head.appendChild(script);
@@ -39,13 +40,15 @@ const MapComponent = ({lon, lat , apiKey = config.MAP_API_KEY }) => {
       });
     };
 
+    
+
     return () => {
       // 컴포넌트 언마운트 시 Google Maps API 스크립트 제거
       document.head.removeChild(script);
     };
   }, [apiKey]);
 
-  return <div ref={mapRef} style={{ height: '400px', width: '100%' }} />;
+  return <div ref={mapRef} style={{ height: '500px', width: '100%', borderRadius: "20px", border: "1px solid #D9D9D9"}} />;
 };
 
 export default MapComponent;

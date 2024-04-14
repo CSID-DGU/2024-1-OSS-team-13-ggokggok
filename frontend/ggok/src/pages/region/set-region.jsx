@@ -105,6 +105,6 @@ export default function SetRegion() {
     <Info>내 지역으로 등록하면 ~ <br />에 대한 서비스를 제공 받을 수 있어요</Info>
     <Button onClick={search_region}>내 지역 등록하기</Button>
     <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>
-  </Wrapper>
+    </Wrapper>
   );
 }
