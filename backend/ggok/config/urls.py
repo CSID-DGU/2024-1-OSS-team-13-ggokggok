@@ -1,6 +1,6 @@
+from user.serializers import UserViewSet
 from django.contrib import admin
 from django.urls import path, include
-import community.serializers
 from community.serializers import PostViewSet, CommentViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -9,6 +9,9 @@ from rest_framework.permissions import AllowAny
 from community.views.base_views import index
 
 app_name='community'
+# UserViewSet에 대한 URL
+user_router = routers.DefaultRouter()
+user_router.register('user', UserViewSet, basename='user')
 
 # QuestionViewSet에 대한 URL
 post_router = routers.DefaultRouter()
@@ -29,6 +32,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
+    path('api/', include(user_router.urls)),
     path('admin/', admin.site.urls),
     path('api/', include(post_router.urls)),
     path('api/', include(comment_router.urls)),  # community/answer/에 대한 URL 변경

@@ -1,9 +1,11 @@
-
-from rest_framework import serializers
 from .models import user_info
+from rest_framework import serializers, viewsets
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = user_info
-        fields = ['user_id', 'user_pw', 'user_mail', 'user_name', 'user_region1', 'user_region2']
+        fields = ['id', 'pw', 'name', 'email', 'region1', 'region2']
 
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = user_info.objects.all()
+    serializer_class = UserInfoSerializer
