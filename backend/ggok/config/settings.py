@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'user.apps.AccountsConfig',
     'rest_framework_swagger',
     'drf_yasg',
-    'place.apps.PlaceConfig'
+    'place.apps.PlaceConfig',
     'corsheaders',
 ]
 

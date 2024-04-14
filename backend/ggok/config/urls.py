@@ -8,7 +8,7 @@ from rest_framework import routers
 from community.views.base_views import index
 
 from rest_framework.permissions import AllowAny
-from ..place.api import PlacePostViewSet, PlaceCommentViewSet
+from place.api import PlacePostViewSet, PlaceCommentViewSet
 from rest_framework.routers import DefaultRouter
 
 
