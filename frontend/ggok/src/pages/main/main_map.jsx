@@ -4,12 +4,14 @@ import MapComponent from "../../components/map";
 import axios from "axios";
 import config from "../../others/apikey";
 import "../../others/font/font.css";
+import logo from "../../others/img/logo-icon.png"
 
 const Title = styled.h1`
   font-size: 40px;
   justify-content: center;
   display: flex;
   margin: 0px;
+  padding-rigth: 20px;
   align-items: center;
 `;
 
@@ -58,6 +60,19 @@ const Btn = styled.button`
     }
   }
 `;
+
+const LogoImage = styled.img`
+  width: 45px; 
+  height: auto; 
+  margin-left: 0px;
+`;
+
+
+const SetRegion = (e)=> {
+  e.preventDefault();
+  navigate("/set-region")
+}
+
 
 const MainMap = () => {
   const [loading, setLoading] = useState(true);
@@ -113,7 +128,9 @@ const MainMap = () => {
 
   return (
     <>
+    
       <Title>
+        <LogoImage src={logo} alt="Logo" ></LogoImage>
         꼭꼭
         <WriteBtn> 글 쓰기 </WriteBtn>
       </Title>
@@ -136,7 +153,7 @@ const MainMap = () => {
       ) : (
         <MapComponent lon={location.longitude} lat={location.latitude} />
       )}
-      <Btn>지역 등록하기</Btn>
+      <Btn onClick={SetRegion}>지역 등록하기</Btn>
     </>
   );
 };

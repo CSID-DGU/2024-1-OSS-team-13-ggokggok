@@ -13,7 +13,7 @@ import Layout from "./components/layout";
 import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
-import './others/font/font.css';
+import './others/font/font.css'; 
 
 
 
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
 
     height: 860px;
     align-items: center;  
-    font-family: "GeekbleMalang2";
+    font-family: "TTLaundryGothicB", "sans-serif", "GeekbleMalang2";
     color: #534340;
     text-align: center;
     

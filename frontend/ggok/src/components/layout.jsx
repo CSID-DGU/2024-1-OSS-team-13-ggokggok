@@ -43,8 +43,8 @@ const MenuItem = styled.div`
   justify-content: center;
   border: 2px solid white;
   height: 50px;
-  width: 50px;
-  margin: 5px;
+  width: 35px;
+  margin: 13px;
   svg {
     width: 45px;
     height: 55px;

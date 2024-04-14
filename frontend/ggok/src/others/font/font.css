@@ -7,3 +7,10 @@ font-family: "GeekbleMalang2";
   src: url("./GeekbleMalang2TTF.ttf") format("truetype");
 }
 
+
+@font-face {
+  font-family: "TTLaundryGothicB";
+  src: url('./런드리고딕Regular.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
