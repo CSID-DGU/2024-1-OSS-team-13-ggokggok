@@ -12,3 +12,5 @@ class PlacePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlacePost
         fields = '__all__'
+
+#commit test
