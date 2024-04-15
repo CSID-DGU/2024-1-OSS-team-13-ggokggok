@@ -27,11 +27,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'community.apps.GgokConfig',
     'rest_framework',
-    'user.apps.AccountsConfig',
+#    'user.apps.AccountsConfig',
     'rest_framework_swagger',
     'drf_yasg',
     'place.apps.PlaceConfig',
     'corsheaders',
+    'user'
 ]
 
 MIDDLEWARE = [
@@ -123,5 +124,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'user.UserInfo'
+
 
 CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
