@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from ..forms import PlacePostForm
-from ..models import PlacePost
+from ..models import PlacePost, PlaceInfo
 from ..api import PlacePostSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -12,6 +12,20 @@ from django.utils import timezone
 @api_view(['POST'])
 def post_create(request):
     if request.method == 'POST':
+
+        #명소 위도+경도 받아와서 확인
+        place_lat = request.data.get('place_lat')
+        place_long = request.data.get('place_long')
+        isPlace = PlaceInfo.objects.filter(lat=place_lat, long=place_long)
+
+        if isPlace:
+            place_id = isPlace.id
+        else: #없으면 새로 등록
+            place_name = request.data.get('place_name')
+            place_address = request.data.get('place_address')
+            newPlace = PlaceInfo.objects.create(name=place_name, address=place_address, lat=place_lat, long=place_long)
+            place_id = newPlace.id
+
         form = PlacePostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
