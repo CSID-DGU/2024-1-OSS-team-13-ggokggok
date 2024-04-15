@@ -2,7 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from ..forms import PlacePostForm
-from ..models import PlacePost, PlaceInfo
+from ..models import PlacePost
+from ...placesinfo.models import PlaceInfo
 from ..api import PlacePostSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
