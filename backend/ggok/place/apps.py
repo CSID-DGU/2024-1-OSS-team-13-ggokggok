@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class GgokConfig(AppConfig):
+class PlaceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'ggok'
+    name = 'place'

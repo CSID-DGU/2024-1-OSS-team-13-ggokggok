@@ -1,8 +1,11 @@
-from rest_framework import serializers
-from .models import UserInfo
+from .models import user_info
+from rest_framework import serializers, viewsets
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserInfo
-        fields = ['user_id', 'user_pw', 'user_mail', 'user_name', 'user_region1', 'user_region2']
-#이후 user_pw는 안보이도록 수정할것
+        model = user_info
+        fields = ['id', 'pw', 'name', 'email', 'region1', 'region2']
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = user_info.objects.all()
+    serializer_class = UserInfoSerializer
