@@ -8,7 +8,7 @@ const GlobalStyle = createGlobalStyle`
     font-family: "GeekbleMalang2";
       font-style: normal;
       font-weight: 100;
-      src: url("src/others/font/GeekbleMalang2TTF.ttf") format("truetype");
+      src: url("src/others/font/런드리고딕Regular.ttf") format("truetype");
     }
     body {
         font-family: "GeekbleMalang2";
