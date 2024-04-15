@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import logo from "../../others/img/logo-icon.png"
 import leftlogo from "../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, WriteButton, BackButton } from "../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
 
 
 
@@ -72,7 +72,7 @@ export default function main_feed(){
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-            <div><WriteButton>글쓰기</WriteButton></div>
+            <div><ExtraButton>글쓰기</ExtraButton></div>
           </Title>
 
    
