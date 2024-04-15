@@ -7,7 +7,6 @@ import "../../others/font/font.css";
 import logo from "../../others/img/logo-icon.png"
 import { useNavigate } from "react-router-dom";
 
-
 const Title = styled.h1`
   font-size: 40px;
   justify-content: center;
@@ -53,7 +52,7 @@ const Btn = styled.button`
   border: none;
   width: 300px;
   font-size: 18px;
-  background-color : #A3CCAA;
+  background-color: #A3CCAA;
   color: #FFFFFF;
   
   &[type="submit"] {
@@ -65,26 +64,29 @@ const Btn = styled.button`
 `;
 
 const LogoImage = styled.img`
-  width: 45px; 
-  height: auto; 
+  width: 45px;
+  height: auto;
   margin-left: 0px;
 `;
-
-
-const SetRegion = (e)=> {
-  e.preventDefault();
-  navigate("/set-region")
-}
-
-const UploadForm= (e)=> {
-  e.preventDefault();
-  navigate("/upload")
-}
 
 const MainMap = () => {
   const [loading, setLoading] = useState(true);
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [address, setAddress] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(null); // 추가: 선택된 지역을 저장하는 state
+
+  const navigate = useNavigate();
+
+  const locations = [
+    { name: "강남구", latitude: 37.5172, longitude: 127.0473 },
+    { name: "마포구", latitude: 37.5665, longitude: 126.978 },
+    { name: "종로구", latitude: 37.5724, longitude: 126.979 }
+  ];
+
+  const handleLocationClick = (locationName) => {
+    setSelectedLocation(locationName); // 선택된 위치 업데이트
+    console.log(`Selected location: ${locationName}`);
+  };
 
   const updateLocation = () => {
     setLoading(true);
@@ -104,27 +106,25 @@ const MainMap = () => {
   };
 
   const fetchAddress = async (lat, lng) => {
-      try {
-        const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`
-        const response = await axios.get(url);
-        const addressComponents = response.data.results[0].address_components;
-    
-        // "동"을 포함한 부분 찾기
-        let dongAddress = "";
-        for (let component of addressComponents) {
-          if (component.types.includes("political", "sublocality", "sublocality_level_2")) {
-            dongAddress = component.long_name;
-            break;
-          }
+    try {
+      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`
+      const response = await axios.get(url);
+      const addressComponents = response.data.results[0].address_components;
+
+      // "동"을 포함한 부분 찾기
+      let dongAddress = "";
+      for (let component of addressComponents) {
+        if (component.types.includes("political", "sublocality", "sublocality_level_2")) {
+          dongAddress = component.long_name;
+          break;
         }
-    
-        setAddress(dongAddress || "동 정보 없음");
-      } catch (error) {
-        console.error('Error fetching address:', error.message);
-        setAddress("주소를 가져올 수 없음");
       }
-  
-    
+
+      setAddress(dongAddress || "동 정보 없음");
+    } catch (error) {
+      console.error('Error fetching address:', error.message);
+      setAddress("주소를 가져올 수 없음");
+    }
   };
 
   useEffect(() => {
@@ -133,10 +133,20 @@ const MainMap = () => {
 
   console.log(location);
 
+  const SetRegion = (e) => {
+    e.preventDefault();
+    navigate("/set-region");
+  };
+
+  const UploadForm = (e) => {
+    e.preventDefault();
+    navigate("/upload");
+  };
+
   return (
     <>
       <Title>
-        <LogoImage src={logo} alt="Logo" ></LogoImage>
+        <LogoImage src={logo} alt="Logo" />
         꼭꼭
         <WriteBtn onClick={UploadForm}> 글 쓰기 </WriteBtn>
       </Title>
@@ -157,9 +167,21 @@ const MainMap = () => {
       {loading ? (
         <h1>Loading...</h1>
       ) : (
-        <MapComponent lon={location.longitude} lat={location.latitude} />
+        <MapComponent
+          locations={locations}
+          lon={location.longitude}
+          lat={location.latitude}
+          onLocationClick={handleLocationClick} // 추가: 위치 클릭 핸들러 전달
+        />
       )}
       <Btn onClick={SetRegion}>지역 등록하기</Btn>
+
+      {selectedLocation && (
+        <div>
+          <h2>선택된 지역:</h2>
+          <p>{selectedLocation}</p>
+        </div>
+      )}
     </>
   );
 };
