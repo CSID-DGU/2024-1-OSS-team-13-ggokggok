@@ -30,8 +30,8 @@ INSTALLED_APPS = [
     'user.apps.AccountsConfig',
     'rest_framework_swagger',
     'drf_yasg',
+    'place.apps.PlaceConfig',
     'corsheaders',
-
 ]
 
 MIDDLEWARE = [
@@ -72,8 +72,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ggok',
+        'USER': 'root',
+        'PASSWORD': '0000',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
