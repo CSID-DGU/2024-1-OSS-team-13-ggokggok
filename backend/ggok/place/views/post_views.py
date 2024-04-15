@@ -34,6 +34,7 @@ def post_create(request):
             post.date = timezone.now()
             post.place_id = place_id
             post.save()
+            #signal
             serializer = PlacePostSerializer(post)
             return Response(serializer.data)
         return Response(form.errors, status=400)
