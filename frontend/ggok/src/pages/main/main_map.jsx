@@ -5,26 +5,10 @@ import axios from "axios";
 import config from "../../others/apikey";
 import "../../others/font/font.css";
 import logo from "../../others/img/logo-icon.png"
+import leftlogo from "../../others/img/left-button.png"
 import { useNavigate } from "react-router-dom";
+import { Wrapper, Title, TitleDiv, WriteButton, BackButton } from "../../styles/Styles";
 
-const Title = styled.h1`
-  font-size: 40px;
-  justify-content: center;
-  display: flex;
-  margin: 0px;
-  padding-rigth: 20px;
-  align-items: center;
-`;
-
-const WriteBtn = styled.button`
-  position: absolute;
-  right: 45px;
-  border: none;
-  background-color: white;
-  color: #A3CCAA;
-  font-size: 16px;
-  font-weight: bold;
-`;
 
 const SubTitle = styled.h2`
   font-size: 24px;
@@ -144,12 +128,15 @@ const MainMap = () => {
   };
 
   return (
-    <>
+    <Wrapper>
+
       <Title>
-        <LogoImage src={logo} alt="Logo" />
-        꼭꼭
-        <WriteBtn onClick={UploadForm}> 글 쓰기 </WriteBtn>
+        <div><BackButton><img src={leftlogo}/></BackButton></div>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
+        <div><WriteButton>글쓰기</WriteButton></div>
       </Title>
+
+
       <SubTitle>
         <Icon>
           <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +169,7 @@ const MainMap = () => {
           <p>{selectedLocation}</p>
         </div>
       )}
-    </>
+    </Wrapper>
   );
 };
 

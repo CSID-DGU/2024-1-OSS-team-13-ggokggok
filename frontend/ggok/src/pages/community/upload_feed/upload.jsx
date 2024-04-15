@@ -112,16 +112,13 @@ export default function upload() {
         "subject": sub,
         "content": text,
         "create_date": currentDate,
-        "post_region": "string",
-        "modify_date": currentDate,
-        "author": 0,
-        "voter": [
-          0
-        ]
+        "post_region": "string",  
+        "author": 1,
+        
     };
     console.log(postData);
 
-    axios.post('http://localhost:8000/api/community/post/', postData)
+    axios.post('http://localhost:8000/community/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })
