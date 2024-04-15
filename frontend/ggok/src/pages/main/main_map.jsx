@@ -24,7 +24,7 @@ const LocationInfo = styled.div`
 const UnVisitButton = styled.button`
   padding: 15px;
   border-radius: 50px;
-  border: 2px solid #A3CCAA;
+  border: 1px solid #A3CCAA;
   font-size: 18px;
   background-color: white;
   color: #A3CCAA;
