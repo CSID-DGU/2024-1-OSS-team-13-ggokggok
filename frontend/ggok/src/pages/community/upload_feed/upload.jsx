@@ -8,15 +8,14 @@ import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainConta
 const Form = styled.form`
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 10px;
-  
-  
+  padding: 10px;
+  width: 90%;
 `;
 
 
 const SubArea = styled.input`
-  width: 90%;
+
   height: 50px;
   border: none;
   border-bottom: 2px solid #E8E8E8;
@@ -79,7 +78,6 @@ const SubmitBtn = styled.input`
     opacity: 0.9;
   }
 `;
-
 export default function upload() {
   const [isLoading, setLoading] = useState(false);
   
