@@ -67,7 +67,7 @@ const WriteBtn = styled.div`
     font-weight: bold;
 `;  
 
-export default function main_feed(){
+export default function Feed_list(){
 
     const [getData, setGetData] = useState([]);
 
@@ -91,15 +91,7 @@ export default function main_feed(){
             <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
-          </Title>
-            <SubTitle>
-            <h2>우리지역 HOT 명소</h2>
-            <ContentBox>
-                
-            </ContentBox>
-            </SubTitle>
-
-            
+          </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
               <ContentBox2>

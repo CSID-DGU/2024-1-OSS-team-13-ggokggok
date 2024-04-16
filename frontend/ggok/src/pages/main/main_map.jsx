@@ -106,6 +106,7 @@ const MainMap = () => {
     try {
       const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`
       const response = await axios.get(url);
+      console.log(response.data.results[0]);
       const addressComponents = response.data.results[0].address_components;
 
       // "동"을 포함한 부분 찾기

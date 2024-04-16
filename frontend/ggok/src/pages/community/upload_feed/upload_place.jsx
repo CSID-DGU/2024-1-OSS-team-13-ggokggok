@@ -122,14 +122,14 @@ export default function upload_place() {
         "create_date": currentDate,
         "post_region": place,
         "modify_date": currentDate,
-        "author": 0,
+        "author": 1,
         "voter": [
-          0
+          1
         ]
     };
     console.log(postData);
 
-    axios.post('http://localhost:8000/api/community/post/', postData)
+    axios.post('http://localhost:8000/place/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })
