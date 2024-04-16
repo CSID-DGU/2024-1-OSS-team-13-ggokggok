@@ -14,6 +14,7 @@ import Feed from "./pages/main/main_feed";
 import Upload from "./pages/community/upload_feed/upload";
 import Upload_place from "./pages/community/upload_feed/upload_place";
 import GlobalStyle from "./styles/GlobalStyle";
+import Feed_list from "./pages/community/feed_list";
 
 
 
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
       {
         path:"upload-place",
         element: <Upload_place/>,
+
+      },
+      {
+        path:"feed-list",
+        element: <Feed_list/>,
 
       },
     ]
