@@ -160,7 +160,7 @@ export default function upload() {
             placeholder="자유롭게 게시물을 등록해주세요!"
             />
             <AttachFileButton htmlFor="file">
-            {file ? "Photo added ✅" : "Add photo"}
+            {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
             </AttachFileButton>
             <AttachFileInput
             onChange={onFileChange}
@@ -170,7 +170,7 @@ export default function upload() {
             />
             <SubmitBtn
             type="submit"
-            value={isLoading ? "Posting..." : "Post text"}
+            value={isLoading ? "등록중..." : "게시글 등록!"}
             />
         </Form>
     </Wrapper>

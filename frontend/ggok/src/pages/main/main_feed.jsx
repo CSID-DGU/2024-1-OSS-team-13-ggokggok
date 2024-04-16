@@ -3,8 +3,9 @@ import logo from "../../others/img/logo-icon.png"
 import leftlogo from "../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
 import { Link } from "react-router-dom";
-
-
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -64,15 +65,24 @@ const WriteBtn = styled.div`
     color: #A3CCAA;
     font-size: 16px;
     font-weight: bold;
-`;
-
-const UploadForm= (e)=> {
-    e.preventDefault();
-    navigate("/upload")
-  }
-  
+`;  
 
 export default function main_feed(){
+
+    const [getData, setGetData] = useState([]);
+
+    async function fetchData() {
+        try {
+          const response = await axios.get('http://localhost:8000/community/post/');
+          setGetData(response.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {fetchData();}, []);
+
+    console.log(getData);
 
 
     return (
@@ -96,22 +106,22 @@ export default function main_feed(){
                 <div style={{display: 'flex'}}>
                     <ContentImg  src="/"></ContentImg >
                     <div>
-                        <h3>맛집 기록</h3>
-                        <p>가나다라마바사아자차카타파하</p>
+                        <h3>{getData.length > 0 && getData[0].subject}</h3>
+                        <p>{getData.length > 0 && getData[0].content}</p>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
                     <ContentImg  src="/"></ContentImg >
                     <div>
-                        <h3>나만 알고 싶은 충무로 카페 발견</h3>
-                        <p>가나다라마바사아자차카타파하</p>
+                        <h3>{getData.length > 0 && getData[1].subject}</h3>
+                        <p>{getData.length > 0 && getData[1].content}</p>
                     </div>
                 </div>
                 <div style={{display: 'flex'}}>
                     <ContentImg src="/"></ContentImg>
                     <div>
-                        <h3>여기 진짜 맛집인데</h3>
-                        <p>가나다라마바사아자차카타파하</p>
+                        <h3>{getData.length > 0 && getData[2].subject}</h3>
+                        <p>{getData.length > 0 && getData[2].content}</p>
                     </div>
                 </div>
                 </ContentBox2>
