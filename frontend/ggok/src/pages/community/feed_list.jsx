@@ -24,12 +24,12 @@ const ContentBox = styled.div`
 `;
 
 const ContentBox2 = styled.div`
-  height: 143px;
+  height: 550px;
   width: 100%;
   border: 1px solid #FFFFFF;
   border-radius: 10px;
- 
   margin: 15px 0 0;
+  overflow: auto;
 
   > div {
     font-size: 20px;
@@ -95,27 +95,16 @@ export default function Feed_list(){
             <SubTitle>
             <h2>우리 지역 소식</h2>
               <ContentBox2>
-                <div style={{display: 'flex'}}>
-                    <ContentImg  src="/"></ContentImg >
-                    <div>
-                        <h3>{getData.length > 0 && getData[0].subject}</h3>
-                        <p>{getData.length > 0 && getData[0].content}</p>
-                    </div>
-                </div>
-                <div style={{display: 'flex'}}>
-                    <ContentImg  src="/"></ContentImg >
-                    <div>
-                        <h3>{getData.length > 0 && getData[1].subject}</h3>
-                        <p>{getData.length > 0 && getData[1].content}</p>
-                    </div>
-                </div>
-                <div style={{display: 'flex'}}>
-                    <ContentImg src="/"></ContentImg>
-                    <div>
-                        <h3>{getData.length > 0 && getData[2].subject}</h3>
-                        <p>{getData.length > 0 && getData[2].content}</p>
-                    </div>
-                </div>
+                {getData.length > 0 ? (
+                        getData.map((data) => (
+                            <div style={{display: 'flex'}}>
+                                <ContentImg src="/"></ContentImg>
+                                <div>
+                                    <h3>{data.subject}</h3>
+                                    <p>{data.content}</p>
+                                </div>
+                            </div>
+                    ))): (<></>)}
                 </ContentBox2>
             </SubTitle>
 
