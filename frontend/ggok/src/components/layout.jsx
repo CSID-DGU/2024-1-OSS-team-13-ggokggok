@@ -17,7 +17,7 @@ const Top = styled.div`
 `;
 
 const Out = styled.div`
-    width: 100%;
+    width: 95%;
     align-items: center;
     justify-content: center;
 
