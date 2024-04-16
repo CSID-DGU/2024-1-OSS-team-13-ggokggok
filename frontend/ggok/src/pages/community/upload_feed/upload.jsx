@@ -119,9 +119,9 @@ export default function upload() {
         "subject": sub,
         "content": text,
         "create_date": currentDate,
-        "post_region": "string",  
+        "post_region": "string",
         "author": 1,
-        
+      
     };
     console.log(postData);
 

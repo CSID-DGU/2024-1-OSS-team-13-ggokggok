@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import logo from "../../others/img/logo-icon.png"
 import leftlogo from "../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
+import { Link } from "react-router-dom";
 
 
 
@@ -57,6 +58,13 @@ const ContentImg = styled.img`
   margin: 0 10px 0 0;
 `;
 
+const WriteBtn = styled.div`
+    border: none;
+    background-color: white;
+    color: #A3CCAA;
+    font-size: 16px;
+    font-weight: bold;
+`;
 
 const UploadForm= (e)=> {
     e.preventDefault();
@@ -72,11 +80,8 @@ export default function main_feed(){
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-            <div><ExtraButton>글쓰기</ExtraButton></div>
+            <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>
-
-   
-
             <SubTitle>
             <h2>우리지역 HOT 명소</h2>
             <ContentBox>
