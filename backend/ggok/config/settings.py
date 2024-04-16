@@ -74,7 +74,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ggok',
-        'USER': 'postgres', #root
+        'USER': 'root',
         'PASSWORD': '0000',
         'HOST': 'localhost',
         'PORT': '',

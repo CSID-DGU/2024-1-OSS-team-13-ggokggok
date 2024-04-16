@@ -1,31 +1,8 @@
 import { styled } from "styled-components";
 import logo from "../../others/img/logo-icon.png"
+import leftlogo from "../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
 
-
-const Title = styled.h1`
-font-size: 35px;
-justify-content: center;
-display: flex;
-margin-left: -10px;
-padding-rigth: 20px;
-align-items: center;
-`;
-
-const LogoImage = styled.img`
-  width: 45px; 
-  height: auto; 
-  margin-left: 0px;
-`;
-
-const WriteBtn = styled.button`
-  position: absolute;
-  right: 45px;
-  border: none;
-  background-color: white;
-  color: #A3CCAA;
-  font-size: 16px;
-  font-weight: bold;
-`;
 
 
 const SubTitle = styled.h2`
@@ -91,13 +68,14 @@ export default function main_feed(){
 
 
     return (
-        <>
-            <Title>
-                <LogoImage src={logo} alt="Logo" ></LogoImage>
-                우리지역
-                <WriteBtn onClick={UploadForm}> 글 쓰기 </WriteBtn>
-            </Title>
-           
+        <Wrapper>
+          <Title>
+            <div><BackButton><img src={leftlogo}/></BackButton></div>
+            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+            <div><ExtraButton>글쓰기</ExtraButton></div>
+          </Title>
+
+   
 
             <SubTitle>
             <h2>우리지역 HOT 명소</h2>
@@ -134,6 +112,6 @@ export default function main_feed(){
                 </ContentBox2>
             </SubTitle>
 
-        </>
+        </Wrapper>
     );
 }
