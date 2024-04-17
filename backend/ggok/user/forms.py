@@ -1,16 +1,16 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from user.models import user_info
+from user.models import UserInfo
 
 class UserForm(UserCreationForm):
-    email = forms.EmailField(label="이메일")
+    #email = forms.EmailField(label="이메일")
     region1 = forms.CharField(label="지역1", required=False)  # 지역1 필드 추가
     region2 = forms.CharField(label="지역2", required=False)  # 지역2 필드 추가
-    name = forms.CharField(label="이름")  # 이름 필드 추가
+    #username = forms.CharField(label="이름")  # 이름 필드 추가
 
     class Meta:
-        model = User
+        model = UserInfo
         fields = ("username", "password1", "password2", "email", "region1", "region2", "name")  # 지역1, 지역2, 이름 필드 추가
 
     def __init__(self, *args, **kwargs):
