@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from user.models import UserInfo
 
 class PlaceInfo(models.Model):
     id = models.AutoField(primary_key=True) #등록로직변경필요
@@ -9,4 +9,4 @@ class PlaceInfo(models.Model):
     long = models.FloatField()
     review = models.IntegerField() #추천 판단용 지표값
     category = models.CharField(max_length=50)
-    written = models.ManyToManyField(User, related_name='written_place')  # 글 쓴 사람수 ..사용처는 미정
+    written = models.ManyToManyField(UserInfo, related_name='written_place')  # 글 쓴 사람수 ..사용처는 미정

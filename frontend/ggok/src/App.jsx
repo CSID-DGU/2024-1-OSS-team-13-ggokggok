@@ -9,13 +9,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Protected_login from "./components/protected_login";
 import Layout from "./components/layout";
-import Community from "./pages/community/community";
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
 import Upload from "./pages/community/upload_feed/upload";
 import Upload_place from "./pages/community/upload_feed/upload_place";
-
 import GlobalStyle from "./styles/GlobalStyle";
+import Feed_list from "./pages/community/feed_list";
+import Place_list from "./pages/community/place_list";
 
 
 
@@ -23,7 +23,6 @@ const Wrapper = styled.div`
 
     height: 860px;
     align-items: center;  
-    color: #534340;
     text-align: center;
     display: flex;
     justify-content: center;
@@ -42,13 +41,6 @@ const router = createBrowserRouter([
         element: <Map/>,
         
       },
-
-    
-      {
-        path:"/community",
-        element: <Community/>,
-
-      },
       {
         path:"feed",
         element: <Feed/>,
@@ -62,6 +54,16 @@ const router = createBrowserRouter([
       {
         path:"upload-place",
         element: <Upload_place/>,
+
+      },
+      {
+        path:"feed-list",
+        element: <Feed_list/>,
+
+      },
+      {
+        path:"place-list",
+        element: <Place_list/>,
 
       },
     ]

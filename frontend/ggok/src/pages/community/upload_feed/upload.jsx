@@ -1,20 +1,22 @@
 import { useState } from "react";
 import { styled } from "styled-components";
 import axios from "axios";
+import logo from "../../../others/img/logo-icon.png"
+import leftlogo from "../../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
 
 const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 10px;
+  padding: 10px;
+  width: 90%;
 `;
-const Title = styled.h1`
-  font-size: 42px;
-  width: 344px;
-`;
+
 
 const SubArea = styled.input`
-  width: 300px;
 
+  height: 50px;
   border: none;
   border-bottom: 2px solid #E8E8E8;
   outline: none; 
@@ -22,23 +24,27 @@ const SubArea = styled.input`
   margin-top: 30px;
 
   &::placeholder {
-    font-size: 16px;
+    font-size: 32px;
+    font-family: "laundryR";
+    color: #959595;
   }
 
 `;
 
 const TextArea = styled.textarea`
-  border: 2px solid #C5D8A4;
-  padding: 20px;
-  border-radius: 20px;
-  font-size: 16px;
-  width: 300px;
+  border: none;
+  width: 90%;
   resize: none;
- 
+  
   &::placeholder {
-    font-size: 16px;
+    font-size: 20px;
+    font-family: "laundryR";
+    color: #959595;
   }
+
   &:focus {
+    font-size: 20px;
+    font-family: "laundryR";
     outline: none;
     border-color: #A3CCAA;
   }
@@ -72,7 +78,6 @@ const SubmitBtn = styled.input`
     opacity: 0.9;
   }
 `;
-
 export default function upload() {
   const [isLoading, setLoading] = useState(false);
   
@@ -112,9 +117,9 @@ export default function upload() {
         "subject": sub,
         "content": text,
         "create_date": currentDate,
-        "post_region": "string",  
+        "post_region": "string",
         "author": 1,
-        
+      
     };
     console.log(postData);
 
@@ -128,8 +133,14 @@ export default function upload() {
   };
 
   return (
-    <>
-        <Title>게시물 등록</Title>
+    <Wrapper>
+
+      <Title>
+        <div><BackButton><img src={leftlogo}/></BackButton></div>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
+       
+      </Title>
+        
         <Form onSubmit={onSubmit}>
            <SubArea
            required
@@ -147,7 +158,7 @@ export default function upload() {
             placeholder="자유롭게 게시물을 등록해주세요!"
             />
             <AttachFileButton htmlFor="file">
-            {file ? "Photo added ✅" : "Add photo"}
+            {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
             </AttachFileButton>
             <AttachFileInput
             onChange={onFileChange}
@@ -157,9 +168,9 @@ export default function upload() {
             />
             <SubmitBtn
             type="submit"
-            value={isLoading ? "Posting..." : "Post text"}
+            value={isLoading ? "등록중..." : "게시글 등록!"}
             />
         </Form>
-    </>
+    </Wrapper>
   );
 }
