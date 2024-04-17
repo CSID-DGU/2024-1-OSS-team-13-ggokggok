@@ -35,7 +35,8 @@ INSTALLED_APPS = [
     'drf_yasg',
     'place.apps.PlaceConfig',
     'corsheaders',
-    'user'
+    'user',
+    'placesinfo.apps.PlacesinfoConfig',
 ]
 
 MIDDLEWARE = [

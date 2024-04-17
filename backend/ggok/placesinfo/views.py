@@ -1,8 +1,9 @@
 from django.shortcuts import render
 from .models import PlaceInfo
-from ..place.models import PlacePost
+
 
 def update_review(place_id):
+    from place.models import PlacePost
     posts = PlacePost.objects.filter(place_id=place_id)
     total = sum([post.reviw for post in posts])
     average = total / len(posts) if len(posts) > 0 else 0
