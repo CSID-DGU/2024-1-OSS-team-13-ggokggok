@@ -9,7 +9,7 @@ import leftlogo from "../../others/img/left-button.png"
 import locationLogo from "../../others/img/LocationPinned.png"
 import { useNavigate } from "react-router-dom";
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
-
+import { Link } from "react-router-dom";
 
 
 const Icon = styled.div`
@@ -62,6 +62,14 @@ const SetCurrentButton = styled.button`
     }
   }
 `;
+
+const WriteBtn = styled.div`
+    border: none;
+    background-color: white;
+    color: #A3CCAA;
+    font-size: 16px;
+    font-weight: bold;
+`;  
 
 
 
@@ -147,7 +155,8 @@ const MainMap = () => {
       <Title>
         <div><BackButton><img src={leftlogo}/></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
-        <div><ExtraButton>명소 +</ExtraButton></div>
+        <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
+
       </Title>
 
 

@@ -107,7 +107,6 @@ export default function Feed_list(){
                     ))): (<></>)}
                 </ContentBox2>
             </SubTitle>
-
         </Wrapper>
     );
 }

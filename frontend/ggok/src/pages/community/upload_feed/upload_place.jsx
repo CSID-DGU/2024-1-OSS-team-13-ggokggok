@@ -4,6 +4,7 @@ import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
+import StarRating from "../../../components/starrating";
 
 const Form = styled.form`
   display: flex;
@@ -86,6 +87,14 @@ export default function upload_place() {
 
   
   const [file, setFile] = useState(null);
+
+  const [ispublic, setpublic] = useState(true);
+
+  const [stars, setstars] = useState(0);
+
+  const toggle = () => {
+    setpublic(prevState => !prevState);
+  };
   
   const onChange = (e) => {
     settext(e.target.value);
@@ -117,12 +126,18 @@ export default function upload_place() {
     
     const currentDate = new Date().toISOString();
     const postData = {
-        "subject": sub,
+        "title": sub,
         "content": text,
-        "create_date": currentDate,
-        "post_region": place,
-        "modify_date": currentDate,
+        "public" : ispublic,
+        "review" : stars,
         "author": 1,
+
+        //"create_date": currentDate,
+        "address": place,
+        "name" : 'abc',
+        "place_id" : 'abc',
+        "category" : "cafe",
+        "modify_date": currentDate,
         "voter": [
           1
         ]
@@ -143,7 +158,7 @@ export default function upload_place() {
       <Title>
         <div><BackButton><img src={leftlogo}/></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>명소 등록</span></TitleDiv>
-       
+        
       </Title>
        
         <Form onSubmit={onSubmit}>
@@ -161,27 +176,35 @@ export default function upload_place() {
            value={place}
            placeholder="명소 주소를 입력해주세요!"
            />
-            <TextArea
+           <div style={{display: 'flex'}}>
+            <button onClick={toggle} type="button">{ispublic ? "공개" : "비공개" }</button>
+            <StarRating 
+            totalStars={5} 
+            selectedStars={stars}
+            onStarClick={setstars}
+            />
+          </div>
+          <TextArea
             required
             rows={5}
             maxLength={180}
             onChange={onChange}
             value={text}
             placeholder="장소에 대한 솔직한 글을 작성해주세요!"
-            />
-            <AttachFileButton htmlFor="file">
+          />
+          <AttachFileButton htmlFor="file">
             {file ? "Photo added ✅" : "Add photo"}
-            </AttachFileButton>
-            <AttachFileInput
+          </AttachFileButton>
+          <AttachFileInput
             onChange={onFileChange}
             type="file"
             id="file"
             accept="image/*"
-            />
-            <SubmitBtn
+          />
+          <SubmitBtn
             type="submit"
             value={isLoading ? "Posting..." : "Post text"}
-            />
+          />
         </Form>
     </>
   );
