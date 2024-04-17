@@ -1,4 +1,6 @@
 from django.db import models
+
+from ..placesinfo.views import update_review
 from user.models import UserInfo
 
 class PlacePost(models.Model):
@@ -16,6 +18,9 @@ class PlacePost(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        super(PlacePost, self).save(*args, **kwargs)
+        update_review(self.place_id) #별점 업데이트
 
 class PlaceComment(models.Model):
     id = models.AutoField(primary_key=True)
