@@ -35,8 +35,9 @@ INSTALLED_APPS = [
     'drf_yasg',
     'place.apps.PlaceConfig',
     'corsheaders',
-    'user'
-]
+    'user',
+    'placesinfo'
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
