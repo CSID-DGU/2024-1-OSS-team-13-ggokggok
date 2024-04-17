@@ -10,6 +10,7 @@ class Post(models.Model):
     post_region = models.CharField(max_length=30)
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(UserInfo, blank=True, default=0, related_name='post_voter')  # 추천인 추가
+    objects = models.Manager()
     def __str__(self):
         return self.subject
 
@@ -21,7 +22,7 @@ class Comment(models.Model):
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(UserInfo, blank=True, default=0, related_name='answer_voter')
-
+    objects = models.Manager()
     def __str__(self):
         return f"Answer to {self.post.subject} by {self.author.username}"
     #장고 관리자에서 보기 편하도록 만들어둔 것

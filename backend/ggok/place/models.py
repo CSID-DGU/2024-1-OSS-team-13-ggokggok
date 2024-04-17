@@ -15,7 +15,7 @@ class PlacePost(models.Model):
     name = models.CharField(max_length=200, null=True)  # 상호명
     place_id = models.CharField(max_length=30)
     #modify_date = models.DateTimeField(null=True, blank=True) 수정 일시는 일단 기능 추가 안함.
-    #recommended = models.ManyToManyField(UserInfo, related_name='recommended_placepost')  # 추천인 추가
+    #voter = models.ManyToManyField(UserInfo, blank=True ,related_name='recommended_placepost')  # 추천인 추가
     public = models.BooleanField()
     review = models.IntegerField()
     category = models.CharField(max_length=50)
@@ -35,8 +35,6 @@ class PlaceComment(models.Model):
     recommended = models.ManyToManyField(UserInfo, related_name='recommended_placecomment')
     date = models.DateTimeField(auto_now_add=True)
     objects = models.Manager()
-
-
     def __str__(self):
         return f"Answer to {self.post.title} by {self.author.username}"
 

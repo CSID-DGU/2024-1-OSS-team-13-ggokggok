@@ -36,8 +36,8 @@ INSTALLED_APPS = [
     'place.apps.PlaceConfig',
     'corsheaders',
     'user',
-    'placesinfo.apps.PlacesinfoConfig',
-]
+    'placesinfo'
+    ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
