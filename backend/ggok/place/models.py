@@ -8,8 +8,8 @@ class PlacePost(models.Model):
     title = models.CharField(max_length=200)
     content = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
-    lat = models.FloatField
-    long = models.FloatField
+    lat = models.FloatField()
+    long = models.FloatField()
     address = models.TextField(null=True) #주소_텍스트
     name = models.CharField(max_length=200, null=True)  # 상호명
     place_id = models.CharField(max_length=30, blank=True)
