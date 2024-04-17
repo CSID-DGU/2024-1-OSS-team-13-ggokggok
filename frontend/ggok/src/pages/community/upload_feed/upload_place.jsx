@@ -189,6 +189,24 @@ export default function upload_place() {
                 placeholder="우리 지역 명소 등록"
               />
             </Icon>
+
+
+            <SubArea
+           required
+           maxLength={10}
+           onChange={onPlace}
+           value={place}
+           placeholder="명소 주소를 입력해주세요!"
+           />
+           
+           <div style={{display: 'flex'}}>
+            <button onClick={toggle} type="button">{ispublic ? "공개" : "비공개" }</button>
+            <StarRating 
+            totalStars={5} 
+            selectedStars={stars}
+            onStarClick={setstars}
+            />
+          </div>
           
       
            
