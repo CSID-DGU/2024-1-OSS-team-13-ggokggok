@@ -34,7 +34,7 @@ def post_create(request):
             post.date = timezone.now()
             post.place_id = place_id
             post.save()
-            #signal
+            #signal - 별점 재계산 함수 호출
             serializer = PlacePostSerializer(post)
             return Response(serializer.data)
         return Response(form.errors, status=400)
