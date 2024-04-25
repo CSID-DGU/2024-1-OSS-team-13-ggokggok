@@ -33,4 +33,3 @@ class PlaceComment(models.Model):
     objects = models.Manager()
     def __str__(self):
         return f"Answer to {self.post.title} by {self.author.username}"
-
