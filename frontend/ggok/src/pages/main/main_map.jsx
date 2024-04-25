@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import {React, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import MapComponent from "../../components/map";
 import axios from "axios";
@@ -10,7 +10,6 @@ import locationLogo from "../../others/img/LocationPinned.png"
 import { useNavigate } from "react-router-dom";
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
 import { Link } from "react-router-dom";
-
 
 const Icon = styled.div`
 
@@ -133,11 +132,26 @@ const MainMap = () => {
     }
   };
 
+  const [getplace, setplace] = useState([]);
+
+    async function fetchPlace() {
+        try {
+          const response = await axios.get('http://localhost:8000/place/post/');
+          setplace(response.data);
+          console.log("get");
+          console.log(getplace);
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }   
+    }
+
+    useEffect(() =>{fetchPlace();}, []);
+
   useEffect(() => {
     updateLocation();
   }, []);
 
-  console.log(location);
 
   const SetRegion = (e) => {
     e.preventDefault();
@@ -177,6 +191,7 @@ const MainMap = () => {
               lon={location.longitude}
               lat={location.latitude}
               onLocationClick={handleLocationClick} // 추가: 위치 클릭 핸들러 전달
+              pins={getplace}
             />
            )}
         </div>
