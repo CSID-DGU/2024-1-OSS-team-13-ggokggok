@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
-import logo from "../../others/img/logo-icon.png"
-import leftlogo from "../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
+import logo from "../../../others/img/logo-icon.png"
+import leftlogo from "../../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -16,12 +16,11 @@ const SubTitle = styled.h2`
 
 const ContentBox = styled.div`
   height: 143px;
-  width: 90%;
+  width: 95%;
   border: 1px solid #C9B6A9;
   border-radius: 10px;
   margin: 15px 0 0;
   padding: 15px;
-
 `;
 
 const ContentBox2 = styled.div`
@@ -68,13 +67,13 @@ const WriteBtn = styled.div`
     font-weight: bold;
 `;  
 
-export default function Place_list(){
+export default function Feed_list(){
 
     const [getData, setGetData] = useState([]);
 
     async function fetchData() {
         try {
-          const response = await axios.get('http://localhost:8000/place/post/');
+          const response = await axios.get('http://localhost:8000/community/post/');
           setGetData(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -90,26 +89,23 @@ export default function Place_list(){
         <Wrapper>
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
-            <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
+            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+            <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>            
             <SubTitle>
-            <h2></h2>
-                <div style= {{ overflow: 'auto', height: '600px' }}>
+            <h2>우리 지역 소식</h2>
+              <ContentBox2>
                 {getData.length > 0 ? (
                         getData.map((data) => (
-                            <ContentBox>
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
                                 <div>
-                                    <h3>{data.title}</h3>
+                                    <h3>{data.subject}</h3>
                                     <p>{data.content}</p>
                                 </div>
                             </div>
-                            </ContentBox>
-                ))): (<></>)}
-                </div>
-
+                    ))): (<></>)}
+                </ContentBox2>
             </SubTitle>
         </Wrapper>
     );
