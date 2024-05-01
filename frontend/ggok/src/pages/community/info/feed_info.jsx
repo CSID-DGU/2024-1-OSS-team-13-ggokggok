@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+
+
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -72,6 +75,9 @@ export default function Feed_info(){
     const [getData, setGetData] = useState([]);
     const [data, setData] = useState();
 
+    const {id} = useParams();
+
+
     async function fetchData() {
         try {
           const response = await axios.get('http://localhost:8000/community/post/');
@@ -89,9 +95,13 @@ export default function Feed_info(){
       };
     
     
-    setData(findDataById(1));
+    if(getData.length> 0){
+        setData(findDataById(1));
+    }
 
     console.log(getData);
+
+    console.log(id);
 
 
     return (

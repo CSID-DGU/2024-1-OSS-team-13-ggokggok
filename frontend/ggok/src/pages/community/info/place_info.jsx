@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -71,6 +73,9 @@ export default function Place_info(){
 
     const [getData, setGetData] = useState([]);
 
+    const {id} = useParams();
+
+
     async function fetchData() {
         try {
           const response = await axios.get('http://localhost:8000/community/post/');
@@ -84,27 +89,19 @@ export default function Place_info(){
 
     console.log(getData);
 
-
+    console.log(id);
     return (
         <Wrapper>
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-            <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
               <ContentBox2>
                 {getData.length > 0 ? (
-                        getData.map((data) => (
-                            <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
-                                <div>
-                                    <h3>{data.subject}</h3>
-                                    <p>{data.content}</p>
-                                </div>
-                            </div>
-                    ))): (<></>)}
+                       <></>
+                    ): (<></>)}
                 </ContentBox2>
             </SubTitle>
         </Wrapper>

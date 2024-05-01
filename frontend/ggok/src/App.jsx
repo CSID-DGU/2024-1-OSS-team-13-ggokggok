@@ -69,12 +69,12 @@ const router = createBrowserRouter([
 
       },
       {
-        path:"feed-info",
+        path:"feed-info/:id",
         element: <Feed_info/>,
 
       },
       {
-        path:"place-info",
+        path:"place-info/:id",
         element: <Place_info/>,
 
       },
