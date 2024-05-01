@@ -50,5 +50,5 @@ urlpatterns = [
     path('', index, name='index'),
     path('place/post/', include(place_post_router.urls)),
     path('place/comment/', include(place_comment_router.urls)),
-
+    path('placesinfo/', include('placesinfo.urls')),
 ]
