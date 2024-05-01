@@ -1,11 +1,14 @@
 import { styled } from "styled-components";
-import logo from "../../others/img/logo-icon.png"
-import leftlogo from "../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
+import logo from "../../../others/img/logo-icon.png"
+import leftlogo from "../../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
+
+
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -67,9 +70,13 @@ const WriteBtn = styled.div`
     font-weight: bold;
 `;  
 
-export default function Feed_list(){
+export default function Feed_info(){
 
     const [getData, setGetData] = useState([]);
+    const [data, setData] = useState();
+
+    const {id} = useParams();
+
 
     async function fetchData() {
         try {
@@ -82,29 +89,33 @@ export default function Feed_list(){
 
     useEffect(() => {fetchData();}, []);
 
+    const findDataById = (id) => {
+        const foundData = data.find(item => item.id === id);
+        return foundData || 0;
+      };
+    
+    
+    if(getData.length> 0){
+        setData(findDataById(1));
+    }
+
     console.log(getData);
+
+    console.log(id);
 
 
     return (
         <Wrapper>
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-            <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
+            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물</span></TitleDiv>
           </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
               <ContentBox2>
-                {getData.length > 0 ? (
-                        getData.map((data) => (
-                            <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
-                                <div>
-                                    <h3>{data.subject}</h3>
-                                    <p>{data.content}</p>
-                                </div>
-                            </div>
-                    ))): (<></>)}
+                { data != 0 ? (
+                    <h2>{data.subject}</h2>            
+                ): (<></>)}
                 </ContentBox2>
             </SubTitle>
         </Wrapper>
