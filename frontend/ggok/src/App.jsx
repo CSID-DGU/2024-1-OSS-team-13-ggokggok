@@ -14,8 +14,10 @@ import Feed from "./pages/main/main_feed";
 import Upload from "./pages/community/upload_feed/upload";
 import Upload_place from "./pages/community/upload_feed/upload_place";
 import GlobalStyle from "./styles/GlobalStyle";
-import Feed_list from "./pages/community/feed_list";
-import Place_list from "./pages/community/place_list";
+import Feed_list from "./pages/community/list/feed_list";
+import Place_list from "./pages/community/list/place_list";
+import Feed_info from "./pages/community/info/feed_info"
+import Place_info from "./pages/community/info/place_info"
 
 
 
@@ -66,6 +68,16 @@ const router = createBrowserRouter([
         element: <Place_list/>,
 
       },
+      {
+        path:"feed-info",
+        element: <Feed_info/>,
+
+      },
+      {
+        path:"place-info",
+        element: <Place_info/>,
+
+      },
     ]
   },
   {
@@ -94,7 +106,6 @@ const router = createBrowserRouter([
     path:"/info-region",
     element: <InfoRegion/>
   }
-
 
 ]);
 
