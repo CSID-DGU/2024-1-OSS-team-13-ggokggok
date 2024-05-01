@@ -7,7 +7,7 @@ from drf_yasg import openapi
 from rest_framework import routers
 from rest_framework.permissions import AllowAny
 from community.views.base_views import index
-from place.api import PlacePostViewSet, PlaceCommentViewSet
+from place.serializers import PlacePostViewSet, PlaceCommentViewSet
 
 app_name='community'
 
