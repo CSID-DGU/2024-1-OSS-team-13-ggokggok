@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from ..forms import PlaceCommentForm
 from ..models import PlacePost, PlaceComment
-from ..api import PlaceCommentSerializer, PlacePostSerializer
+from ..serializers import PlaceCommentSerializer, PlacePostSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone

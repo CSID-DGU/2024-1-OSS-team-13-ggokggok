@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from ..forms import PlacePostForm
 from ..models import PlacePost
 from ...placesinfo.models import PlaceInfo
-from ..api import PlacePostSerializer
+from ..serializers import PlacePostSerializer
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
