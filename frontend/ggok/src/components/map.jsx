@@ -1,9 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import config from '../others/apikey';
 
-const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY }) => {
+const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
   const mapRef = useRef();
   const markers = useRef([]);
+
+  console.log("pins");
+  console.log(pins);
 
   useEffect(() => {
     if (!apiKey) {
@@ -33,11 +36,11 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY 
       });
 
       // 새로운 마커들 추가
-      markers.current = locations.map(location => {
+      markers.current = pins.data.map(location => {
         const marker = new window.google.maps.Marker({
-          position: { lat: location.latitude, lng: location.longitude },
+          position: { lat: location.lat, lng: location.long },
           map: map,
-          title: location.name
+          title: location.title
         });
 
         // 마커 클릭 이벤트 리스너 추가

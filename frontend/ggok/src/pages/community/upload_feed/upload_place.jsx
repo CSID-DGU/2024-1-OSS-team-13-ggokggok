@@ -153,7 +153,8 @@ export default function upload_place() {
         "public" : ispublic,
         "review" : stars,
         "author": 1,
-
+        "lat" : '37.5611',
+        "long" : '126.9932',
         //"create_date": currentDate,
         "address": place,
         "name" : 'abc',
