@@ -5,7 +5,7 @@ from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from ..api import PlacePostSerializer
+from ..serializers import PlacePostSerializer
 
 @api_view(['GET'])
 def index(request): #목록조회
