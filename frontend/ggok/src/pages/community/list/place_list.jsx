@@ -98,6 +98,7 @@ export default function Place_list(){
                 <div style= {{ overflow: 'auto', height: '600px' }}>
                 {getData.length > 0 ? (
                         getData.map((data) => (
+                            <Link to={data ? `/place-info/${data.id}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
@@ -107,6 +108,7 @@ export default function Place_list(){
                                 </div>
                             </div>
                             </ContentBox>
+                            </Link>
                 ))): (<></>)}
                 </div>
 

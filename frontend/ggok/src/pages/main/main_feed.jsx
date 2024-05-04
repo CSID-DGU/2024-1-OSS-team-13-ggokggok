@@ -108,6 +108,7 @@ export default function main_feed(){
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
+                          <Link to={data ? `/place-info/${data.id}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
@@ -117,6 +118,7 @@ export default function main_feed(){
                                 </div>
                             </div>
                             </ContentBox>
+                          </Link>
                 ))): (<></>)}
                 </div>
             </SubTitle>
@@ -135,6 +137,7 @@ export default function main_feed(){
                 <ContentBox2>
                 {getData.length > 0 ? (
                     getData.map((data) => (
+                      <Link to={data ? `/feed-info/${data.id}` : "/"}>
                         <div style={{display: 'flex'}}>
                             <ContentImg src="/"></ContentImg>
                             <div>
@@ -142,6 +145,7 @@ export default function main_feed(){
                                 <p>{data.content}</p>
                             </div>
                         </div>
+                      </Link>
                 ))): (<></>)}
                 </ContentBox2>
             </SubTitle>

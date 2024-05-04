@@ -97,6 +97,7 @@ export default function Feed_list(){
               <ContentBox2>
                 {getData.length > 0 ? (
                         getData.map((data) => (
+                          <Link to={data ? `/feed-info/${data.id}` : "/"}>
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
                                 <div>
@@ -104,6 +105,7 @@ export default function Feed_list(){
                                     <p>{data.content}</p>
                                 </div>
                             </div>
+                          </Link>
                     ))): (<></>)}
                 </ContentBox2>
             </SubTitle>
