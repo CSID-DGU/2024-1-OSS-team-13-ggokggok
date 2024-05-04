@@ -139,7 +139,7 @@ const MainMap = () => {
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('http://localhost:8000/place/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
           setplace(response.data);
           console.log("get");
           console.log(getplace);

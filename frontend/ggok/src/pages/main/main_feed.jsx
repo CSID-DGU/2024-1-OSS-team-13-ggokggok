@@ -74,7 +74,7 @@ export default function main_feed(){
 
     async function fetchData() {
         try {
-          const response = await axios.get('http://localhost:8000/community/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/');
           setGetData(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -85,7 +85,7 @@ export default function main_feed(){
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('http://localhost:8000/place/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
           setplace(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
