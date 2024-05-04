@@ -167,7 +167,7 @@ export default function upload_place() {
     };
     console.log(postData);
 
-    axios.post('http://localhost:8000/place/post/', postData)
+    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })

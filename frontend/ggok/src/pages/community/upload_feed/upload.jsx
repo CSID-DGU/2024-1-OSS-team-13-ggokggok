@@ -123,7 +123,7 @@ export default function upload() {
     };
     console.log(postData);
 
-    axios.post('http://localhost:8000/community/post/', postData)
+    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })

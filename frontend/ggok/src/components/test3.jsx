@@ -7,7 +7,7 @@ function Test3() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get('http://localhost:8000/api/community/post/');
+        const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//api/community/post/');
         setPostData(response.data);
         console.log(postData);
       } catch (error) {

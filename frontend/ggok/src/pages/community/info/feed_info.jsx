@@ -72,37 +72,38 @@ const WriteBtn = styled.div`
 
 export default function Feed_info(){
 
-    const [getData, setGetData] = useState([]);
-    const [data, setData] = useState();
+    const [data, setData] = useState(null);
 
     const {id} = useParams();
 
 
-    async function fetchData() {
+    useEffect(() => {
+      const fetchData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/community/post/');
-          setGetData(response.data);
+          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/");
+          const foundData = response.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          setData(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-    }
-
-    useEffect(() => {fetchData();}, []);
-
-    const findDataById = (id) => {
-        const foundData = data.find(item => item.id === id);
-        return foundData || 0;
       };
+
+      fetchData();
+    }, [id]); 
+
+    function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
     
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      const seconds = date.getSeconds().toString().padStart(2, "0");
     
-    if(getData.length> 0){
-        setData(findDataById(1));
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-
-    console.log(getData);
-
-    console.log(id);
-
+    
 
     return (
         <Wrapper>
@@ -112,9 +113,13 @@ export default function Feed_info(){
           </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
-              <ContentBox2>
-                { data != 0 ? (
-                    <h2>{data.subject}</h2>            
+              <ContentBox2> 
+                { data ? (
+                  <div>
+                    <h1>{data.subject}</h1><br></br>
+                    <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
+                    <h2>{data.content}</h2>       
+                  </div>   
                 ): (<></>)}
                 </ContentBox2>
             </SubTitle>
