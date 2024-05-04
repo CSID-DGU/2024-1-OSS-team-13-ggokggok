@@ -104,7 +104,7 @@ export default function main_feed(){
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>
             <SubTitle>
-            <h2>우리지역 HOT 명소</h2>
+            <Link to = '/place-list'><h2>우리지역 HOT 명소</h2></Link>
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
@@ -123,7 +123,7 @@ export default function main_feed(){
 
             
             <SubTitle>
-            <h2>우리 지역 소식</h2>
+            <Link to = '/feed-list' ><h2>우리 지역 소식</h2></Link>
                 {/*
                 <ContentBox2>
                 {getData.length > 0 ? (

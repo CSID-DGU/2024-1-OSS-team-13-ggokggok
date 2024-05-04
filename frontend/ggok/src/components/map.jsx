@@ -7,7 +7,7 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY,
 
   console.log("pins");
   console.log(pins);
-
+  console.log(locations);
   useEffect(() => {
     if (!apiKey) {
       console.error('API key is missing.');
@@ -36,7 +36,7 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY,
       });
 
       // 새로운 마커들 추가
-      markers.current = pins.data.map(location => {
+      markers.current = pins.map(location => {
         const marker = new window.google.maps.Marker({
           position: { lat: location.lat, lng: location.long },
           map: map,
@@ -45,7 +45,7 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY,
 
         // 마커 클릭 이벤트 리스너 추가
         marker.addListener('click', () => {
-          onLocationClick(location.name);
+          onLocationClick(location);
         });
 
         return marker;

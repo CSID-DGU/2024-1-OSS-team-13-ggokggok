@@ -72,36 +72,24 @@ const WriteBtn = styled.div`
 
 export default function Feed_info(){
 
-    const [getData, setGetData] = useState([]);
-    const [data, setData] = useState();
+    const [data, setData] = useState(null);
 
     const {id} = useParams();
 
 
-    async function fetchData() {
+    useEffect(() => {
+      const fetchData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/community/post/');
-          setGetData(response.data);
+          const response = await axios.get("http://localhost:8000/community/post/");
+          const foundData = response.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          setData(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
-    }
-
-    useEffect(() => {fetchData();}, []);
-
-    const findDataById = (id) => {
-        const foundData = data.find(item => item.id === id);
-        return foundData || 0;
       };
-    
-    
-    if(getData.length> 0){
-        setData(findDataById(1));
-    }
 
-    console.log(getData);
-
-    console.log(id);
+      fetchData();
+    }, [id]); 
 
 
     return (
@@ -112,8 +100,8 @@ export default function Feed_info(){
           </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
-              <ContentBox2>
-                { data != 0 ? (
+              <ContentBox2> 
+                { data ? (
                     <h2>{data.subject}</h2>            
                 ): (<></>)}
                 </ContentBox2>
