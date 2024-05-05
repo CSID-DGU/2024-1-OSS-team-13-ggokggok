@@ -139,5 +139,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'user.UserInfo'
 
 
-CORS_ALLOWED_ORIGINS = ['http://localhost:5173']
+CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'https://oss-ggok.web.app']
 CSRF_TRUSTED_ORIGINS =['https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app']
