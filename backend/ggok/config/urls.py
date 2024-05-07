@@ -1,5 +1,4 @@
 
-from user.serializers import UserViewSet
 from django.contrib import admin
 from django.urls import path, include
 from drf_yasg.views import get_schema_view
@@ -10,10 +9,6 @@ from community.views.base_views import index
 from place.serializers import PlacePostViewSet, PlaceCommentViewSet
 
 app_name='community'
-
-# UserViewSet에 대한 URL
-user_router = routers.DefaultRouter()
-user_router.register('', UserViewSet, basename='user')
 
 # PlacePostViewSet에 대한 URL
 place_post_router = routers.DefaultRouter()
@@ -34,7 +29,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('user/', include(user_router.urls)),
+    path('user/', include('user.urls')),
     path('admin/', admin.site.urls),
     path('community/', include('community.urls')),
     path('api/doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
