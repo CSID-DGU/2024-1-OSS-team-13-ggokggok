@@ -82,14 +82,17 @@ const MainMap = () => {
   const navigate = useNavigate();
 
   const locations = [
-    { name: "강남구", latitude: 37.5172, longitude: 127.0473 },
-    { name: "마포구", latitude: 37.5665, longitude: 126.978 },
-    { name: "종로구", latitude: 37.5724, longitude: 126.979 }
+    { name: "강남구", lat: 37.5172, long: 127.0473 },
+    { name: "마포구", lat: 37.5665, long: 126.978 },
+    { name: "종로구", lat: 37.5724, long: 126.979 }
   ];
 
-  const handleLocationClick = (locationName) => {
-    setSelectedLocation(locationName); // 선택된 위치 업데이트
-    console.log(`Selected location: ${locationName}`);
+  const handleLocationClick = (location) => {
+    setSelectedLocation(location); // 선택된 위치 업데이트
+    console.log(`Selected location: ${location}`);
+
+    navigate(`/place-info/${location.id}`);
+
   };
 
   const updateLocation = () => {
@@ -136,7 +139,7 @@ const MainMap = () => {
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('http://localhost:8000/place/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
           setplace(response.data);
           console.log("get");
           console.log(getplace);

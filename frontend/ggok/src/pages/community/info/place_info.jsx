@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import StarRating from "../../../components/starrating";
 
 
 const SubTitle = styled.h2`
@@ -71,25 +72,38 @@ const WriteBtn = styled.div`
 
 export default function Place_info(){
 
-    const [getData, setGetData] = useState([]);
+    const [data, setData] = useState(null);
 
     const {id} = useParams();
 
 
-    async function fetchData() {
+    useEffect(() => {
+      const fetchData = async () => {
         try {
-          const response = await axios.get('http://localhost:8000/community/post/');
-          setGetData(response.data);
+          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/");
+          const foundData = response.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          setData(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
+      };
+
+      fetchData();
+    }, [id]); 
+
+    function formatTimestamp(timestamp) {
+      const date = new Date(timestamp);
+    
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      const hours = date.getHours().toString().padStart(2, "0");
+      const minutes = date.getMinutes().toString().padStart(2, "0");
+      const seconds = date.getSeconds().toString().padStart(2, "0");
+    
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-
-    useEffect(() => {fetchData();}, []);
-
-    console.log(getData);
-
-    console.log(id);
+  
     return (
         <Wrapper>
           <Title>
@@ -99,9 +113,18 @@ export default function Place_info(){
             <SubTitle>
             <h2>우리 지역 소식</h2>
               <ContentBox2>
-                {getData.length > 0 ? (
-                       <></>
-                    ): (<></>)}
+                {data ? (
+                  <div>
+                    <h1>{data.title}</h1><br></br>
+                    <h1>{data.address}</h1><br></br>
+                    <StarRating 
+                      totalStars={5} 
+                      selectedStars={data.review}
+                    />
+                    <h3>{formatTimestamp(data.date)}</h3><br></br>       
+                    <h2>{data.content}</h2>       
+                  </div>   
+                ): (<></>)}
                 </ContentBox2>
             </SubTitle>
         </Wrapper>

@@ -74,7 +74,7 @@ export default function main_feed(){
 
     async function fetchData() {
         try {
-          const response = await axios.get('http://localhost:8000/community/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/');
           setGetData(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -85,7 +85,7 @@ export default function main_feed(){
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('http://localhost:8000/place/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
           setplace(response.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -104,10 +104,11 @@ export default function main_feed(){
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>
             <SubTitle>
-            <h2>우리지역 HOT 명소</h2>
+            <Link to = '/place-list'><h2>우리지역 HOT 명소</h2></Link>
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
+                          <Link to={data ? `/place-info/${data.id}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
@@ -117,13 +118,14 @@ export default function main_feed(){
                                 </div>
                             </div>
                             </ContentBox>
+                          </Link>
                 ))): (<></>)}
                 </div>
             </SubTitle>
 
             
             <SubTitle>
-            <h2>우리 지역 소식</h2>
+            <Link to = '/feed-list' ><h2>우리 지역 소식</h2></Link>
                 {/*
                 <ContentBox2>
                 {getData.length > 0 ? (
@@ -135,6 +137,7 @@ export default function main_feed(){
                 <ContentBox2>
                 {getData.length > 0 ? (
                     getData.map((data) => (
+                      <Link to={data ? `/feed-info/${data.id}` : "/"}>
                         <div style={{display: 'flex'}}>
                             <ContentImg src="/"></ContentImg>
                             <div>
@@ -142,6 +145,7 @@ export default function main_feed(){
                                 <p>{data.content}</p>
                             </div>
                         </div>
+                      </Link>
                 ))): (<></>)}
                 </ContentBox2>
             </SubTitle>
