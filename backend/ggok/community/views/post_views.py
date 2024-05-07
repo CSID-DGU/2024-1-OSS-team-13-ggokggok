@@ -1,10 +1,11 @@
+from coreapi.auth import TokenAuthentication
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
-from community.serializers import PostSerializer
+from community.serializers import CommunityPostSerializer
 from rest_framework.permissions import IsAuthenticated
 
 def extract_region(full_region):
@@ -16,15 +17,17 @@ def extract_region(full_region):
     return extracted_region
 class PostListAndCreate(APIView):
     permission_classes = [IsAuthenticated]
-
+    serializer_class = CommunityPostSerializer
+    queryset = Post.objects.all()
+    #authentication_classes = [TokenAuthentication]
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
-        serializer = PostSerializer(posts, many=True)
+        serializer = CommunityPostSerializer(posts, many=True)
         return Response(serializer.data)
 
-    @swagger_auto_schema(request_body=PostSerializer)
+    @swagger_auto_schema(request_body=CommunityPostSerializer)
     def post(self, request, *args, **kwargs):
-        serializer = PostSerializer(data=request.data)
+        serializer = CommunityPostSerializer(data=request.data)
 
         if serializer.is_valid():
             requested_region = request.data.get('post_region', '')
@@ -46,19 +49,20 @@ class PostListAndCreate(APIView):
 
 class PostDetailUpdateDelete(APIView):
     permission_classes = [IsAuthenticated]
-
+    serializer_class = CommunityPostSerializer
+    queryset = Post.objects.all()
     def get_object(self, post_id):
         return get_object_or_404(Post, pk=post_id)
 
     def get(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        serializer = PostSerializer(post)
+        serializer = CommunityPostSerializer(post)
         return Response(serializer.data)
 
-    @swagger_auto_schema(request_body=PostSerializer)
+    @swagger_auto_schema(request_body=CommunityPostSerializer)
     def put(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        serializer = PostSerializer(post, data=request.data)
+        serializer = CommunityPostSerializer(post, data=request.data)
         if serializer.is_valid():
             if request.user == post.author:
                 serializer.save()
@@ -76,7 +80,9 @@ class PostDetailUpdateDelete(APIView):
 
 class PostVote(APIView):
     permission_classes = [IsAuthenticated]
-    @swagger_auto_schema(responses={200: PostSerializer})
+    serializer_class = CommunityPostSerializer
+    queryset = Post.objects.all()
+    @swagger_auto_schema(responses={200: CommunityPostSerializer})
     def post(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, pk=post_id)
         if request.user == post.author:
@@ -84,5 +90,5 @@ class PostVote(APIView):
         else:
             post.voter.add(request.user)
             post.save()  # 변경 사항 저장
-            serializer = PostSerializer(post)
+            serializer = CommunityPostSerializer(post)
             return Response(serializer.data)

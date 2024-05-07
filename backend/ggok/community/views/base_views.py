@@ -3,7 +3,7 @@ from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from ..serializers import PostSerializer
+from ..serializers import CommunityPostSerializer
 
 @api_view(['GET'])
 def index(request):
@@ -17,11 +17,11 @@ def index(request):
             Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
             Q(answer__author__username__icontains=kw)  # 답변 글쓴이 검색
         ).distinct()
-    serializer = PostSerializer(post_list, many=True)
+    serializer = CommunityPostSerializer(post_list, many=True)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
-    serializer = PostSerializer(post)
+    serializer = CommunityPostSerializer(post)
     return Response(serializer.data)
