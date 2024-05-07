@@ -1,71 +1,19 @@
-from django.shortcuts import get_list_or_404, get_object_or_404
-from django.utils import timezone
-from community.forms import PostForm
+from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from community.serializers import PostSerializer
-from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import permission_classes, api_view
 
-@login_required(login_url='account:login')
-@api_view(['GET', 'POST'])
-def post_list_and_create(request):
-    if request.method == 'GET':
-        posts = get_list_or_404(Post)
-        serializer = PostSerializer(posts, many=True)
-        return Response(serializer.data)
-    elif request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.author = request.user
-            post.create_date = timezone.now()
-            post.save()
-            serializer = PostSerializer(post)
-            return Response(serializer.data, status=201)
-        else:
-            return Response(form.errors, status=400)
-
-
-@login_required(login_url='account:login')
-@api_view(['GET', 'PUT', 'DELETE'])
-def post_handler(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-
-    if request.method == 'GET':
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
-    elif request.method == 'PUT':
-        if request.user != post.author:
-            return Response({'error': '수정권한이 없습니다'}, status=403)
-        form = PostForm(request.data, instance=post)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.modify_date = timezone.now()
-            post.save()
-            serializer = PostSerializer(post)
-            return Response(serializer.data)
-        else:
-            return Response(form.errors, status=400)
-    elif request.method == 'DELETE':
-        if request.user != post.author:
-            return Response({'error': '삭제권한이 없습니다'}, status=403)
-        post.delete()
-        return Response(status=204)
-@login_required(login_url='account:login')
-@api_view(['POST'])
-def post_vote(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    if request.user == post.author:
-        return Response({'error': '본인이 작성한 글은 추천할수 없습니다'}, status=400)
-    else:
-        post.voter.add(request.user)
-        serializer = PostSerializer(post)
-        return Response(serializer.data)
+def extract_region(full_region):
+    # 문자열을 공백 기준으로 분할합니다. 최대 2개의 띄어쓰기만 고려하여 분할
+    word = full_region.split(' ', 2)
+    # 띄어쓰기로 분할된 부분 중 첫 2개만 합침
+    # 띄어쓰기가 2번 이하인 경우에는 전체 문자열이나, 해당하는 부분만 반환
+    extracted_region = ' '.join(word[:2])
+    return extracted_region
 class PostListAndCreate(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -77,10 +25,24 @@ class PostListAndCreate(APIView):
     @swagger_auto_schema(request_body=PostSerializer)
     def post(self, request, *args, **kwargs):
         serializer = PostSerializer(data=request.data)
+
         if serializer.is_valid():
-            serializer.save(author=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            requested_region = request.data.get('post_region', '')
+            requested_region = extract_region(requested_region)
+
+            # 현재 사용자의 region1과 region2 값을 얻습니다.
+            user_region1 = extract_region(request.user.region1)
+            user_region2 = extract_region(request.user.region2)
+            # 요청된 region 값이 사용자의 region1 또는 region2와 일치하는지 확인합니다.
+            #if requested_region in [user_region1, user_region2]:
+            if requested_region == user_region1 or requested_region == user_region2:
+                serializer.save(author=request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'error': '사용자가 등록한 지역의 게시글만 작성 가능합니다'},
+                            status=status.HTTP_400_BAD_REQUEST)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class PostDetailUpdateDelete(APIView):
     permission_classes = [IsAuthenticated]
@@ -98,18 +60,22 @@ class PostDetailUpdateDelete(APIView):
         post = self.get_object(post_id)
         serializer = PostSerializer(post, data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if request.user == post.author:
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return Response({'error': '사용자가 작성한 글이 아닙니다.'}, status=400)
 
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        post.delete()
+        if request.user == post.author:
+            post.delete()
+        else:
+            return Response({'error': '사용자가 작성한 글이 아닙니다.'}, status=400)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PostVote(APIView):
     permission_classes = [IsAuthenticated]
-
     @swagger_auto_schema(responses={200: PostSerializer})
     def post(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, pk=post_id)
