@@ -31,7 +31,6 @@ const UnVisitButton = styled.button`
 `;
 
 const VisitButton = styled.button`
-
     padding: 15px;
     border-radius: 50px;
     border: none;
