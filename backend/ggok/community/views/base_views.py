@@ -1,27 +1,39 @@
-from .. models import Post
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+
+from community.models import Post
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from ..serializers import CommunityPostSerializer
+from community.serializers import CommunityPostSerializer
 
+
+@swagger_auto_schema(method='get', query_serializer=CommunityPostSerializer(),tags=['커뮤니티 게시글 검색'])
 @api_view(['GET'])
-def index(request):
-    kw = request.GET.get('kw', '')  # 검색어
-    post_list = Post.objects.order_by('-create_date')
-    if kw:
+def RegionSearch(request):
+    # 'region'과 'search' 파라미터를 가져옴
+    region = request.GET.get('region', '')
+    search = request.GET.get('search', '')
+    name = request.GET.get('name', '')
+    post_list = Post.objects.order_by('voter') #추천수가 많은 순으로 정렬
+    # 'region' 파라미터가 있을 경우 해당 로직을 실행
+    if region:
         post_list = post_list.filter(
-            Q(subject__icontains=kw) |  # 제목 검색
-            Q(content__icontains=kw) |  # 내용 검색
-            Q(answer__content__icontains=kw) |  # 답변 내용 검색
-            Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
-            Q(answer__author__username__icontains=kw)  # 답변 글쓴이 검색
+            Q(post_region__icontains=region)  # 지역 커뮤니티 게시글 검색
+        ).distinct()
+
+    # 'search' 파라미터가 있을 경우 해당 로직을 실행
+    elif search:
+        post_list = post_list.filter(
+            Q(subject__icontains=search) |  # 제목, 내용, 지역을 포함해 검색
+            Q(content__icontains=search) |
+            Q(post_region__icontains=search)
         ).distinct()
     serializer = CommunityPostSerializer(post_list, many=True)
-    return Response(serializer.data)
-
-@api_view(['GET'])
-def detail(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    serializer = CommunityPostSerializer(post)
-    return Response(serializer.data)
+    response_data = {
+        'success': True,
+        'status code': status.HTTP_200_OK,
+        'message': "요청에 성공하였습니다.",
+        'data': serializer.data
+    }
+    return Response(response_data, status=status.HTTP_200_OK)
