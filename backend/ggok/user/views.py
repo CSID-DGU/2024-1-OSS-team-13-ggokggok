@@ -8,48 +8,96 @@ from user.serializers import JoinSerializer,LoginSerializer
 from drf_yasg.utils import swagger_auto_schema
 
 class LoginView(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     serializer_class = LoginSerializer
     queryset = UserInfo.objects.all()
-    @swagger_auto_schema(request_body=LoginSerializer)
+    @swagger_auto_schema(request_body=LoginSerializer, tags=['유저 관리'])
     def post(self, request, *args, **kwargs):
         serializer = LoginSerializer(data=request.data)
         if serializer.is_valid():
-            username = serializer.validated_data['username']
-            password = serializer.validated_data['password']
+            username = request.data['username']
+            password = request.data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return Response({'detail': '로그인 성공'})
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_200_OK,
+                    'message': "로그인 성공.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
             else:
-                return Response({'detail': '로그인 실패'}, status=status.HTTP_401_UNAUTHORIZED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                response_data = {
+                    'success': False,
+                    'status code': status.HTTP_404_NOT_FOUND,
+                    'message': "등록되지 않은 사용자입니다.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_404_NOT_FOUND)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "요청 실패.",
+                'data': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class LogoutView(APIView):
-    def post(self, request, *args, **kwargs):
-        logout(request)
-        return Response({'detail': '로그아웃 성공'})
+    serializer_class = LoginSerializer
+    queryset = UserInfo.objects.all()
+    @swagger_auto_schema(tags=['유저 관리'])
+    def post(self, request):
+        if request.user.is_authenticated:  # 사용자가 로그인되어있는지
+            logout(request)
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': "로그아웃 되었습니다.",
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "로그인되어 있지 않습니다.",
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class JoinView(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     serializer_class = JoinSerializer
     queryset = UserInfo.objects.all()
-    @swagger_auto_schema(request_body=JoinSerializer)
+    @swagger_auto_schema(request_body=JoinSerializer, tags=['유저 관리'])
     def post(self, request, *args, **kwargs):
         serializer = JoinSerializer(data=request.data)
         if serializer.is_valid():
             new_username = serializer.validated_data['username']
             new_password = serializer.validated_data['password']
-            new_password_check = serializer.validated_data['password_check']
             if UserInfo.objects.filter(username=new_username).exists():
-                 return Response({'error_msg': '이미 사용중인 아이디입니다.'}, status=status.HTTP_400_BAD_REQUEST)
-            # if new_password != new_password_check:
-            #     return Response({'error_msg': '비밀번호가 서로 같지 않습니다.'}, status=status.HTTP_400_BAD_REQUEST)
-            # elif UserInfo.objects.filter(username=new_username).exists():
-            #     return Response({'error_msg': '이미 사용중인 아이디입니다.'}, status=status.HTTP_400_BAD_REQUEST)
+                response_data = {
+                    'success': False,
+                    'status code': status.HTTP_400_BAD_REQUEST,
+                    'message': "이미 사용중인 아이디입니다.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 UserInfo.objects.create_user(username=new_username, password=new_password)
-                return Response({'detail': '회원가입 성공'},status = status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_200_OK,
+                    'message': "회원가입 되었습니다.",
+                    'data': serializer.data
+                }
+                return Response(response_data,status = status.HTTP_201_CREATED)
+        response_data = {
+            'success': False,
+            'status code': status.HTTP_400_BAD_REQUEST,
+            'message': "요청 실패.",
+            'data': serializer.data
+        }
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
