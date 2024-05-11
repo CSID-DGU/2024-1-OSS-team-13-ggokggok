@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import logo from "../../others/img/logo-icon.png"
 import leftlogo from "../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -103,8 +103,12 @@ export default function main_feed(){
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>
+          
+          <SubTitle>
+            <Link to = '/place-list' style={{ textDecoration: "none"}}><h2>우리지역 HOT 명소</h2></Link>
+          </SubTitle>
+
             <SubTitle>
-            <Link to = '/place-list'><h2>우리지역 HOT 명소</h2></Link>
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
@@ -122,10 +126,10 @@ export default function main_feed(){
                 ))): (<></>)}
                 </div>
             </SubTitle>
-
             
             <SubTitle>
-            <Link to = '/feed-list' ><h2>우리 지역 소식</h2></Link>
+              <Link to = '/feed-list' style={{ textDecoration: "none"}}><h2>우리 지역 소식</h2></Link>
+            </SubTitle>
                 {/*
                 <ContentBox2>
                 {getData.length > 0 ? (
@@ -134,6 +138,7 @@ export default function main_feed(){
                 ))): (<></>)}
                 </ContentBox2>
                 */}
+                <SubTitle>
                 <ContentBox2>
                 {getData.length > 0 ? (
                     getData.map((data) => (
