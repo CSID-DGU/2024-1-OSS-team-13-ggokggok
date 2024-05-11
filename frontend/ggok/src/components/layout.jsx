@@ -6,13 +6,12 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 10px;
   width: 393px;
-  height: 100%;
+  height: 95%;
   align-items: center;
-  
 `;
 
 const Top = styled.div`
-    height: 10px;
+    height: 15px;
     align-items: center;
     justify-content: center;
 `;
@@ -21,19 +20,16 @@ const Out = styled.div`
     width: 95%;
     align-items: center;
     justify-content: center;
-
 `;
 
 
 const Menu = styled.div`
-  position: fixed;
-  margin-top: 700px;
-  height: 110px;
+  height: 100px;
   display: flex;
   flex-direction: rows;
   align-items: center;
-  gap: 20px;
-  
+  gap: 25px;
+  margin-bottom: 13px;
 `;
 
 const MenuItem = styled.div`
@@ -41,13 +37,9 @@ const MenuItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 50px;
+  height: 0px;
   width: 35px;
-  margin: 13px;
-  svg {
-    width: 45px;
-    height: 55px;
-  }
+  margin: 0 13px;
 `;
 
 export default function Layout(){
@@ -97,7 +89,7 @@ export default function Layout(){
                     </svg>
                 </MenuItem>
             </Link>
-            <Link to="/profile">
+            <Link to="/mypage">
                 <MenuItem>
                     <svg width="60" height="53" viewBox="2 -2 42 50" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M29.4688 20.5C30.4882 20.5 31.4658 20.905 32.1867 21.6258C32.9075 22.3467 33.3125 23.3243 33.3125 24.3438V25.625C33.3125 30.6757 28.5462 35.875 20.5 35.875C12.4537 35.875 7.6875 30.6757 7.6875 25.625V24.3438C7.6875 23.3243 8.09247 22.3467 8.81331 21.6258C9.53415 20.905 10.5118 20.5 11.5312 20.5H29.4688ZM29.4688 23.0625H11.5312C11.1914 23.0625 10.8656 23.1975 10.6253 23.4378C10.385 23.678 10.25 24.0039 10.25 24.3438V25.625C10.25 29.3099 13.9195 33.3125 20.5 33.3125C27.0805 33.3125 30.75 29.3099 30.75 25.625V24.3438C30.75 24.0039 30.615 23.678 30.3747 23.4378C30.1345 23.1975 29.8086 23.0625 29.4688 23.0625ZM20.5 3.84375C22.3689 3.84375 24.1613 4.58619 25.4829 5.90773C26.8044 7.22928 27.5469 9.02168 27.5469 10.8906C27.5469 12.7596 26.8044 14.552 25.4829 15.8735C24.1613 17.1951 22.3689 17.9375 20.5 17.9375C18.6311 17.9375 16.8387 17.1951 15.5171 15.8735C14.1956 14.552 13.4531 12.7596 13.4531 10.8906C13.4531 9.02168 14.1956 7.22928 15.5171 5.90773C16.8387 4.58619 18.6311 3.84375 20.5 3.84375ZM20.5 6.40625C19.3107 6.40625 18.1701 6.87871 17.3291 7.71969C16.4881 8.56068 16.0156 9.70129 16.0156 10.8906C16.0156 12.08 16.4881 13.2206 17.3291 14.0616C18.1701 14.9025 19.3107 15.375 20.5 15.375C21.6893 15.375 22.8299 14.9025 23.6709 14.0616C24.5119 13.2206 24.9844 12.08 24.9844 10.8906C24.9844 9.70129 24.5119 8.56068 23.6709 7.71969C22.8299 6.87871 21.6893 6.40625 20.5 6.40625Z" fill="#534340"/>
