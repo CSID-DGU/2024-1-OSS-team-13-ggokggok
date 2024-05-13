@@ -1,27 +1,13 @@
-from user.serializers import UserViewSet
+
 from django.contrib import admin
 from django.urls import path, include
-from community.serializers import PostViewSet, CommentViewSet
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import routers
 from rest_framework.permissions import AllowAny
-from community.views.base_views import index
 from place.serializers import PlacePostViewSet, PlaceCommentViewSet
 
 app_name='community'
-
-# UserViewSet에 대한 URL
-user_router = routers.DefaultRouter()
-user_router.register('', UserViewSet, basename='user')
-
-# QuestionViewSet에 대한 URL
-post_router = routers.DefaultRouter()
-post_router.register('', PostViewSet, basename='post')
-
-# AnswerViewSet에 대한 URL 설정
-comment_router = routers.DefaultRouter()
-comment_router.register('', CommentViewSet, basename='comment')  # URL 경로 변경
 
 # PlacePostViewSet에 대한 URL
 place_post_router = routers.DefaultRouter()
@@ -42,12 +28,10 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('user/', include(user_router.urls)),
+    path('user/', include('user.urls')),
     path('admin/', admin.site.urls),
-    path('community/post/', include(post_router.urls)),
-    path('community/comment/', include(comment_router.urls)),  # community/answer/에 대한 URL 변경
+    path('community/', include('community.urls')),
     path('api/doc/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('', index, name='index'),
     path('place/post/', include(place_post_router.urls)),
     path('place/comment/', include(place_comment_router.urls)),
     path('placesinfo/', include('placesinfo.urls')),

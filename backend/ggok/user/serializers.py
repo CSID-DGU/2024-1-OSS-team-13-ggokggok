@@ -1,11 +1,10 @@
-from .models import UserInfo
-from rest_framework import serializers, viewsets
+from user.models import UserInfo
+from rest_framework import serializers
 
-class UserInfoSerializer(serializers.ModelSerializer):
+class JoinSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserInfo
-        fields = ['id', 'password', 'username', 'email', 'region1', 'region2']
-
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = UserInfo.objects.all()
-    serializer_class = UserInfoSerializer
+        fields = 'username', 'password'
+class LoginSerializer(serializers.Serializer):
+    username = serializers.CharField(max_length=255)
+    password = serializers.CharField(max_length=128, write_only=True)
