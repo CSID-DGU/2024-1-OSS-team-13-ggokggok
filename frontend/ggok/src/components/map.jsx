@@ -1,13 +1,12 @@
 import React, { useRef, useEffect } from 'react';
 import config from '../others/apikey';
 
-const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
+const MapComponent = ({onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
   const mapRef = useRef();
   const markers = useRef([]);
 
   console.log("pins");
   console.log(pins);
-  console.log(locations);
   useEffect(() => {
     if (!apiKey) {
       console.error('API key is missing.');
@@ -56,7 +55,7 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY,
       // 컴포넌트 언마운트 시 Google Maps API 스크립트 제거
       document.head.removeChild(script);
     };
-  }, [locations, apiKey, onLocationClick]);
+  }, [apiKey, onLocationClick]);
 
   return <div ref={mapRef} style={{ height: '450px', width: '100%', borderRadius: "20px", border: "1px solid #D9D9D9"}} />;
 };

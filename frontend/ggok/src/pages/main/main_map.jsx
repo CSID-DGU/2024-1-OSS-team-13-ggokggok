@@ -81,6 +81,7 @@ const MainMap = () => {
 
   const navigate = useNavigate();
 
+
   const handleLocationClick = (location) => {
     setSelectedLocation(location); // 선택된 위치 업데이트
     console.log(`Selected location: ${location}`);
@@ -184,7 +185,6 @@ const MainMap = () => {
         <div>
           {loading ? ( <span> Loading...</span> ) : (
             <MapComponent
-              locations={locations}
               lon={location.longitude}
               lat={location.latitude}
               onLocationClick={handleLocationClick} // 추가: 위치 클릭 핸들러 전달
