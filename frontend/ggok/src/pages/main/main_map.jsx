@@ -81,12 +81,6 @@ const MainMap = () => {
 
   const navigate = useNavigate();
 
-  const locations = [
-    { name: "강남구", lat: 37.5172, long: 127.0473 },
-    { name: "마포구", lat: 37.5665, long: 126.978 },
-    { name: "종로구", lat: 37.5724, long: 126.979 }
-  ];
-
   const handleLocationClick = (location) => {
     setSelectedLocation(location); // 선택된 위치 업데이트
     console.log(`Selected location: ${location}`);
