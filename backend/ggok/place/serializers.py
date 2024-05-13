@@ -1,23 +1,32 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import PlacePost, PlaceComment
-from rest_framework import serializers, viewsets
+from place.models import PlacePost, PlaceComment
+from placesinfo.models import PlaceInfo
+from rest_framework import serializers
 
 class PlaceCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceComment
         fields = '__all__'
-class PlacePostSerializer(serializers.ModelSerializer):
-    comment = PlaceCommentSerializer(many=True, read_only=True)  # comment 필드 추가
 
+from rest_framework import serializers
+from .models import PlacePost
+
+class PlacePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlacePost
         fields = '__all__'
 
-class PlacePostViewSet(viewsets.ModelViewSet):
-    queryset = PlacePost.objects.all()
-    serializer_class = PlacePostSerializer
+    def create(self, validated_data):
+        place_post = PlacePost.objects.create(**validated_data)
+        return place_post
 
-class PlaceCommentViewSet(viewsets.ModelViewSet):
-    queryset = PlaceComment.objects.all()
-    serializer_class = PlaceCommentSerializer
+
+
+class PlacePostVoteSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = PlacePost
+        fields = ['voter']
+class PlaceCommentPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PlaceComment
+        fields = ['content']

@@ -1,39 +1,38 @@
 from django.db import models
 
-from placesinfo.views import update_review
+from placesinfo.models import PlaceInfo
 from user.models import UserInfo
 
+from django.db import models
+from user.models import UserInfo
+
+
 class PlacePost(models.Model):
-    id = models.AutoField(primary_key=True)
-    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='author_placepost') # 계정이 삭제되면 이 계정이 작성한 질문을 삭제하도록
-    title = models.CharField(max_length=200)
+    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='author_place_post')
+    subject = models.CharField(max_length=200)
     content = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
-    lat = models.FloatField()
-    long = models.FloatField()
-    address = models.TextField(null=True)  # 주소_텍스트
-    name = models.CharField(max_length=200, null=True)  # 상호명
-    place_id = models.CharField(max_length=30)
-    #modify_date = models.DateTimeField(null=True, blank=True) 수정 일시는 일단 기능 추가 안함.
-    #voter = models.ManyToManyField(UserInfo, blank=True ,related_name='recommended_placepost')  # 추천인 추가
-    public = models.BooleanField()
+    create_date = models.DateTimeField(auto_now_add=True, blank=True)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+    long = models.DecimalField(max_digits=9, decimal_places=6)
+    address = models.TextField(null=True)
+    name = models.CharField(max_length=200, null=True)
+    modify_date = models.DateTimeField(null=True, blank=True)
+    public = models.BooleanField(default=False)
     review = models.IntegerField()
     category = models.CharField(max_length=50)
+
     objects = models.Manager()
     def __str__(self):
-        return self.title
-
-    def save(self, *args, **kwargs):
-        super(PlacePost, self).save(*args, **kwargs)
-        update_review(self.place_id) #별점 업데이트
+        return self.subject
 
 class PlaceComment(models.Model):
-    id = models.AutoField(primary_key=True)
-    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='author_placecomment')
-    placepost = models.ForeignKey(PlacePost, on_delete=models.CASCADE)
+    author = models.ForeignKey(UserInfo, on_delete=models.CASCADE, related_name='place_comments')
+    post = models.ForeignKey(PlacePost, on_delete=models.CASCADE)
     content = models.TextField()
-    recommended = models.ManyToManyField(UserInfo, related_name='recommended_placecomment')
-    date = models.DateTimeField(auto_now_add=True)
+    create_date = models.DateTimeField(auto_now_add=True, blank=True)
+    modify_date = models.DateTimeField(null=True, blank=True)
+    voter = models.ManyToManyField(UserInfo, blank=True, related_name='place_comment_votes')
     objects = models.Manager()
+
     def __str__(self):
-        return f"Answer to {self.post.title} by {self.author.username}"
+        return f"Answer to {self.post.subject} by {self.author.username}"

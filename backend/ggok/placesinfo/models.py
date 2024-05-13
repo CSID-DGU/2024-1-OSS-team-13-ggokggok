@@ -1,13 +1,22 @@
 from django.db import models
-from user.models import UserInfo
 
 class PlaceInfo(models.Model):
-    id = models.AutoField(primary_key=True) #등록로직변경필요
-    name = models.CharField(max_length=200) #상호명
-    address = models.TextField() #주소_텍스트
+    name = models.CharField(max_length=255)
+    address = models.CharField(max_length=255)
     lat = models.FloatField()
     long = models.FloatField()
-    review = models.IntegerField() #추천 판단용 지표값
-    category = models.CharField(max_length=50)
-    written = models.ManyToManyField(UserInfo, related_name='written_place')  # 글 쓴 사람수 ..사용처는 미정
+    category = models.CharField(max_length=100)
     objects = models.Manager()
+    total_review_score = models.IntegerField(default=0)
+    review_count = models.IntegerField(default=0)
+    average_review = models.FloatField(default=0.0)
+
+    def update_average_review(self):
+        if self.review_count > 0:
+            self.average_review = self.total_review_score / self.review_count
+        else:
+            self.average_review = 0.0
+        self.save()
+    def __str__(self):
+        return self.name
+

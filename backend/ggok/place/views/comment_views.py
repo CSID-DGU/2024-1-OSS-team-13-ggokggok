@@ -1,61 +1,162 @@
-from rest_framework.decorators import api_view
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from ..forms import PlaceCommentForm
-from ..models import PlacePost, PlaceComment
-from ..serializers import PlaceCommentSerializer, PlacePostSerializer
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from django.utils import timezone
+from place.models import PlacePost, PlaceComment
+from place.serializers import PlaceCommentSerializer, PlaceCommentPutSerializer
 
-@login_required(login_url='account:login')
-@api_view(['POST'])
-def comment_create(request, post_id): #댓글 작성
-    post = get_object_or_404(PlacePost, pk=post_id)
-    if request.method == 'POST':
-        form = PlaceCommentForm(request.data)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.author = request.user
-            comment.date = timezone.now()
-            comment.post = post
-            comment.save()
-            serializer = PlaceCommentSerializer(comment)
-            return Response(serializer.data)
-        return Response(form.errors, status=400)
+# 댓글 생성과 댓글 리스트 조회 파라미터에 post_id가 들어간다.
+class CommentListAndCreate(APIView):
+    #permission_classes = [IsAuthenticated]
+    serializer_class = PlaceCommentSerializer
+    queryset = PlaceComment.objects.all()
+    @swagger_auto_schema(tags=['명소 게시글의 댓글 List'])
+    def get(self, request, post_id):
+        post = get_object_or_404(PlacePost, pk=post_id)
+        comments = post.comment_set.all()
+        serializer = PlaceCommentSerializer(comments, many=True)
+        response_data = {
+            'success': True,
+            'status code': status.HTTP_200_OK,
+            'message': "요청에 성공하였습니다.",
+            'data': serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    @swagger_auto_schema(request_body=PlaceCommentSerializer,tags=['명소 댓글 CRUD'])
+    def post(self, request, post_id):
+        # post = get_object_or_404(Post, pk=post_id)
+        serializer = PlaceCommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(author=request.user)
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': "댓글을 작성했습니다.",
+                'data': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        response_data = {
+            'success': False,
+            'status code': status.HTTP_400_BAD_REQUEST,
+            'message': "요청에 실패하였습니다.",
+            'data': serializer.data
+        }
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
-@login_required(login_url='account:login')
-@api_view(['PUT'])
-def comment_modify(request, comment_id):
-    comment = get_object_or_404(PlaceComment, pk=comment_id)
-    if request.user != comment.author:
-        return Response({'error': '수정권한이 없습니다'}, status=403)
-    if request.method == 'PUT':
-        form = PlaceCommentForm(request.data, instance=comment)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.date = timezone.now()
-            comment.save()
-            serializer = PlaceCommentSerializer(comment)
-            return Response(serializer.data)
-        return Response(form.errors, status=400)
-
-@login_required(login_url='account:login')
-@api_view(['DELETE'])
-def comment_delete(request, comment_id):
-    comment = get_object_or_404(PlaceComment, pk=comment_id)
-    if request.user != comment.author:
-        return Response({'error': '삭제권한이 없습니다'}, status=403)
-    comment.delete()
-    return Response(status=204)
-
-@login_required(login_url='account:login')
-@api_view(['POST'])
-def comment_vote(request, comment_id):
-    comment = get_object_or_404(PlaceComment, pk=comment_id)
-    if request.user == comment.author:
-        return Response({'error': '본인이 작성한 글은 추천할수 없습니다'}, status=400)
-    else:
-        comment.review.add(request.user)
+# 댓글의 조회(GET), 수정(PUT), 삭제(DELETE)
+class CommentDetail(APIView):
+    #permission_classes = [IsAuthenticated]
+    serializer_class = PlaceCommentSerializer
+    queryset = PlaceComment.objects.all()
+    def get_object(self, comment_id):
+        return get_object_or_404(PlaceComment, pk=comment_id)
+    @swagger_auto_schema(tags=['명소 댓글 CRUD'])
+    def get(self, request, comment_id, *args, **kwargs):
+        comment = self.get_object(comment_id)
         serializer = PlaceCommentSerializer(comment)
-        return Response(serializer.data)
+        response_data = {
+            'success': True,
+            'status code': status.HTTP_200_OK,
+            'message': '요청 성공.',
+            'data': serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    @swagger_auto_schema(request_body=PlaceCommentPutSerializer, tags=['명소 댓글 CRUD'])
+    def put(self, request, comment_id):
+        comment = self.get_object(comment_id)
+        serializer = PlaceCommentPutSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            if request.user == comment.author:
+                serializer.save()
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_200_OK,
+                    'message': '댓글을 수정했습니다.',
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+            else:
+                response_data = {
+                    'success': False,
+                    'status code': status.HTTP_403_FORBIDDEN,
+                    'message': "댓글 수정 권한이 없습니다.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': '요청 실패.',
+                'data': serializer.data
+            }
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+    @swagger_auto_schema(tags=['명소 댓글 CRUD'])
+    def delete(self, request, comment_id):
+        comment = self.get_object(comment_id)
+        if request.user == comment.author:
+            comment.delete()
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': '게시글을 삭제했습니다.',
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        elif request.user != comment.author:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_403_FORBIDDEN,
+                'message': '삭제 권한이 없습니다.',
+            }
+            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': '요청 실패.',
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+# 댓글 추천 기능
+class CommentVote(APIView):
+    #permission_classes = [IsAuthenticated]
+    serializer_class = PlaceCommentSerializer
+    queryset = PlaceComment.objects.all()
+    @swagger_auto_schema(request_body=PlaceCommentSerializer, tags=['명소 추천 API'])
+    def post(self, request, comment_id):
+        comment = get_object_or_404(PlaceComment, pk=comment_id)
+        serializer = PlaceCommentSerializer(comment, data=request.data)
+        if request.user == comment.author:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': '본인이 작성한 게시글은 추천할 수 없습니다.',
+                'data': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+        elif request.user in comment.voter.all():
+            # 이미 추천한 경우 추천 취소
+            comment.voter.remove(request.user)
+            comment.save()  # 변경 사항 저장
+            serializer = PlaceCommentSerializer(comment)
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': '추천을 취소했습니다.',
+                'data': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
+        else:
+            comment.voter.add(request.user)
+            serializer = PlaceCommentSerializer(comment)
+            comment.save()  # 변경 사항 저장
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': '추천!.',
+                'data': serializer.data
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
