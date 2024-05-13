@@ -78,6 +78,20 @@ const router = createBrowserRouter([
         element: <Place_info/>,
 
       },
+      {
+        path:"/set-region",
+        element: <SetRegion/>
+      },
+    
+      {
+        path:"/search-region",
+        element: <SearchRegion/>
+      },
+    
+      {
+        path:"/info-region",
+        element: <InfoRegion/>
+      }
     ]
   },
   {
@@ -91,20 +105,6 @@ const router = createBrowserRouter([
   {
     path:"/intro",
     element: <Intro/>
-  },
-  {
-    path:"/set-region",
-    element: <SetRegion/>
-  },
-
-  {
-    path:"/search-region",
-    element: <SearchRegion/>
-  },
-
-  {
-    path:"/info-region",
-    element: <InfoRegion/>
   }
 
 ]);
