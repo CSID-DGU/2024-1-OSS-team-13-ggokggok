@@ -5,7 +5,6 @@ from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from community.serializers import CommunityPostSerializer, CommunityPostVoteSerializer
-from rest_framework.permissions import IsAuthenticated
 
 def extract_region(full_region):
     # 문자열을 공백 기준으로 분할합니다. 최대 2개의 띄어쓰기만 고려하여 분할
@@ -15,10 +14,8 @@ def extract_region(full_region):
     extracted_region = ' '.join(word[:2])
     return extracted_region
 class PostListAndCreate(APIView):
-    #permission_classes = [IsAuthenticated]
     serializer_class = CommunityPostSerializer
     queryset = Post.objects.all()
-    #authentication_classes = [TokenAuthentication]
     @swagger_auto_schema( tags=['커뮤니티 게시글 List'])
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
@@ -67,7 +64,7 @@ class PostListAndCreate(APIView):
                         'message': '사용자가 등록한 지역의 게시글만 작성 가능합니다',
                         'data': serializer.data
                     }
-                    return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+                    return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
             else:
                 response_data = {
                     'success': False,
@@ -75,7 +72,7 @@ class PostListAndCreate(APIView):
                     'message': '사용자의 지역 정보가 설정되지 않았습니다.',
                     'data': serializer.data
                 }
-            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         response_data = {
             'success': False,
             'status code': status.HTTP_400_BAD_REQUEST,
@@ -163,7 +160,7 @@ class PostDetailUpdateDelete(APIView):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 class PostVote(APIView):
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
     queryset = Post.objects.all()
     serializer_class = CommunityPostVoteSerializer
     @swagger_auto_schema(request_body=CommunityPostVoteSerializer, tags=['추천 API'])
