@@ -7,7 +7,7 @@ class PlaceInfo(models.Model):
     long = models.FloatField()
     category = models.CharField(max_length=100)
     objects = models.Manager()
-    total_review_score = models.IntegerField(default=0)
+    total_review_score = models.FloatField(default=0)
     review_count = models.IntegerField(default=0)
     average_review = models.FloatField(default=0.0)
 

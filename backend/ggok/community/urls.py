@@ -13,6 +13,6 @@ urlpatterns = [
     path('comments/<int:post_id>/', CommentListAndCreate.as_view(), name='comment_list_and_create'),
     path('comment/<int:comment_id>/', CommentDetail.as_view(), name='comment_detail'),
     path('vote/comment/<int:comment_id>/', CommentVote.as_view(), name='comment_vote'),
-    #serch
+    #search
     path('', RegionSearch, name='region_post_list'),
 ]

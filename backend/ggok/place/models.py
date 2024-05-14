@@ -1,7 +1,3 @@
-from django.db import models
-
-from placesinfo.models import PlaceInfo
-from user.models import UserInfo
 
 from django.db import models
 from user.models import UserInfo
@@ -14,13 +10,12 @@ class PlacePost(models.Model):
     create_date = models.DateTimeField(auto_now_add=True, blank=True)
     lat = models.DecimalField(max_digits=9, decimal_places=6)
     long = models.DecimalField(max_digits=9, decimal_places=6)
-    address = models.TextField(null=True)
+    address = models.CharField(null=True)
     name = models.CharField(max_length=200, null=True)
     modify_date = models.DateTimeField(null=True, blank=True)
     public = models.BooleanField(default=False)
-    review = models.IntegerField()
+    review = models.FloatField()
     category = models.CharField(max_length=50)
-
     objects = models.Manager()
     def __str__(self):
         return self.subject

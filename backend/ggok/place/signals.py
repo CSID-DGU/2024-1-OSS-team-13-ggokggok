@@ -1,5 +1,4 @@
 # place/models.py 또는 해당 시그널이 정의된 파일
-
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from place.models import PlacePost

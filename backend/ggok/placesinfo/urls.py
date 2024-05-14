@@ -1,7 +1,7 @@
 from django.urls import path
-from placesinfo.serializers import PlaceInfoListAPIView, PlaceInfoAPIView
+from placesinfo.views import RegionSearch
 
 urlpatterns = [
-    path('', PlaceInfoListAPIView.as_view(), name='place-list'),
-    path('<int:id>/', PlaceInfoAPIView.as_view(), name='place-detail'),
+    path('', RegionSearch, name='place_info_list'),
+
 ]

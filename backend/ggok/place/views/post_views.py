@@ -4,10 +4,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from place.models import PlacePost
-from placesinfo.models import PlaceInfo
-from place.serializers import PlacePostSerializer, PlacePostVoteSerializer
-from django.db.models import F
-from django.db import transaction
+from place.serializers import PlacePostSerializer
 
 class PostListAndCreate(APIView):
     serializer_class = PlacePostSerializer
@@ -38,7 +35,7 @@ class PostListAndCreate(APIView):
         response_data = {
             'success': False,
             'status code': status.HTTP_400_BAD_REQUEST,
-            'message': "요청에 실패하였습니다.",
+            'message': "요청 실패.",
             'data': serializer.errors  # 에러 정보 포함
         }
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
@@ -118,50 +115,50 @@ class PostDetailUpdateDelete(APIView):
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
-class PostVote(APIView):
-    #permission_classes = [IsAuthenticated]
-    queryset = PlacePost.objects.all()
-    serializer_class = PlacePostSerializer
-    @swagger_auto_schema(request_body=PlacePostVoteSerializer, tags=['명소 추천 API'])
-    def post(self, request, post_id, *args, **kwargs):
-        post = get_object_or_404(PlacePost, pk=post_id)
-        serializer = PlacePostVoteSerializer(data=request.data)
-        if not serializer.is_valid():
-            response_data = {
-                'success': False,
-                'status code': status.HTTP_400_BAD_REQUEST,
-                'message': '요청 실패.',
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        if request.user == post.author:
-            response_data = {
-                'success': False,
-                'status code': status.HTTP_403_FORBIDDEN,
-                'message': '본인이 작성한 게시글은 추천할 수 없습니다.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
-        elif request.user in post.voter.all():
-            # 이미 추천한 경우 추천 취소
-            post.voter.remove(request.user)
-            post.save()  # 변경 사항 저장
-            serializer = PlacePostVoteSerializer(post)
-            response_data = {
-                'success': True,
-                'status code': status.HTTP_200_OK,
-                'message': '추천을 취소했습니다.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
-        else:
-            post.voter.add(request.user)
-            post.save()  # 변경 사항 저장
-            serializer = PlacePostVoteSerializer(post)
-            response_data = {
-                'success': True,
-                'status code': status.HTTP_200_OK,
-                'message': '추천!.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
+# class PostVote(APIView):
+#     #permission_classes = [IsAuthenticated]
+#     queryset = PlacePost.objects.all()
+#     serializer_class = PlacePostSerializer
+#     @swagger_auto_schema(request_body=PlacePostVoteSerializer, tags=['명소 추천 API'])
+#     def post(self, request, post_id, *args, **kwargs):
+#         post = get_object_or_404(PlacePost, pk=post_id)
+#         serializer = PlacePostVoteSerializer(data=request.data)
+#         if not serializer.is_valid():
+#             response_data = {
+#                 'success': False,
+#                 'status code': status.HTTP_400_BAD_REQUEST,
+#                 'message': '요청 실패.',
+#             }
+#             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+#         if request.user == post.author:
+#             response_data = {
+#                 'success': False,
+#                 'status code': status.HTTP_403_FORBIDDEN,
+#                 'message': '본인이 작성한 게시글은 추천할 수 없습니다.',
+#                 'data': serializer.data
+#             }
+#             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+#         elif request.user in post.voter.all():
+#             # 이미 추천한 경우 추천 취소
+#             post.voter.remove(request.user)
+#             post.save()  # 변경 사항 저장
+#             serializer = PlacePostVoteSerializer(post)
+#             response_data = {
+#                 'success': True,
+#                 'status code': status.HTTP_200_OK,
+#                 'message': '추천을 취소했습니다.',
+#                 'data': serializer.data
+#             }
+#             return Response(response_data, status=status.HTTP_200_OK)
+#         else:
+#             post.voter.add(request.user)
+#             post.save()  # 변경 사항 저장
+#             serializer = PlacePostVoteSerializer(post)
+#             response_data = {
+#                 'success': True,
+#                 'status code': status.HTTP_200_OK,
+#                 'message': '추천!.',
+#                 'data': serializer.data
+#             }
+#             return Response(response_data, status=status.HTTP_200_OK)
 

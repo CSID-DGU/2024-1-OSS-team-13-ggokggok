@@ -1,14 +1,9 @@
 from place.models import PlacePost, PlaceComment
-from placesinfo.models import PlaceInfo
 from rest_framework import serializers
-
 class PlaceCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceComment
         fields = '__all__'
-
-from rest_framework import serializers
-from .models import PlacePost
 
 class PlacePostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +25,8 @@ class PlaceCommentPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceComment
         fields = ['content']
+class PlaceCommentVoteSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = PlacePost
+        fields = ['voter']

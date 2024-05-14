@@ -21,3 +21,9 @@ class CommentPutSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['content']
+
+class CommunityCommentVoteSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = Post
+        fields = ['voter']
