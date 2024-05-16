@@ -144,7 +144,7 @@ SWAGGER_SETTINGS = {
     'DEFAULT_API_URL': 'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app',
 
 }
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app','127.0.0.1', 'localhost']
 
