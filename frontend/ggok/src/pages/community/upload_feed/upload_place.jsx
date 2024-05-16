@@ -5,7 +5,7 @@ import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
 import StarRating from "../../../components/starrating";
-import SearchRegion from "./search-region";
+import SearchRegion from "./search-place";
 import { useNavigate } from "react-router-dom"; // useNavigate import 추가
 
 const Form = styled.form`
@@ -139,7 +139,7 @@ export default function upload_place() {
 
   const handleButtonClick = () => {
     // 버튼 클릭 시 이동할 경로를 지정합니다.
-    const destination = '/search-region';
+    const destination = '/searchplace';
 
     // 페이지 이동
     navigate(destination);
