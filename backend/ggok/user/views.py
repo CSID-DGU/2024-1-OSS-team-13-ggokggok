@@ -20,11 +20,18 @@ class LoginView(APIView):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
+                user_info = UserInfo.objects.get(username=username)
+                user_data = {
+                    'id': user_info.id,
+                    'username': user_info.username,
+                    'region1': user_info.region1,
+                    'region2': user_info.region2,
+                }
                 response_data = {
                     'success': True,
                     'status code': status.HTTP_200_OK,
                     'message': "로그인 성공.",
-                    'data': serializer.data
+                    'data': user_data
                 }
                 return Response(response_data, status=status.HTTP_200_OK)
             else:
