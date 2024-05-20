@@ -1,11 +1,14 @@
-from .models import Post, Comment
+from community.models import Post, Comment
 from rest_framework import serializers
-    #PostSerializer
+
 class CommunityPostSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+
     class Meta:
         model = Post
         fields = '__all__'
+
+
 class CommunityPostVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:

@@ -1,10 +1,14 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from community.serializers import CommunityPostSerializer, CommunityPostVoteSerializer
+from rest_framework import status, permissions
+from rest_framework.authentication import SessionAuthentication
+from user.models import UserInfo
+
 
 def extract_region(full_region):
     # 문자열을 공백 기준으로 분할합니다. 최대 2개의 띄어쓰기만 고려하여 분할
@@ -16,6 +20,7 @@ def extract_region(full_region):
 class PostListAndCreate(APIView):
     serializer_class = CommunityPostSerializer
     queryset = Post.objects.all()
+
     @swagger_auto_schema( tags=['커뮤니티 게시글 List'])
     def get(self, request, *args, **kwargs):
         posts = Post.objects.all()
@@ -31,55 +36,60 @@ class PostListAndCreate(APIView):
 
     @swagger_auto_schema(request_body=CommunityPostSerializer, tags=['커뮤니티 게시글 CRUD'])
     def post(self, request, *args, **kwargs):
-        serializer = CommunityPostSerializer(data=request.data)
-        if serializer.is_valid():
-            requested_region = request.data.get('post_region', '')
-            requested_region = extract_region(requested_region)
-            temp1 = False
-            temp2 = False
-            if request.user.region1 is not None or request.user.region2 is not None:
-                # request한 사용자의 region1과 region2 값을 얻습니다.
-                if request.user.region1 is not None:
-                    user_region1 = extract_region(request.user.region1)
-                    if user_region1 == requested_region:
-                        temp1 = True
-                if request.user.region2 is not None:
-                    user_region2 = extract_region(request.user.region2)
-                    if user_region2 == requested_region:
-                        temp2 = True
-                # 요청된 region 값이 사용자의 region1 또는 region2와 일치하는지 확인합니다.
-                if temp1 or temp2:
-                    serializer.save(author=request.user)
-                    response_data = {
-                        'success': True,
-                        'status code': status.HTTP_201_CREATED,
-                        'message': "게시글 작성 성공.",
-                        'data': serializer.data
-                    }
-                    return Response(response_data, status=status.HTTP_201_CREATED)
-                else:
-                    response_data = {
-                        'success': False,
-                        'status code': status.HTTP_403_FORBIDDEN,
-                        'message': '사용자가 등록한 지역의 게시글만 작성 가능합니다',
-                        'data': serializer.data
-                    }
-                    return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        requested_username = request.data.get('author')
+        requested_region = request.data.get('post_region', '')
+
+        try:
+            user = UserInfo.objects.get(id=requested_username)
+            user_region1 = user.region1
+            user_region2 = user.region2
+        except UserInfo.DoesNotExist:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': '사용자 정보를 찾을 수 없습니다.',
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+        temp1 = False
+        temp2 = False
+
+        if user_region1 is not None:
+            user_region1 = extract_region(user_region1)
+            if user_region1 == requested_region:
+                temp1 = True
+
+        if user_region2 is not None:
+            user_region2 = extract_region(user_region2)
+            if user_region2 == requested_region:
+                temp2 = True
+
+        if temp1 or temp2:
+            serializer = CommunityPostSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.save(author=requested_username)
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_201_CREATED,
+                    'message': "게시글 작성 성공.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_201_CREATED)
             else:
                 response_data = {
                     'success': False,
-                    'status code': status.HTTP_403_FORBIDDEN,
-                    'message': '사용자의 지역 정보가 설정되지 않았습니다.',
-                    'data': serializer.data
+                    'status code': status.HTTP_400_BAD_REQUEST,
+                    'message': '입력한 데이터가 올바르지 않습니다.',
+                    'data': serializer.errors
                 }
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_403_FORBIDDEN,
+                'message': '사용자가 등록한 지역의 게시글만 작성 가능합니다',
+            }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        response_data = {
-            'success': False,
-            'status code': status.HTTP_400_BAD_REQUEST,
-            'message': '요청 실패.',
-            'data': serializer.data
-        }
-        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class PostDetailUpdateDelete(APIView):
