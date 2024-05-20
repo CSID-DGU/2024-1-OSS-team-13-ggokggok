@@ -1,4 +1,5 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 import axios from "axios";
@@ -76,8 +77,8 @@ export default function Login() {
 
   const [error, setError] = useState("");
 
-  let sessionStorage = window.sessionStorage;
 
+  
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -101,8 +102,11 @@ export default function Login() {
             console.log(response);
             if(response.data.success == true){
               sessionStorage.clear();
-              sessionStorage.setItem("loginId", email);
-              sessionStorage.setItem("loginPassword", password);
+              sessionStorage.setItem('user', JSON.stringify(response.data));
+              console.log(sessionStorage.getItem("user"));
+              //sessionStorage.setItem("token", token);
+
+
 
               {/* 
                     sessionStorage.clear();
@@ -153,7 +157,7 @@ export default function Login() {
           name="email"
           value={email}
           placeholder="이메일"
-          type="email"
+          type="text"
           required
         />
         <Input
@@ -165,7 +169,7 @@ export default function Login() {
           required
         />
         
-        <Link style={{ textDecoration: "none"}}><div color="A3CCAA">Forgot your passoword?</div></Link>
+        <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원가입</div></Link>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
         
       </Form>

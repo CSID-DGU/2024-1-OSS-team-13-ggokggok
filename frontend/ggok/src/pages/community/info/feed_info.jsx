@@ -81,7 +81,7 @@ export default function Feed_info(){
       const fetchData = async () => {
         try {
           const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/");
-          const foundData = response.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          const foundData = response.data.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
           setData(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -105,6 +105,62 @@ export default function Feed_info(){
     }
     
 
+    const [getData, setGetData] = useState([]);
+
+    async function fetchData() {
+        try {
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`);
+          setGetData(response.data.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {fetchData();}, []);
+
+    const [comment, setcomment] = useState([]);
+
+    const onChange = (e) => {
+      setcomment(e.target.value);
+    };
+
+    const onSubmit = async (e) => {
+      e.preventDefault();
+      const currentDate = new Date().toISOString();
+      const postData = 
+      {
+            "content": comment,
+          // "create_date": currentDate,
+            "post": id,
+            "author": 1,
+          
+        
+      };
+      console.log(postData);
+  
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`, postData)
+      .then(response => {
+        console.log('Post successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error posting:', error);
+      });
+    };
+
+    const onlike = async (e) => {
+      e.preventDefault();
+
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/post/${id}/`)
+      .then(response => {
+        console.log('Post successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error posting:', error);
+      });
+    };
+
+    
+
     return (
         <Wrapper>
           <Title>
@@ -118,9 +174,40 @@ export default function Feed_info(){
                   <div>
                     <h1>{data.subject}</h1><br></br>
                     <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
-                    <h2>{data.content}</h2>       
+                    <h2>{data.content}</h2> 
                   </div>   
                 ): (<></>)}
+
+                {
+                  <form onSubmit={onlike}>
+                     <input type="submit" ></input>
+                  </form>
+                }
+
+                {
+                  <form onSubmit={onSubmit}>
+                     <input
+                       required
+                       maxLength={100}
+                       onChange={onChange}
+                       value={comment}
+                       placeholder="댓글을 입력해주세요"
+                     ></input>
+                     <input type="submit" ></input>
+                  </form>
+                }
+                
+                {<h1>댓글</h1>}
+                {getData.length > 0 ? (
+                        getData.map((data) => (
+                            <div style={{display: 'flex'}}>
+                                <div>
+                                    <h3>{data.content}</h3>
+                                    <p>{formatTimestamp(data.create_date)}</p>
+                                </div>
+                            </div>
+                    ))): (<></>)}
+                    
                 </ContentBox2>
             </SubTitle>
         </Wrapper>

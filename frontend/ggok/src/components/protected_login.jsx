@@ -4,8 +4,9 @@ export default function protected_login({children}) {
 
 
     let sessionStorage = window.sessionStorage;
-    if(sessionStorage.getItem("loginId") === null) return <Navigate to ="/login"/>;
+    if(sessionStorage.getItem("user") === null) return <Navigate to ="/intro"/>;
     
+
     return children;
 
 }

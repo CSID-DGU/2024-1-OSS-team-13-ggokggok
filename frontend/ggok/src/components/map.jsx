@@ -36,8 +36,9 @@ const MapComponent = ({onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
 
       // 새로운 마커들 추가
       markers.current = pins.map(location => {
+        console.log(location.lat);
         const marker = new window.google.maps.Marker({
-          position: { lat: location.lat, lng: location.long },
+          position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
           map: map,
           title: location.title
         });

@@ -148,7 +148,7 @@ export default function upload_place() {
     
     const currentDate = new Date().toISOString();
     const postData = {
-        "title": sub,
+        "subject": sub,
         "content": text,
         "public" : ispublic,
         "review" : stars,
