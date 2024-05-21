@@ -30,7 +30,6 @@ const ContentBox2 = styled.div`
   height: 550px;
   width: 100%;
   border: 1px solid #FFFFFF;
-  border-radius: 10px;
   margin: 15px 0 0;
   overflow: auto;
 
@@ -69,6 +68,50 @@ const WriteBtn = styled.div`
     font-size: 16px;
     font-weight: bold;
 `;  
+
+
+const FormContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+// 입력 필드 스타일 컴포넌트
+const InputField = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+`;
+
+// 버튼 스타일 컴포넌트
+const Button = styled.input`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #A3CCAA;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  `;
+
+
+  const Like = styled.input`
+  display: inline-block; /* 인라인 블록 요소로 설정하여 옆으로 배치됩니다. */
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  `;
+
+
+
+  axios.defaults.withCredentials = true;
 
 export default function Feed_info(){
 
@@ -138,7 +181,17 @@ export default function Feed_info(){
       };
       console.log(postData);
   
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`, postData)
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`, 
+      postData,
+      {
+        headers: {
+          'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
+        },
+        withCredentials: true
+      })
       .then(response => {
         console.log('Post successful:', response.data);
       })
@@ -150,7 +203,17 @@ export default function Feed_info(){
     const onlike = async (e) => {
       e.preventDefault();
 
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/post/${id}/`)
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/post/${id}/`,{},
+      {
+        headers: {
+          'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
+          'Content-Type': 'application/json',
+          'accept': 'application/json',
+          //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
+        },
+        withCredentials: true
+      }
+      )
       .then(response => {
         console.log('Post successful:', response.data);
       })
@@ -178,24 +241,24 @@ export default function Feed_info(){
                   </div>   
                 ): (<></>)}
 
-                {
+                <FormContainer>
                   <form onSubmit={onlike}>
-                     <input type="submit" ></input>
+                    <Like type="submit" value={"❤️"} />
                   </form>
-                }
+                </FormContainer>
 
-                {
+                <FormContainer>
                   <form onSubmit={onSubmit}>
-                     <input
-                       required
-                       maxLength={100}
-                       onChange={onChange}
-                       value={comment}
-                       placeholder="댓글을 입력해주세요"
-                     ></input>
-                     <input type="submit" ></input>
+                    <InputField
+                      required
+                      maxLength={100}
+                      onChange={onChange}
+                      value={comment}
+                      placeholder="댓글을 입력해주세요"
+                    />
+                    <Button type="submit" value={"등록"} />
                   </form>
-                }
+                </FormContainer>
                 
                 {<h1>댓글</h1>}
                 {getData.length > 0 ? (

@@ -5,6 +5,7 @@ import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
 
+// 스타일 정의
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -13,9 +14,7 @@ const Form = styled.form`
   width: 90%;
 `;
 
-
 const SubArea = styled.input`
-
   height: 50px;
   border: none;
   border-bottom: 2px solid #E8E8E8;
@@ -28,7 +27,6 @@ const SubArea = styled.input`
     font-family: "laundryR";
     color: #959595;
   }
-
 `;
 
 const TextArea = styled.textarea`
@@ -78,98 +76,127 @@ const SubmitBtn = styled.input`
     opacity: 0.9;
   }
 `;
-export default function upload() {
+
+
+axios.defaults.withCredentials = true;
+
+
+export default function Upload() {
+
+    // csrftoken 가져와 콘솔창에서 보여주기
+  let csrftoken = getCookie('csrftoken');
+  if (csrftoken != '') {
+      console.log('csrf값은 : ' + csrftoken);
+  }
+
+  // csrftoken 가져오기
+  function getCookie(cname) {
+      var name = cname + '=';
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') c = c.substring(1);
+          if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+      }
+      return '';
+  }
+
+
   const [isLoading, setLoading] = useState(false);
-  
-  const [sub, setsub] = useState("");
-  const [text, settext] = useState("");
-  
-  
+  const [sub, setSub] = useState("");
+  const [text, setText] = useState("");
   const [file, setFile] = useState(null);
-  
+
   const onChange = (e) => {
-    settext(e.target.value);
+    setText(e.target.value);
   };
 
   const onSub = (e) => {
-    setsub(e.target.value);
+    setSub(e.target.value);
   };
-
-
 
   const onFileChange = (e) => {
     const { files } = e.target;
-    if (files && files.length === 1 && files[0].size < 1024*1024) {
+    if (files && files.length === 1 && files[0].size < 1024 * 1024) {
       setFile(files[0]);
-    }else{
-        alert(`Please select one file that is 1MB or less.`);
+    } else {
+      alert('Please select one file that is 1MB or less.');
     }
   };
-  
-
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const currentDate = new Date().toISOString();
     const postData = {
-        "subject": sub,
-        "content": text,
-       // "create_date": currentDate,
-        "post_region": "string",
-        "author": 4,
-      
+      subject: sub,
+      content: text,
+      // create_date: currentDate,
+      post_region: "string",
+      author: 1,
     };
-    console.log(postData);
 
-    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/', postData, {withCredentials: true})
-    .then(response => {
+
+    const csrfToken = getCookie('csrftoken');
+    const sessionId = getCookie('sessionid');
+
+    try {
+      const response = await axios.post(
+        'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/',
+        postData,
+        {
+          headers: {
+            'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
+            'Content-Type': 'application/json',
+            'accept': 'application/json',
+            //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
+          },
+          withCredentials: true
+        }
+      );
+      console.log(postData);
       console.log('Post successful:', response.data);
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error posting:', error);
-    });
+    }
   };
 
   return (
     <Wrapper>
-
       <Title>
-        <div><BackButton><img src={leftlogo}/></BackButton></div>
+        <div><BackButton><img src={leftlogo} /></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
-       
       </Title>
-        
-        <Form onSubmit={onSubmit}>
-           <SubArea
-           required
-           maxLength={10}
-           onChange={onSub}
-           value={sub}
-           placeholder="제목"
-           />
-            <TextArea
-            required
-            rows={5}
-            maxLength={180}
-            onChange={onChange}
-            value={text}
-            placeholder="자유롭게 게시물을 등록해주세요!"
-            />
-            <AttachFileButton htmlFor="file">
-            {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
-            </AttachFileButton>
-            <AttachFileInput
-            onChange={onFileChange}
-            type="file"
-            id="file"
-            accept="image/*"
-            />
-            <SubmitBtn
-            type="submit"
-            value={isLoading ? "등록중..." : "게시글 등록!"}
-            />
-        </Form>
+      
+      <Form onSubmit={onSubmit}>
+        <SubArea
+          required
+          maxLength={10}
+          onChange={onSub}
+          value={sub}
+          placeholder="제목"
+        />
+        <TextArea
+          required
+          rows={5}
+          maxLength={180}
+          onChange={onChange}
+          value={text}
+          placeholder="자유롭게 게시물을 등록해주세요!"
+        />
+        <AttachFileButton htmlFor="file">
+          {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
+        </AttachFileButton>
+        <AttachFileInput
+          onChange={onFileChange}
+          type="file"
+          id="file"
+          accept="image/*"
+        />
+        <SubmitBtn
+          type="submit"
+          value={isLoading ? "등록중..." : "게시글 등록!"}
+        />
+      </Form>
     </Wrapper>
   );
 }

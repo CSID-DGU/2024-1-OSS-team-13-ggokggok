@@ -18,7 +18,7 @@ import Feed_list from "./pages/community/list/feed_list";
 import Place_list from "./pages/community/list/place_list";
 import Feed_info from "./pages/community/info/feed_info"
 import Place_info from "./pages/community/info/place_info"
-
+import My_map from "./pages/roadmap/my_map"
 
 
 const Wrapper = styled.div`
@@ -91,6 +91,10 @@ const router = createBrowserRouter([
       {
         path:"/info-region",
         element: <InfoRegion/>
+      },
+      {
+        path:"/my-map",
+        element: <My_map/>
       }
     ]
   },

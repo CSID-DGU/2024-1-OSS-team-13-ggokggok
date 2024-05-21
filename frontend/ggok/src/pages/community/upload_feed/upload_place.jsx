@@ -100,6 +100,7 @@ const SubmitBtn = styled.input`
   }
 `;
 
+
 export default function upload_place() {
   const [isLoading, setLoading] = useState(false);
   
@@ -167,7 +168,7 @@ export default function upload_place() {
     };
     console.log(postData);
 
-    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/', postData)
+    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })

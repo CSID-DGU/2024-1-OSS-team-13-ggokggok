@@ -30,7 +30,6 @@ const ContentBox2 = styled.div`
   height: 550px;
   width: 100%;
   border: 1px solid #FFFFFF;
-  border-radius: 10px;
   margin: 15px 0 0;
   overflow: auto;
 
@@ -70,6 +69,36 @@ const WriteBtn = styled.div`
     font-weight: bold;
 `;  
 
+
+
+const FormContainer = styled.div`
+  margin-bottom: 20px;
+`;
+
+// 입력 필드 스타일 컴포넌트
+const InputField = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+`;
+
+// 버튼 스타일 컴포넌트
+const Button = styled.input`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #A3CCAA;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  `;
+
+
 export default function Place_info(){
 
     const [data, setData] = useState(null);
@@ -80,9 +109,10 @@ export default function Place_info(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/");
-          const foundData = response.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/");
+          const foundData = response.data.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
           setData(foundData);
+          console.log(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -104,18 +134,6 @@ export default function Place_info(){
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
-
-    const onlike = async (e) => {
-      e.preventDefault();
-
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/vote/post/${id}/`)
-      .then(response => {
-        console.log('Post successful:', response.data);
-      })
-      .catch(error => {
-        console.error('Error posting:', error);
-      });
-    };
 
     const [getData, setGetData] = useState([]);
 
@@ -183,24 +201,18 @@ export default function Place_info(){
                 ): (<></>)}
 
 
-                {
-                  <form onSubmit={onlike}>
-                     <input type="submit" ></input>
-                  </form>
-                }
-
-                {
+                <FormContainer>
                   <form onSubmit={onSubmit}>
-                     <input
-                       required
-                       maxLength={100}
-                       onChange={onChange}
-                       value={comment}
-                       placeholder="댓글을 입력해주세요"
-                     ></input>
-                     <input type="submit" ></input>
+                    <InputField
+                      required
+                      maxLength={100}
+                      onChange={onChange}
+                      value={comment}
+                      placeholder="댓글을 입력해주세요"
+                    />
+                    <Button type="submit" value={"등록"} />
                   </form>
-                }
+                </FormContainer>
                 
                 {<h1>댓글</h1>}
                 {getData.length > 0 ? (
