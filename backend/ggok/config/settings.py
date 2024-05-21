@@ -164,9 +164,13 @@ SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_NAME = "csrftoken"
 CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to access the CSRF cookie
 CORS_ALLOW_HEADERS = [
-    "Content-Type",
-    "Authorization",
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "x-requested-with",
+    "withCredentials",
 ]
+
 # REST_FRAMEWORK = {
 #      'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.SessionAuthentication',],}
 #     'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],}
