@@ -97,7 +97,9 @@ export default function Feed_list(){
               <ContentBox2>
                 {getData.length > 0 ? (
                         getData.map((data) => (
-                          <Link to={data ? `/feed-info/${data.id}` : "/"}>
+                          <Link to={data ? `/feed-info/${data.id}` : "/"}
+                          style={{textDecoration: "none"}}>
+
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
                                 <div>

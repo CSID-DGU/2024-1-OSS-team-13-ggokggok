@@ -18,6 +18,7 @@ import Feed_list from "./pages/community/list/feed_list";
 import Place_list from "./pages/community/list/place_list";
 import Feed_info from "./pages/community/info/feed_info"
 import Place_info from "./pages/community/info/place_info"
+import MyPage from "./pages/mypage/mypage";
 
 
 
@@ -78,6 +79,12 @@ const router = createBrowserRouter([
         element: <Place_info/>,
 
       },
+
+      {
+        path:"mypage",
+        element: <MyPage/>,
+      },
+
     ]
   },
   {

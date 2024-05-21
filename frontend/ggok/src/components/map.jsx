@@ -58,7 +58,7 @@ const MapComponent = ({ locations, onLocationClick, apiKey = config.MAP_API_KEY,
     };
   }, [locations, apiKey, onLocationClick]);
 
-  return <div ref={mapRef} style={{ height: '450px', width: '100%', borderRadius: "20px", border: "1px solid #D9D9D9"}} />;
+  return <div ref={mapRef} style={{ height: '380px', width: '100%', borderRadius: "20px", border: "1px solid #D9D9D9"}} />;
 };
 
 export default MapComponent;

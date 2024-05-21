@@ -4,8 +4,12 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from user.models import UserInfo
-from user.serializers import JoinSerializer,LoginSerializer
+from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer
 from drf_yasg.utils import swagger_auto_schema
+from community.models import Post
+from place.models import PlacePost
+from django.db.models import Q
+from rest_framework.decorators import api_view
 
 class LoginView(APIView):
     #permission_classes = [IsAuthenticated]
@@ -108,3 +112,36 @@ class JoinView(APIView):
             'data': serializer.data
         }
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+@swagger_auto_schema(method='get', query_serializer=UserPostQuerySerializer, tags=['유저별 게시글 검색'])
+@api_view(['GET'])
+def UserPostSearch(request):
+    query_serializer = UserPostQuerySerializer(data=request.query_params)
+    if not query_serializer.is_valid():
+        return Response(query_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    community = request.GET.get('community', '')
+    place = request.GET.get('place', '')
+    post_list = Post.objects.order_by('create_date')
+    place_post_list = PlacePost.objects.order_by('create_date')
+
+    if community:
+        post_list = post_list.filter(
+            Q(author__icontains=community)
+        ).distinct()
+        serializer = PostSerializer(post_list, many=True)
+    elif place:
+        place_post_list = place_post_list.filter(
+            Q(author__icontains=place)
+        ).distinct()
+        serializer = PlacePostSerializer(place_post_list, many=True)
+    else:
+        return Response({"error": "Either 'community' or 'place' parameter must be provided."}, status=status.HTTP_400_BAD_REQUEST)
+
+    response_data = {
+        'success': True,
+        'status code': status.HTTP_200_OK,
+        'message': "요청에 성공하였습니다.",
+        'data': serializer.data
+    }
+    return Response(response_data, status=status.HTTP_200_OK)

@@ -13,6 +13,11 @@ export const Title = styled.h1`
   align-items: center;
 `;
 
+export const SubTitle = styled.h1`
+  color: #534340;
+
+`;
+
 export const LogoImage = styled.img`
   width: 45px; 
   height: auto; 
@@ -99,8 +104,8 @@ export const MainContainer = styled.div`
   .locButton {
     border-radius: 50px;
    
-    width:50px;
-    heigth:50px;
+    width: 50px;
+    heigth: 50px;
   
     background-color: #FFFFFF;
   }
