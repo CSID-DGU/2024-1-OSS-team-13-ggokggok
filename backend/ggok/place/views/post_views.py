@@ -5,6 +5,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from place.models import PlacePost
 from place.serializers import PlacePostSerializer
+from user.models import UserInfo
+
 
 class PostListAndCreate(APIView):
     serializer_class = PlacePostSerializer
@@ -23,8 +25,28 @@ class PostListAndCreate(APIView):
     @swagger_auto_schema(request_body=PlacePostSerializer, tags=['명소 등록 CRUD'])
     def post(self, request):
         serializer = PlacePostSerializer(data=request.data)
+        lat = request.data.get('lat')
+        long = request.data.get('long')
+        author = request.data.get('author')
+        if UserInfo.objects.filter(author=author).none():
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "사용자가 존재하지 않습니다.",
+                'data': {}
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+        if PlacePost.objects.filter(author=author, lat=lat, long=long).exists():
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "해당 위치에 대한 게시글은 이미 작성되었습니다.",
+                'data': {}
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save(author=author)
             response_data = {
                 'success': True,
                 'status code': status.HTTP_201_CREATED,
@@ -36,7 +58,7 @@ class PostListAndCreate(APIView):
             'success': False,
             'status code': status.HTTP_400_BAD_REQUEST,
             'message': "요청 실패.",
-            'data': serializer.errors  # 에러 정보 포함
+            'data': serializer.errors
         }
         return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
