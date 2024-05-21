@@ -5,9 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from community.models import Post, Comment
-from community.serializers import CommunityCommentSerializer, CommentPutSerializer
+from community.serializers import CommunityCommentSerializer, CommentPutSerializer, CommunityCommentVoteSerializer
 
-# 댓글 생성과 댓글 리스트 조회 파라미터에 post_id가 들어간다.
+
 class CommentListAndCreate(APIView):
     #permission_classes = [IsAuthenticated]
     serializer_class = CommunityCommentSerializer
@@ -122,12 +122,12 @@ class CommentDetail(APIView):
 # 댓글 추천 기능
 class CommentVote(APIView):
     #permission_classes = [IsAuthenticated]
-    serializer_class = CommunityCommentSerializer
+    serializer_class = CommunityCommentVoteSerializer
     queryset = Comment.objects.all()
-    @swagger_auto_schema(request_body=CommunityCommentSerializer, tags=['추천 API'])
+    @swagger_auto_schema(request_body=CommunityCommentVoteSerializer, tags=['추천 API'])
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id)
-        serializer = CommunityCommentSerializer(comment, data=request.data)
+        serializer = CommunityCommentVoteSerializer(comment, data=request.data)
         if request.user == comment.author:
             response_data = {
                 'success': False,
@@ -141,7 +141,7 @@ class CommentVote(APIView):
             # 이미 추천한 경우 추천 취소
             comment.voter.remove(request.user)
             comment.save()  # 변경 사항 저장
-            serializer = CommunityCommentSerializer(comment)
+            serializer = CommunityCommentVoteSerializer(comment)
             response_data = {
                 'success': True,
                 'status code': status.HTTP_200_OK,
@@ -151,7 +151,7 @@ class CommentVote(APIView):
             return Response(response_data, status=status.HTTP_200_OK)
         else:
             comment.voter.add(request.user)
-            serializer = CommunityCommentSerializer(comment)
+            serializer = CommunityCommentVoteSerializer(comment)
             comment.save()  # 변경 사항 저장
             response_data = {
                 'success': True,

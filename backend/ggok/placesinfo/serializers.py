@@ -9,12 +9,5 @@ class PlaceInfoListSerializer(serializers.ModelSerializer):
 class PlaceInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlaceInfo
-        fields = ['id', 'name', 'address', 'lat', 'long', 'review']
+        fields = '__all__'
 
-class PlaceInfoListAPIView(generics.ListAPIView):
-    queryset = PlaceInfo.objects.all()
-    serializer_class = PlaceInfoListSerializer  # 명소 상호명(name)만을 반환하는 serializer 사용
-
-class PlaceInfoAPIView(generics.RetrieveAPIView):
-    queryset = PlaceInfo.objects.all()
-    serializer_class = PlaceInfoSerializer  # 모든 명소 정보를 반환하는 serializer 사용
