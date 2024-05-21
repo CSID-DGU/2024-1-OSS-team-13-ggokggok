@@ -28,7 +28,7 @@ class PostListAndCreate(APIView):
         lat = request.data.get('lat')
         long = request.data.get('long')
         author = request.user
-        if UserInfo.objects.filter(author=author).none():
+        if UserInfo.objects.filter(username=author).none():
             response_data = {
                 'success': False,
                 'status code': status.HTTP_400_BAD_REQUEST,
