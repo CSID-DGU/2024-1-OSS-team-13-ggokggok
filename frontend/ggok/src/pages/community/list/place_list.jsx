@@ -75,7 +75,7 @@ export default function Place_list(){
     async function fetchData() {
         try {
           const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/');
-          setGetData(response.data);
+          setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
