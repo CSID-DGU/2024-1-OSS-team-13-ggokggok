@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from user.models import UserInfo
-from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer, PlaceInfoSerializer
+from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from place.models import PlacePost
@@ -120,43 +120,23 @@ def UserPostSearch(request):
     if not query_serializer.is_valid():
         return Response(query_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    post = request.GET.get('post', '')
-    author = request.GET.get('author', '')
+    community = request.GET.get('community', '')
+    place = request.GET.get('place', '')
     post_list = Post.objects.order_by('create_date')
     place_post_list = PlacePost.objects.order_by('create_date')
 
-    if post == 'community':
+    if community:
         post_list = post_list.filter(
-            Q(author__icontains=author)
+            Q(author__icontains=community)
         ).distinct()
         serializer = PostSerializer(post_list, many=True)
-    else:
+    elif place:
         place_post_list = place_post_list.filter(
-            Q(author__icontains=author)
+            Q(author__icontains=place)
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
-
-    response_data = {
-        'success': True,
-        'status code': status.HTTP_200_OK,
-        'message': "요청에 성공하였습니다.",
-        'data': serializer.data
-    }
-    return Response(response_data, status=status.HTTP_200_OK)
-
-@swagger_auto_schema(method='get', query_serializer=PlaceInfoSerializer, tags=['유저 등록 명소 반환'])
-@api_view(['GET'])
-def UserPlaceGet(request):
-    author = request.GET.get('author', '')
-    if not author:
-        return Response({"error": "author parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-    place_post_list = PlacePost.objects.order_by('create_date')
-    place_post_list = place_post_list.filter(
-        Q(author__icontains=author)
-    ).distinct()
-
-    serializer = PlaceInfoSerializer(place_post_list, many=True)
+    else:
+        return Response({"error": "Either 'community' or 'place' parameter must be provided."}, status=status.HTTP_400_BAD_REQUEST)
 
     response_data = {
         'success': True,

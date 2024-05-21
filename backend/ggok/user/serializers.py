@@ -13,12 +13,12 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, write_only=True)
 
 class UserPostQuerySerializer(serializers.Serializer):
-    post = serializers.CharField(required=True)
-    author = serializers.CharField(required=True)
+    community = serializers.CharField(required=False)
+    place = serializers.CharField(required=False)
 
     def validate(self, data):
-        if not data.get('post') or not data.get('author'):
-            raise serializers.ValidationError("Both 'post' and 'userID' must be provided.")
+        if not data.get('community') and not data.get('place'):
+            raise serializers.ValidationError("Either 'community' or 'place' parameter must be provided.")
         return data
 
 class PostSerializer(serializers.ModelSerializer):
@@ -31,8 +31,3 @@ class PlacePostSerializer(serializers.ModelSerializer):
         model = PlacePost
         fields = '__all__'
 
-
-class PlaceInfoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PlacePost
-        fields = ['lat', 'long']
