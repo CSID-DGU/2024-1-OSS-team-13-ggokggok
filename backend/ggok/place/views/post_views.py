@@ -37,7 +37,7 @@ class PostListAndCreate(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
-        if PlacePost.objects.filter(author=author, lat=lat, long=long).exists():
+        if PlacePost.objects.filter(author_id=author, lat=lat, long=long).exists():
             response_data = {
                 'success': False,
                 'status code': status.HTTP_400_BAD_REQUEST,
