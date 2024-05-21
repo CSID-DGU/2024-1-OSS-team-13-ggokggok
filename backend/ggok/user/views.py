@@ -127,12 +127,13 @@ def UserPostSearch(request):
 
     if community:
         post_list = post_list.filter(
+            #author=community
             Q(author__icontains=community)
         ).distinct()
         serializer = PostSerializer(post_list, many=True)
     elif place:
         place_post_list = place_post_list.filter(
-            Q(author__icontains=place)
+            author_id=place
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
     else:
