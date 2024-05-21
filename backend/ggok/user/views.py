@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from user.models import UserInfo
-from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer
+from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer, PlaceInfoSerializer
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from place.models import PlacePost
@@ -135,6 +135,28 @@ def UserPostSearch(request):
             Q(author__icontains=author)
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
+
+    response_data = {
+        'success': True,
+        'status code': status.HTTP_200_OK,
+        'message': "요청에 성공하였습니다.",
+        'data': serializer.data
+    }
+    return Response(response_data, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='get', query_serializer=PlaceInfoSerializer, tags=['유저 등록 명소 반환'])
+@api_view(['GET'])
+def UserPlaceGet(request):
+    author = request.GET.get('author', '')
+    if not author:
+        return Response({"error": "author parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+    place_post_list = PlacePost.objects.order_by('create_date')
+    place_post_list = place_post_list.filter(
+        Q(author__icontains=author)
+    ).distinct()
+
+    serializer = PlaceInfoSerializer(place_post_list, many=True)
 
     response_data = {
         'success': True,
