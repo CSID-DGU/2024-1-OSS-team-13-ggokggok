@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
@@ -50,7 +50,8 @@ const LocArea = styled.button`
 const TextArea = styled.textarea`
   border: none;
   resize: none;
-  
+  font-size: 20px;
+
   &::placeholder {
     font-size: 20px;
     font-family: "laundryR";
@@ -136,9 +137,29 @@ export default function upload_place() {
     }
   };
 
+  useEffect(() => {
+    if(sessionStorage.getItem('sub') != null){
+      setsub(sessionStorage.getItem('sub'));
+    }
+    if(sessionStorage.getItem('text') != null){
+      settext(sessionStorage.getItem('text'));
+    }
+    if(sessionStorage.getItem('star') != null){
+      setstars(sessionStorage.getItem('star'));
+    }
+    if(sessionStorage.getItem('pub') != null){
+      setpublic(sessionStorage.getItem('pub'));
+    }
+  },[]);
+
+
   const handleButtonClick = () => {
     // 버튼 클릭 시 이동할 경로를 지정합니다.
-    const destination = '/searchplace';
+    const destination = '/search-place';
+    sessionStorage.setItem('sub', sub);
+    sessionStorage.setItem('text', text);
+    sessionStorage.setItem('star', stars);
+    sessionStorage.setItem('pub', ispublic);
 
     // 페이지 이동
     navigate(destination);
@@ -146,36 +167,64 @@ export default function upload_place() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
+
     const currentDate = new Date().toISOString();
     const postData = {
         "subject": sub,
         "content": text,
         "public" : ispublic,
         "review" : stars,
-        "author": 1,
-        "lat" : '37.5611',
-        "long" : '126.9932',
+        "author": userId(),
+        "lat" : sessionStorage.getItem('lat'),
+        "long" : sessionStorage.getItem('lng'),
         //"create_date": currentDate,
-        "address": place,
-        "name" : 'abc',
-        "place_id" : 'abc',
+        "address": sessionStorage.getItem('add'),
+        "name" : sessionStorage.getItem('name'),
         "category" : "cafe",
-        "modify_date": currentDate,
-        "voter": [
-          1
-        ]
+
     };
     console.log(postData);
 
-    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', postData)
+    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', postData
+    )
     .then(response => {
       console.log('Post successful:', response.data);
     })
     .catch(error => {
       console.error('Error posting:', error);
     });
+
+    setsub("");
+    settext("");
+    setplace("");
+    setFile(null);
+    setpublic(true); // 공개로 초기화
+    setstars(0); // 별점 초기화
+    sessionStorage.removeItem('name');
+    sessionStorage.removeItem('add');
+    sessionStorage.removeItem('lat');
+    sessionStorage.removeItem('lng');
+    sessionStorage.removeItem('pub');
+    sessionStorage.removeItem('star');
+    sessionStorage.removeItem('sub');
+    sessionStorage.removeItem('text');
+
   };
+  function userId() {
+    const sessionData = sessionStorage.getItem('user');
+    if (sessionData) {
+      try {
+        const userData = JSON.parse(sessionData);
+        return parseInt(userData.data.id);
+      } catch (error) {
+        console.error('Error parsing session data:', error);
+        return null;
+      }
+    } else {
+      console.error('Session data not found.');
+      return null;
+    }
+  }
 
   return (
     <>

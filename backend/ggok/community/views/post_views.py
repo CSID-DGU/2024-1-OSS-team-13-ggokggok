@@ -8,6 +8,8 @@ from community.serializers import CommunityPostSerializer, CommunityPostVoteSeri
 from rest_framework import status, permissions
 from rest_framework.authentication import SessionAuthentication
 from user.models import UserInfo
+from rest_framework.parsers import MultiPartParser, FormParser #이미지업로드
+from drf_yasg import openapi
 
 
 def extract_region(full_region):
@@ -20,6 +22,7 @@ def extract_region(full_region):
 class PostListAndCreate(APIView):
     serializer_class = CommunityPostSerializer
     queryset = Post.objects.all()
+    parser_classes = (MultiPartParser, FormParser)
 
     @swagger_auto_schema( tags=['커뮤니티 게시글 List'])
     def get(self, request, *args, **kwargs):
@@ -66,6 +69,13 @@ class PostListAndCreate(APIView):
 
         if temp1 or temp2:
             serializer = CommunityPostSerializer(data=request.data)
+            try:
+                post_image = request.FILES.get('image')
+                if post_image:
+                    serializer.validated_data['image'] = post_image
+            except Exception as e:
+                print(f"An error occurred while uploading image: {e}")
+                serializer.validated_data['image'] = None
             if serializer.is_valid():
                 serializer.save(author=requested_username)
                 response_data = {

@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from user.models import UserInfo
-from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer
+from user.serializers import JoinSerializer,LoginSerializer, UserPostQuerySerializer, PostSerializer, PlacePostSerializer, MyUserInfoSerializer
 from drf_yasg.utils import swagger_auto_schema
 from community.models import Post
 from place.models import PlacePost
@@ -122,8 +122,10 @@ def UserPostSearch(request):
 
     community = request.GET.get('community', '')
     place = request.GET.get('place', '')
+    myuser = request.GET.get('myuser', '')
     post_list = Post.objects.order_by('create_date')
     place_post_list = PlacePost.objects.order_by('create_date')
+    user_info_list = UserInfo.objects.all()
 
     if community:
         post_list = post_list.filter(
@@ -135,6 +137,11 @@ def UserPostSearch(request):
             Q(author__icontains=place)
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
+    elif myuser:
+       user_info_list = user_info_list.filter(
+            Q(id__icontains=myuser)
+       ).distinct()
+       serializer = MyUserInfoSerializer(user_info_list, many=True)
     else:
         return Response({"error": "Either 'community' or 'place' parameter must be provided."}, status=status.HTTP_400_BAD_REQUEST)
 

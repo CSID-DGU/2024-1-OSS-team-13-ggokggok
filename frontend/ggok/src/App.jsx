@@ -102,6 +102,10 @@ const router = createBrowserRouter([
       {
         path:"mypage",
         element: <MyPage/>,
+      },     
+      {
+        path:"search-place",
+        element: <SearchPlace/>,
       },
       {
         path:"searchplace",
