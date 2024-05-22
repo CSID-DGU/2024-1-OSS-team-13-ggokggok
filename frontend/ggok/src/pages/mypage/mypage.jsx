@@ -2,57 +2,80 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { Title, TitleDiv, LogoImage } from "../../styles/Styles";
+
+import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
-  profileImage: "",
-  resident: "",
-  username: "",
+  "username": "",
+  "region1": "",
+  "region2": ""
 };
 
 // 프로필 정보를 가져오는 함수
 const fetchProfileInfo = async () => {
   try {
-    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/post_search/?community=${sessionStorage.getItem('user').data.id}`);
-    return response.data;
+    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=1`);
+    return response.data.data[0]; // API 응답 데이터에서 첫 번째 객체를 반환
   } catch (error) {
     console.error("Error fetching profile info:", error);
     return null;
   }
 };
 
+const Blank = styled.div`
+  width: 35px;
+`;
+
+
+const LogoutBtn = styled.div`
+    border: none;
+    background-color: white;
+    color: #A3CCAA;
+    font-size: 16px;
+    font-weight: bold;
+`;  
+
+
 const ProfileWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
+  margin: 10px 0 20px;
   background-color: #eaf4ec;
   padding: 20px;
 `;
+
 
 const ProfileImage = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-bottom: 20px;
+  background-color: white;
 `;
 
 const UserInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 
 const ResidentInfo = styled.div`
-  margin-bottom: 5px;
+  margin-bottom: 10px;
+  font-size: 23px;
 `;
 
 const UserName = styled.div`
-  font-weight: bold;
+  font-size: 30px;
 `;
 
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin: 30px 0;
   background-color: #F6F6F6;
   border-radius: 20px;
   overflow: hidden;
@@ -64,7 +87,7 @@ const SlidingButton = styled.button`
   border: none;
   outline: none;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 18px;
   transition: all 0.3s ease;
   background-color: ${({ active }) => (active ? "#534340" : "#F6F6F6")};
   color: ${({ active }) => (active ? "#ffffff" : "#E8E8E8")};
@@ -154,10 +177,16 @@ const MyPage = () => {
 
   return (
     <>
+      <Title>
+        <Blank></Blank>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>마이페이지</span></TitleDiv>
+        <div><Link to ="/intro" style={{textDecoration: "none"}}><LogoutBtn>로그아웃</LogoutBtn></Link></div>
+      </Title>
+
       <ProfileWrapper>
         <ProfileImage src={profile.profileImage} alt="Profile" />
         <UserInfoWrapper>
-          <ResidentInfo>{profile.resident}</ResidentInfo>
+          <ResidentInfo>{profile.region1} 주민</ResidentInfo>
           <UserName>{profile.username}</UserName>
         </UserInfoWrapper>
       </ProfileWrapper>
@@ -173,7 +202,7 @@ const MyPage = () => {
           active={selectedButton === "my-roadmap"}
           onClick={() => handleButtonClick("my-roadmap")}
         >
-          내 로드맵
+          내 명소 게시물
         </SlidingButton>
       </ButtonContainer>
 
