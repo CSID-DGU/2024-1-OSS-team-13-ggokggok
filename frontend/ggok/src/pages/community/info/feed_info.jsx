@@ -111,8 +111,6 @@ const Button = styled.input`
 
 
 
-  axios.defaults.withCredentials = true;
-
 export default function Feed_info(){
 
     const [data, setData] = useState(null);
@@ -152,7 +150,7 @@ export default function Feed_info(){
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${parseInt(id)}/`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -168,30 +166,22 @@ export default function Feed_info(){
     };
 
     const onSubmit = async (e) => {
+
       e.preventDefault();
+      setcomment('');
+
       const currentDate = new Date().toISOString();
       const postData = 
       {
             "content": comment,
           // "create_date": currentDate,
-            "post": id,
-            "author": 1,
-          
-        
+            "post": parseInt(id),
+            "author": userId(),        
       };
       console.log(postData);
   
       axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`, 
-      postData,
-      {
-        headers: {
-          'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
-          'Content-Type': 'application/json',
-          'accept': 'application/json',
-          //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
-        },
-        withCredentials: true
-      })
+      postData)
       .then(response => {
         console.log('Post successful:', response.data);
       })
@@ -204,15 +194,6 @@ export default function Feed_info(){
       e.preventDefault();
 
       axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/post/${id}/`,{},
-      {
-        headers: {
-          'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
-          'Content-Type': 'application/json',
-          'accept': 'application/json',
-          //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
-        },
-        withCredentials: true
-      }
       )
       .then(response => {
         console.log('Post successful:', response.data);
@@ -221,6 +202,22 @@ export default function Feed_info(){
         console.error('Error posting:', error);
       });
     };
+
+    function userId() {
+      const sessionData = sessionStorage.getItem('user');
+      if (sessionData) {
+        try {
+          const userData = JSON.parse(sessionData);
+          return parseInt(userData.data.id);
+        } catch (error) {
+          console.error('Error parsing session data:', error);
+          return null;
+        }
+      } else {
+        console.error('Session data not found.');
+        return null;
+      }
+    }
 
     
 

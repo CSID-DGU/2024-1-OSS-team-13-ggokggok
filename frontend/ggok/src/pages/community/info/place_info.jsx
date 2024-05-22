@@ -109,10 +109,8 @@ export default function Place_info(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/");
-          const foundData = response.data.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
-          setData(foundData);
-          console.log(foundData);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`);
+          setData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -139,14 +137,14 @@ export default function Place_info(){
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${id}/`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${parseInt(id)}/`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
     }
 
-    useEffect(() => {fetchData();}, []);
+    useEffect(() => {fetchData(); console.log(data )}, []);
 
     const [comment, setcomment] = useState([]);
 
@@ -156,13 +154,14 @@ export default function Place_info(){
 
     const onSubmit = async (e) => {
       e.preventDefault();
+      setcomment('');
       const currentDate = new Date().toISOString();
       const postData = 
       {
             "content": comment,
           // "create_date": currentDate,
-            "post": id,
-            "author": 1,
+            "post": parseInt(id),
+            "author": userId(),
           
         
       };
@@ -176,8 +175,24 @@ export default function Place_info(){
         console.error('Error posting:', error);
       });
     };
-
   
+    function userId() {
+      const sessionData = sessionStorage.getItem('user');
+      if (sessionData) {
+        try {
+          const userData = JSON.parse(sessionData);
+          return parseInt(userData.data.id);
+        } catch (error) {
+          console.error('Error parsing session data:', error);
+          return null;
+        }
+      } else {
+        console.error('Session data not found.');
+        return null;
+      }
+    }
+
+
     return (
         <Wrapper>
           <Title>
@@ -195,7 +210,7 @@ export default function Place_info(){
                       totalStars={5} 
                       selectedStars={data.review}
                     />
-                    <h3>{formatTimestamp(data.date)}</h3><br></br>       
+                    <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
                     <h2>{data.content}</h2>       
                   </div>   
                 ): (<></>)}

@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
 import { Link } from "react-router-dom";
 
+import Cookies from 'js-cookie';
+
 const Icon = styled.div``;
 
 const LocationInfo = styled.div`
@@ -142,10 +144,12 @@ const MainMap = () => {
 
     useEffect(() =>{fetchPlace();}, []);
 
-  useEffect(() => {
-    updateLocation();
-  }, []);
+    useEffect(() => {
+      updateLocation();
+    }, []);
+  
 
+    
   return (
     <Wrapper>
 
@@ -198,7 +202,6 @@ const MainMap = () => {
           )}
         </div>
       </MainContainer>
-
     </Wrapper>
   );
 };
