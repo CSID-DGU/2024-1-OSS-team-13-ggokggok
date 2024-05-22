@@ -134,7 +134,7 @@ const MainMap = () => {
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//user/post_search/?place=${userId()}`);
           setplace(response.data.data);
           console.log("get");
           console.log(getplace);
@@ -160,6 +160,22 @@ const MainMap = () => {
     e.preventDefault();
     navigate("/upload");
   };
+
+  function userId() {
+    const sessionData = sessionStorage.getItem('user');
+    if (sessionData) {
+      try {
+        const userData = JSON.parse(sessionData);
+        return parseInt(userData.data.id);
+      } catch (error) {
+        console.error('Error parsing session data:', error);
+        return null;
+      }
+    } else {
+      console.error('Session data not found.');
+      return null;
+    }
+  }
 
   return (
     <Wrapper>

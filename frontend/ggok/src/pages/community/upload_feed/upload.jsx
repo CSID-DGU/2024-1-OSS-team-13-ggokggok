@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
+
 
 // 스타일 정의
 const Form = styled.form`
@@ -33,7 +34,8 @@ const TextArea = styled.textarea`
   border: none;
   width: 90%;
   resize: none;
-  
+  font-size: 20px;
+
   &::placeholder {
     font-size: 20px;
     font-family: "laundryR";
@@ -80,26 +82,7 @@ const SubmitBtn = styled.input`
 
 axios.defaults.withCredentials = true;
 
-
 export default function Upload() {
-
-    // csrftoken 가져와 콘솔창에서 보여주기
-  let csrftoken = getCookie('csrftoken');
-  if (csrftoken != '') {
-      console.log('csrf값은 : ' + csrftoken);
-  }
-
-  // csrftoken 가져오기
-  function getCookie(cname) {
-      var name = cname + '=';
-      var ca = document.cookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') c = c.substring(1);
-          if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
-      }
-      return '';
-  }
 
 
   const [isLoading, setLoading] = useState(false);
@@ -126,32 +109,26 @@ export default function Upload() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    setSub("");
+    setText("");
+    setFile(null);
     const currentDate = new Date().toISOString();
     const postData = {
       subject: sub,
       content: text,
       // create_date: currentDate,
       post_region: "string",
-      author: 1,
+      author: userId(),
     };
 
 
-    const csrfToken = getCookie('csrftoken');
-    const sessionId = getCookie('sessionid');
 
     try {
       const response = await axios.post(
         'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/',
         postData,
-        {
-          headers: {
-            'X-CSRFToken': 'r8PtYvz43tbWq5gJqoEOaXqoI38ZzhRb',
-            'Content-Type': 'application/json',
-            'accept': 'application/json',
-            //'Session-ID': 'qhz5e8afm70jfbnl90gdvjqj31x7b84j'
-          },
-          withCredentials: true
-        }
+
+        
       );
       console.log(postData);
       console.log('Post successful:', response.data);
@@ -159,6 +136,23 @@ export default function Upload() {
       console.error('Error posting:', error);
     }
   };
+
+
+  function userId() {
+    const sessionData = sessionStorage.getItem('user');
+    if (sessionData) {
+      try {
+        const userData = JSON.parse(sessionData);
+        return parseInt(userData.data.id);
+      } catch (error) {
+        console.error('Error parsing session data:', error);
+        return null;
+      }
+    } else {
+      console.error('Session data not found.');
+      return null;
+    }
+  }
 
   return (
     <Wrapper>
