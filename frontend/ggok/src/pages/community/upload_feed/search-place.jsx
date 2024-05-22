@@ -1,5 +1,5 @@
-import { useState } from "react"; 
-import { styled } from "styled-components";
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -40,6 +40,10 @@ const SearchButton = styled.button`
   border: none;
   border-radius: 30px;
   cursor: pointer;
+
+  &:hover {
+    background-color: #89b492;
+  }
 `;
 
 const CurrentLocation = styled.button`
@@ -47,7 +51,7 @@ const CurrentLocation = styled.button`
   margin-right: 140px;
   font-size: 20px;
   height: 22px;
-  align-items: center; 
+  align-items: center;
   border: none;
   background-color: white;
 `;
@@ -63,55 +67,123 @@ const SVGImage = (
   </svg>
 );
 
+const ResultsContainer = styled.div`
+  width: 100%;
+  padding: 10px 20px;
+  gap: 30px;
+  items-align: center;
+`;
+
+const ResultItem = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  cursor: pointer;
+`;
+
+const ResultTitle = styled.h3`
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #534340;
+`;
+
+const ResultAddress = styled.p`
+  font-size: 16px;
+  color: #717171;
+`;
+
+const ResultLink = styled.a`
+  font-size: 16px;
+  color: #A3CCAA;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const removeHtmlTags = (str) => {
+  // HTML 태그 제거 로직
+};
+
+
+
 export default function SearchPlace() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState(null);
-  const clientId = "Your_Client_ID"; // 여기에 클라이언트 ID를 입력하세요
-  const clientSecret = "Your_Client_Secret"; // 여기에 클라이언트 시크릿을 입력하세요
+  const [error, setError] = useState('');
 
   const handleSearch = async () => {
     try {
-      const apiUrl = `https://openapi.naver.com/v1/search/local.json?query=${encodeURIComponent(searchTerm)}`;
-      const response = await fetch(apiUrl, {
+
+      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}&display=5`;
+
+      const response = await fetch(api_url, {
         headers: {
           'X-Naver-Client-Id': 'WDVId7gO_fHzG7oRtf5w',
           'X-Naver-Client-Secret': 'q4MDc81Fjb',
         },
+        params: {
+          display : 5,
+          start : 1
+        }
+        
+       
       });
+
       if (!response.ok) {
         throw new Error('네이버 API 요청에 실패했습니다.');
       }
+
       const data = await response.json();
       setSearchResult(data);
     } catch (error) {
       console.error(error);
-      // 사용자에게 오류를 보여줄 수 있는 방법을 추가하세요
+      setError('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
     }
   };
 
+  const convertCoordinates = (mapx, mapy) => {
+    const longitude = (mapx / 10000000).toFixed(6);
+    const latitude = (mapy / 10000000).toFixed(7);
+    return { longitude, latitude };
+  };
+  
+  
+  
+
+  const handleClickResult = (item) => {
+    const { longitude, latitude } = convertCoordinates(item.mapx, item.mapy);
+    console.log('선택한 식당:', item.title); // 식당 이름 출력
+    console.log('주소 좌표값:', longitude, latitude); // 주소 좌표값 출력
+  };
+  
+  
+  
   return (
     <Wrapper>
       <Title>명소 등록</Title>
       <SearchContainer>
-        <SearchInput type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="검색어를 입력하세요..." />
+        <SearchInput
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="검색어를 입력하세요..."
+        />
         <SearchButton onClick={handleSearch}>검색</SearchButton>
       </SearchContainer>
 
-      <CurrentLocation>
-        {SVGImage} 
-        <Sub>현재 위치로 검색하기</Sub>
-      </CurrentLocation>
+      {error && <p>{error}</p>} {/* 에러가 있을 경우에만 출력 */}
 
-      {searchResult && (
-        <div>
+      {searchResult && searchResult.items && (
+        
+        <ResultsContainer>
           {searchResult.items.map((item, index) => (
-            <div key={index}>
-              <h3>{item.title}</h3>
-              <p>{item.description}</p>
-              <a href={item.link} target="_blank" rel="noopener noreferrer">더 읽기</a>
-            </div>
+            <ResultItem key={index} onClick={() => handleClickResult(item)}>
+              {SVGImage} <ResultTitle dangerouslySetInnerHTML={{ __html: item.title }} />
+              <ResultAddress dangerouslySetInnerHTML={{ __html: item.address }} />
+            </ResultItem>
           ))}
-        </div>
+        </ResultsContainer>
       )}
     </Wrapper>
   );
