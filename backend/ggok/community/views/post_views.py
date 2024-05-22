@@ -36,11 +36,11 @@ class PostListAndCreate(APIView):
 
     @swagger_auto_schema(request_body=CommunityPostSerializer, tags=['커뮤니티 게시글 CRUD'])
     def post(self, request, *args, **kwargs):
-        requested_username = request.data.get('author')
+        requested_author = request.data.get('author')
         requested_region = request.data.get('post_region', '')
 
         try:
-            user = UserInfo.objects.get(id=requested_username)
+            user = UserInfo.objects.get(id=requested_author)
             user_region1 = user.region1
             user_region2 = user.region2
         except UserInfo.DoesNotExist:
@@ -67,7 +67,7 @@ class PostListAndCreate(APIView):
         if temp1 or temp2:
             serializer = CommunityPostSerializer(data=request.data)
             if serializer.is_valid():
-                serializer.save(author=requested_username)
+                serializer.save()
                 response_data = {
                     'success': True,
                     'status code': status.HTTP_201_CREATED,
@@ -116,8 +116,9 @@ class PostDetailUpdateDelete(APIView):
     def put(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
         serializer = CommunityPostSerializer(post, data=request.data)
+        requested_author = request.data.get('author')
         if serializer.is_valid():
-            if request.user == post.author:
+            if requested_author == post.author:
                 serializer.save()
                 response_data = {
                     'success': True,
@@ -146,7 +147,8 @@ class PostDetailUpdateDelete(APIView):
     @swagger_auto_schema(tags=['커뮤니티 게시글 CRUD'])
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        if request.user == post.author:
+        requested_author = request.data.get('author')
+        if requested_author == post.author:
             post.delete()
             response_data = {
                 'success': True,
@@ -154,7 +156,7 @@ class PostDetailUpdateDelete(APIView):
                 'message': '게시글을 삭제했습니다.',
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        elif request.user != post.author:
+        elif requested_author != post.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
@@ -177,6 +179,7 @@ class PostVote(APIView):
     def post(self, request, post_id, *args, **kwargs):
         post = get_object_or_404(Post, pk=post_id)
         serializer = CommunityPostVoteSerializer(data=request.data)
+        requested_author = request.data.get('author')
         if not serializer.is_valid():
             response_data = {
                 'success': False,
@@ -184,7 +187,7 @@ class PostVote(APIView):
                 'message': '요청 실패.',
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        if request.user == post.author:
+        if requested_author == post.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
@@ -192,9 +195,9 @@ class PostVote(APIView):
                 'data': serializer.data
             }
             return Response(response_data, status=status.HTTP_403_FORBIDDEN)
-        elif request.user in post.voter.all():
+        elif requested_author in post.voter.all():
             # 이미 추천한 경우 추천 취소
-            post.voter.remove(request.user)
+            post.voter.remove(requested_author)
             post.save()  # 변경 사항 저장
             serializer = CommunityPostVoteSerializer(post)
             response_data = {
@@ -205,7 +208,7 @@ class PostVote(APIView):
             }
             return Response(response_data, status=status.HTTP_200_OK)
         else:
-            post.voter.add(request.user)
+            post.voter.add(requested_author)
             post.save()  # 변경 사항 저장
             serializer = CommunityPostVoteSerializer(post)
             response_data = {

@@ -29,7 +29,7 @@ class CommentListAndCreate(APIView):
         # post = get_object_or_404(Post, pk=post_id)
         serializer = CommunityCommentSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save()
             response_data = {
                 'success': True,
                 'status code': status.HTTP_200_OK,
@@ -67,8 +67,9 @@ class CommentDetail(APIView):
     def put(self, request, comment_id):
         comment = self.get_object(comment_id)
         serializer = CommentPutSerializer(comment, data=request.data)
+        requested_author = request.data.get('author')
         if serializer.is_valid():
-            if request.user == comment.author:
+            if requested_author == comment.author:
                 serializer.save()
                 response_data = {
                     'success': True,
@@ -96,7 +97,8 @@ class CommentDetail(APIView):
     @swagger_auto_schema(tags=['커뮤니티 댓글 CRUD'])
     def delete(self, request, comment_id):
         comment = self.get_object(comment_id)
-        if request.user == comment.author:
+        requested_author = request.data.get('author')
+        if requested_author == comment.author:
             comment.delete()
             response_data = {
                 'success': True,
@@ -104,7 +106,7 @@ class CommentDetail(APIView):
                 'message': '게시글을 삭제했습니다.',
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        elif request.user != comment.author:
+        elif requested_author != comment.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
@@ -128,7 +130,8 @@ class CommentVote(APIView):
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id)
         serializer = CommunityCommentVoteSerializer(comment, data=request.data)
-        if request.user == comment.author:
+        requested_author = request.data.get('author')
+        if requested_author == comment.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_400_BAD_REQUEST,
@@ -137,9 +140,9 @@ class CommentVote(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
 
-        elif request.user in comment.voter.all():
+        elif requested_author in comment.voter.all():
             # 이미 추천한 경우 추천 취소
-            comment.voter.remove(request.user)
+            comment.voter.remove(requested_author)
             comment.save()  # 변경 사항 저장
             serializer = CommunityCommentVoteSerializer(comment)
             response_data = {
@@ -150,7 +153,7 @@ class CommentVote(APIView):
             }
             return Response(response_data, status=status.HTTP_200_OK)
         else:
-            comment.voter.add(request.user)
+            comment.voter.add(requested_author)
             serializer = CommunityCommentVoteSerializer(comment)
             comment.save()  # 변경 사항 저장
             response_data = {
