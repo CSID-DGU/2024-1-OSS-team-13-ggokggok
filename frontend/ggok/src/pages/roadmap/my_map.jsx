@@ -161,6 +161,22 @@ const MainMap = () => {
     navigate("/upload");
   };
 
+  function userId() {
+    const sessionData = sessionStorage.getItem('user');
+    if (sessionData) {
+      try {
+        const userData = JSON.parse(sessionData);
+        return parseInt(userData.data.id);
+      } catch (error) {
+        console.error('Error parsing session data:', error);
+        return null;
+      }
+    } else {
+      console.error('Session data not found.');
+      return null;
+    }
+  }
+
   return (
     <Wrapper>
 

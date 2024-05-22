@@ -101,6 +101,18 @@ const ResultLink = styled.a`
   }
 `;
 
+const Button = styled.input`
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #A3CCAA;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  `;
+
 const removeHtmlTags = (str) => {
   // HTML 태그 제거 로직
 };
@@ -111,6 +123,10 @@ export default function SearchPlace() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState(null);
   const [error, setError] = useState('');
+  const [name, setname] = useState('');
+  const [add,setadd] = useState('');
+  const [lat, setlat] = useState();
+  const [lng, setlng] = useState();
 
   const handleSearch = async () => {
     try {
@@ -153,10 +169,27 @@ export default function SearchPlace() {
 
   const handleClickResult = (item) => {
     const { longitude, latitude } = convertCoordinates(item.mapx, item.mapy);
-    console.log('선택한 식당:', item.title); // 식당 이름 출력
-    console.log('주소 좌표값:', longitude, latitude); // 주소 좌표값 출력
+    setlat(latitude);
+    setlng(longitude);
+    setname(removeHTMLTags(item.title));
+    setadd(item.address);
+    console.log(item);
   };
+
   
+  function removeHTMLTags(str) {
+    return str.replace(/<[^>]*>/g, '');
+  }
+  const onSubmit = async (e) => {
+
+    e.preventDefault();
+    sessionStorage.setItem('name', name);
+    sessionStorage.setItem('lat', lat);
+    sessionStorage.setItem('lng', lng);
+    sessionStorage.setItem('add', add);
+
+    
+  }
   
   
   return (
@@ -185,6 +218,10 @@ export default function SearchPlace() {
           ))}
         </ResultsContainer>
       )}
+
+        <form onSubmit={onSubmit}>
+          <Button type="submit" value={ name + " 등록"} />
+        </form>
     </Wrapper>
   );
 }

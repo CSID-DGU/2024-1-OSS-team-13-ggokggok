@@ -67,6 +67,8 @@ const Switcher = styled.span`
   }
 `;
 
+
+
 export default function Login() {
   const nav = useNavigate();
   const [isLoading, setLoading] = useState(false);
@@ -99,12 +101,10 @@ export default function Login() {
           try {
             const response = await axios.post("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/login/",postData);
             console.log('data');
-            console.log(response);
             if(response.data.success == true){
               sessionStorage.clear();
               sessionStorage.setItem('user', JSON.stringify(response.data));
-              console.log(sessionStorage.getItem("user"));
-              //sessionStorage.setItem("token", token);
+     
 
 
 
