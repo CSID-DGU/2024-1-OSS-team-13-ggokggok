@@ -130,7 +130,7 @@ class CommentVote(APIView):
     @swagger_auto_schema(request_body=CommunityCommentVoteSerializer, tags=['추천 API'])
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id)
-        serializer = CommunityCommentSerializer(comment, data=request.data)
+        serializer = CommunityCommentVoteSerializer(comment, data=request.data)
         requested_author_id = request.data.get('author')
         if serializer.is_valid():
             # requested_author_id로 User 객체를 조회합니다.
