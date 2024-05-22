@@ -27,8 +27,9 @@ class PostListAndCreate(APIView):
         serializer = PlacePostSerializer(data=request.data)
         lat = request.data.get('lat')
         long = request.data.get('long')
-        author = request.user
-        if UserInfo.objects.filter(username=author).none():
+        #author = request.user
+        author = request.data.get('author')
+        if UserInfo.objects.filter(id=author).none():
             response_data = {
                 'success': False,
                 'status code': status.HTTP_400_BAD_REQUEST,
@@ -46,7 +47,7 @@ class PostListAndCreate(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
-            serializer.save(author=request.user)
+            serializer.save(author=author)
             response_data = {
                 'success': True,
                 'status code': status.HTTP_201_CREATED,
