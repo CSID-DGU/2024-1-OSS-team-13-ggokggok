@@ -166,7 +166,7 @@ export default function SearchPlace() {
   
   return (
     <Wrapper>
-      <Title>명소 등록</Title>
+      <Title>명소 검색</Title>
       <SearchContainer>
         <SearchInput
           type="text"
