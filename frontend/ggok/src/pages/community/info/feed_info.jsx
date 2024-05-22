@@ -203,6 +203,21 @@ export default function Feed_info(){
       });
     };
 
+
+    const colike = async (coid) => {
+    //  e.preventDefault();
+
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/comment/${coid}/`,{
+    },
+      )
+      .then(response => {
+        console.log('Post successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error posting:', error);
+      });
+    };
+
     function userId() {
       const sessionData = sessionStorage.getItem('user');
       if (sessionData) {
@@ -264,6 +279,9 @@ export default function Feed_info(){
                                 <div>
                                     <h3>{data.content}</h3>
                                     <p>{formatTimestamp(data.create_date)}</p>
+                                    <form onSubmit={colike(data.id)}>
+                                      <Like type="submit" value={"❤️"} />
+                                    </form>
                                 </div>
                             </div>
                     ))): (<></>)}
