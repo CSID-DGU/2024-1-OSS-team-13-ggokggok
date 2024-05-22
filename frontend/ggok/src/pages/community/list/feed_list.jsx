@@ -73,8 +73,8 @@ export default function Feed_list(){
 
     async function fetchData() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/');
-          setGetData(response.data);
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/');
+          setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -97,7 +97,9 @@ export default function Feed_list(){
               <ContentBox2>
                 {getData.length > 0 ? (
                         getData.map((data) => (
-                          <Link to={data ? `/feed-info/${data.id}` : "/"}>
+                          <Link to={data ? `/feed-info/${data.id}` : "/"}
+                          style={{textDecoration: "none"}}>
+
                             <div style={{display: 'flex'}}>
                                 <ContentImg src="/"></ContentImg>
                                 <div>

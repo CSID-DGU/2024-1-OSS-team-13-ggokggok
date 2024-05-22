@@ -1,29 +1,35 @@
-from django.shortcuts import render, get_object_or_404
-from .post_views import PlacePost
-from django.core.paginator import Paginator
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
+from place.models import PlacePost
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.shortcuts import get_object_or_404
-from ..serializers import PlacePostSerializer
+from place.serializers import PlacePostSerializer
 
+
+@swagger_auto_schema(method='get', query_serializer=PlacePostSerializer(), tags=['명소 게시글 검색'])
 @api_view(['GET'])
-def index(request): #목록조회
-    kw = request.GET.get('kw', '')  # 검색어
-    placepost_list = PlacePost.objects.order_by('-date')
-    if kw:
-        placepost_list = placepost_list.filter(
-            Q(title__icontains=kw) |  # 제목 검색
-            Q(content__icontains=kw) |  # 내용 검색
-            Q(placecomment__content__icontains=kw) |  # 답변 내용 검색
-            Q(author__username__icontains=kw) |  # 질문 글쓴이 검색
-            Q(placecomment__author__username__icontains=kw)  # 답변 글쓴이 검색
+def RegionSearch(request):
+    address = request.GET.get('address', '')
+    search = request.GET.get('search', '')
+    post_list = PlacePost.objects.order_by('-review')  # 추천수가 많은 순으로 정렬
+
+    if address:
+        post_list = post_list.filter(
+                Q(address__icontains=address)
         ).distinct()
-    serializer = PlacePostSerializer(placepost_list, many=True)
-    return Response(serializer.data)
 
-@api_view(['GET'])
-def detail(request, post_id): #게시글 개별 조회
-    post = get_object_or_404(PlacePost, pk=post_id)
-    serializer = PlacePostSerializer(post)
-    return Response(serializer.data)
+    elif search:
+        post_list = post_list.filter(
+            Q(subject__icontains=search) |
+            Q(content__icontains=search) |
+            Q(address__icontains=search)
+        ).distinct()
+    serializer = PlacePostSerializer(post_list, many=True)
+    response_data = {
+        'success': True,
+        'status code': status.HTTP_200_OK,
+        'message': "요청에 성공하였습니다.",
+        'data': serializer.data
+    }
+    return Response(response_data, status=status.HTTP_200_OK)

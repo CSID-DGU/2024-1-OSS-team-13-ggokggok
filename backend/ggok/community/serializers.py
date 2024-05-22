@@ -1,24 +1,32 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import Post, Comment
-#from .serializers import PostSerializer
-from rest_framework import serializers, viewsets
+from community.models import Post, Comment
+from rest_framework import serializers
 
-class CommentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Comment
-        fields = '__all__'
-class PostSerializer(serializers.ModelSerializer):
-    comment = CommentSerializer(many=True, read_only=True)  # comment 필드 추가
+class CommunityPostSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
 
     class Meta:
         model = Post
         fields = '__all__'
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
 
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+class CommunityPostVoteSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = Post
+        fields = ['voter']
+    #CommentSerializer
+class CommunityCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class CommentPutSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['content']
+
+class CommunityCommentVoteSerializer(serializers.ModelSerializer):
+    voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    class Meta:
+        model = Post
+        fields = ['voter']

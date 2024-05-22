@@ -18,6 +18,7 @@ import Feed_list from "./pages/community/list/feed_list";
 import Place_list from "./pages/community/list/place_list";
 import Feed_info from "./pages/community/info/feed_info"
 import Place_info from "./pages/community/info/place_info"
+import My_map from "./pages/roadmap/my_map"
 import MyPage from "./pages/mypage/mypage";
 import SearchPlace from "./pages/community/upload_feed/search-place";
 
@@ -80,7 +81,24 @@ const router = createBrowserRouter([
         element: <Place_info/>,
 
       },
-
+      {
+        path:"/set-region",
+        element: <SetRegion/>
+      },
+    
+      {
+        path:"/search-region",
+        element: <SearchRegion/>
+      },
+    
+      {
+        path:"/info-region",
+        element: <InfoRegion/>
+      },
+      {
+        path:"/my-map",
+        element: <My_map/>
+      },
       {
         path:"mypage",
         element: <MyPage/>,
@@ -103,20 +121,6 @@ const router = createBrowserRouter([
   {
     path:"/intro",
     element: <Intro/>
-  },
-  {
-    path:"/set-region",
-    element: <SetRegion/>
-  },
-
-  {
-    path:"/search-region",
-    element: <SearchRegion/>
-  },
-
-  {
-    path:"/info-region",
-    element: <InfoRegion/>
   }
 
 ]);
