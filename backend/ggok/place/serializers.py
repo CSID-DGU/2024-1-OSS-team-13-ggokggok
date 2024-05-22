@@ -29,4 +29,4 @@ class PlaceCommentVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = PlacePost
-        fields = ['voter']
+        fields = ['author','voter']
