@@ -47,7 +47,7 @@ class PostListAndCreate(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
-            serializer.save(author=author)
+            serializer.save()
             response_data = {
                 'success': True,
                 'status code': status.HTTP_201_CREATED,
