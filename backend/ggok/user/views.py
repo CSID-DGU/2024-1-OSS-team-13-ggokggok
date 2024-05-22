@@ -120,7 +120,7 @@ def UserPostSearch(request):
     if not query_serializer.is_valid():
         return Response(query_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    community =  request.GET.get('community', '')
+    community = request.GET.get('community', '')
     place = request.GET.get('place', '')
     myuser = request.GET.get('myuser', '')
     post_list = Post.objects.order_by('create_date')
@@ -138,10 +138,10 @@ def UserPostSearch(request):
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
     elif myuser:
-        user_info_list = user_info_list.filter(
+       user_info_list = user_info_list.filter(
             Q(id__icontains=myuser)
-        ).distinct()
-        serializer = MyUserInfoSerializer(user_info_list, many=True)
+       ).distinct()
+       serializer = MyUserInfoSerializer(user_info_list, many=True)
     else:
         return Response({"error": "Either 'community' or 'place' parameter must be provided."}, status=status.HTTP_400_BAD_REQUEST)
 
