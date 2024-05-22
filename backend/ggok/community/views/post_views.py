@@ -176,7 +176,7 @@ class PostVote(APIView):
     queryset = Post.objects.all()
     serializer_class = CommunityPostVoteSerializer
     @swagger_auto_schema(request_body=CommunityPostVoteSerializer, tags=['추천 API'])
-    def post(self, request, post_id, *args, **kwargs):
+    def post(self, request, post_id):
         post = get_object_or_404(Post, pk=post_id)
         serializer = CommunityPostVoteSerializer(data=request.data)
         requested_author = request.data.get('author')

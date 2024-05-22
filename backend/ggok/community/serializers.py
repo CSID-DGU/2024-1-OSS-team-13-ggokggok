@@ -13,7 +13,7 @@ class CommunityPostVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ['voter']
+        fields = ['author','voter']
     #CommentSerializer
 class CommunityCommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,4 +29,4 @@ class CommunityCommentVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ['voter']
+        fields = ['author','voter']

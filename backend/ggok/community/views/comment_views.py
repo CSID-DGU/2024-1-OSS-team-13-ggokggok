@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from community.models import Post, Comment
 from community.serializers import CommunityCommentSerializer, CommentPutSerializer, CommunityCommentVoteSerializer
+from user.models import UserInfo
 
 
 class CommentListAndCreate(APIView):
@@ -129,37 +130,43 @@ class CommentVote(APIView):
     @swagger_auto_schema(request_body=CommunityCommentVoteSerializer, tags=['추천 API'])
     def post(self, request, comment_id):
         comment = get_object_or_404(Comment, pk=comment_id)
-        serializer = CommunityCommentVoteSerializer(comment, data=request.data)
-        requested_author = request.data.get('author')
-        if requested_author == comment.author:
-            response_data = {
-                'success': False,
-                'status code': status.HTTP_400_BAD_REQUEST,
-                'message': '본인이 작성한 게시글은 추천할 수 없습니다.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CommunityCommentSerializer(comment, data=request.data)
+        requested_author_id = request.data.get('author')
+        if serializer.is_valid():
+            # requested_author_id로 User 객체를 조회합니다.
+            requested_author = get_object_or_404(UserInfo, pk=requested_author_id)
 
-        elif requested_author in comment.voter.all():
-            # 이미 추천한 경우 추천 취소
-            comment.voter.remove(requested_author)
-            comment.save()  # 변경 사항 저장
-            serializer = CommunityCommentVoteSerializer(comment)
-            response_data = {
-                'success': True,
-                'status code': status.HTTP_200_OK,
-                'message': '추천을 취소했습니다.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
+            if requested_author == comment.author:
+                response_data = {
+                    'success': False,
+                    'status code': status.HTTP_400_BAD_REQUEST,
+                    'message': '본인이 작성한 게시글은 추천할 수 없습니다.',
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+            if requested_author in comment.voter.all():
+                # 이미 추천한 경우 추천 취소
+                comment.voter.remove(requested_author)
+                comment.save()  # 변경 사항 저장
+                serializer = CommunityCommentVoteSerializer(comment)
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_200_OK,
+                    'message': '추천을 취소했습니다.',
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
+            else:
+                comment.voter.add(requested_author)
+                serializer = CommunityCommentVoteSerializer(comment)
+                comment.save()  # 변경 사항 저장
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_200_OK,
+                    'message': '추천!.',
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_200_OK)
         else:
-            comment.voter.add(requested_author)
-            serializer = CommunityCommentVoteSerializer(comment)
-            comment.save()  # 변경 사항 저장
-            response_data = {
-                'success': True,
-                'status code': status.HTTP_200_OK,
-                'message': '추천!.',
-                'data': serializer.data
-            }
-            return Response(response_data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
