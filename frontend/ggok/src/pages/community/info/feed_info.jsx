@@ -206,8 +206,10 @@ export default function Feed_info(){
 
     const colike = async (coid) => {
     //  e.preventDefault();
+    const sessionData = sessionStorage.getItem('user');
+    const userData = JSON.parse(sessionData);
 
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/comment/${coid}/`,{
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/comment/${coid}/`,{'author' : userData.data.id
     },
       )
       .then(response => {
