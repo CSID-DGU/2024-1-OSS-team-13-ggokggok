@@ -8,9 +8,6 @@ class CommunityPostSerializer(serializers.ModelSerializer):
         class Meta:
             model = Post
             fields = '__all__'
-            extra_kwargs = {
-                'image': {'required': False}  # 이미지 필드를 선택사항으로 설정
-            }
 
 
 class CommunityPostVoteSerializer(serializers.ModelSerializer):
