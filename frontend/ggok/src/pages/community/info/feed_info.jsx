@@ -188,6 +188,8 @@ export default function Feed_info(){
       .catch(error => {
         console.error('Error posting:', error);
       });
+
+      
     };
 
     const onlike = async (e) => {

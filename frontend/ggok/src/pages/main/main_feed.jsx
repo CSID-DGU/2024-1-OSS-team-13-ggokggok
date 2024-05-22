@@ -115,7 +115,7 @@ export default function main_feed(){
                           <Link to={data ? `/place-info/${data.id}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
+                                <ContentImg src={`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app${data.image}`}></ContentImg>
                                 <div>
                                     <h3>{data.title}</h3>
                                     <p>{data.content}</p>
@@ -144,7 +144,7 @@ export default function main_feed(){
                     getData.map((data) => (
                       <Link to={data ? `/feed-info/${data.id}` : "/"}>
                         <div style={{display: 'flex'}}>
-                            <ContentImg src="/"></ContentImg>
+                            <ContentImg src= {`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app${data.image}`}></ContentImg>
                             <div>
                                 <h3>{data.subject}</h3>
                                 <p>{data.content}</p>

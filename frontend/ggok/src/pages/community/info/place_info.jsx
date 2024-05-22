@@ -174,6 +174,7 @@ export default function Place_info(){
       .catch(error => {
         console.error('Error posting:', error);
       });
+      
     };
   
     function userId() {

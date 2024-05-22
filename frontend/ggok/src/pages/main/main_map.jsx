@@ -132,7 +132,7 @@ const MainMap = () => {
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/');
           setplace(response.data.data);
           console.log("get");
           console.log(getplace);

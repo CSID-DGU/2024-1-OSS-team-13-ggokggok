@@ -109,6 +109,8 @@ export default function Upload() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    /*
     setSub("");
     setText("");
     setFile(null);
@@ -119,6 +121,7 @@ export default function Upload() {
       // create_date: currentDate,
       post_region: "string",
       author: userId(),
+      image : null,
     };
 
 
@@ -135,6 +138,29 @@ export default function Upload() {
     } catch (error) {
       console.error('Error posting:', error);
     }
+    */
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('subject', sub);
+    formData.append('content', text);
+    formData.append('post_region', '서울시');
+    formData.append('author', userId());
+
+
+
+    try {
+      const response = await axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Server Response:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+
+
   };
 
 

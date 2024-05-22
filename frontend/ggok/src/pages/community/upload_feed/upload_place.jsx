@@ -169,7 +169,7 @@ export default function upload_place() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    /*
     const currentDate = new Date().toISOString();
     const postData = {
         "subject": sub,
@@ -183,6 +183,7 @@ export default function upload_place() {
         "address": sessionStorage.getItem('add'),
         "name" : sessionStorage.getItem('name'),
         "category" : "cafe",
+        "image" : null,
 
     };
     console.log(postData);
@@ -195,6 +196,33 @@ export default function upload_place() {
     .catch(error => {
       console.error('Error posting:', error);
     });
+    */
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('subject', sub);
+    formData.append('content', text);
+    formData.append('author', userId());
+    formData.append('public', ispublic);
+    formData.append('review', stars);
+    formData.append('category', "cafe");
+    formData.append('name', sessionStorage.getItem('name'));
+    formData.append('address', sessionStorage.getItem('add'));
+    formData.append('lat', sessionStorage.getItem('lat'));
+    formData.append('long', sessionStorage.getItem('lng'));
+
+
+
+
+    try {
+      const response = await axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Server Response:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
 
     setsub("");
     settext("");

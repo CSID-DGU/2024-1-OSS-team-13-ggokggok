@@ -74,28 +74,26 @@ export default function Login() {
   const [isLoading, setLoading] = useState(false);
 
 
-  const [email, setEmail] = useState("");
+  const [id, setid] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
-
 
   
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
-
-    if(email==="" || password === "" || isLoading) return;
+    setLoading(true);
+    if(id==="" || password === "" || isLoading) return;
 
 
     const postData = {
-      "username" : email,
+      "username" : id,
       "password" : password,
     };
 
     try {
-        setLoading(true);
 
         const fetchData = async () => {
           try {
@@ -139,8 +137,8 @@ export default function Login() {
     } = e;
 
 
-    if(name === "email"){
-        setEmail(value);
+    if(name === "id"){
+        setid(value);
     }else if(name === "password"){
         setPassword(value);
     }
@@ -150,13 +148,13 @@ export default function Login() {
     
     <Wrapper>
       <Title>로그인</Title>
-
+      {!isLoading ?  (
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
-          name="email"
-          value={email}
-          placeholder="이메일"
+          name="id"
+          value={id}
+          placeholder="아이디"
           type="text"
           required
         />
@@ -172,7 +170,14 @@ export default function Login() {
         <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원가입</div></Link>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
         
-      </Form>
+      </Form>)
+      :
+      (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' , height: '100vh', fontSize: '30px' }}>
+        <h1>Loading...</h1>
+      </div> 
+      )  
+      }
       {error !== "" ? <Error>{error}</Error> : null}
     </Wrapper>
   );

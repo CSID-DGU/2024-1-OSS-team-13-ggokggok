@@ -71,9 +71,8 @@ export default function CreateAccount(){
     const nav = useNavigate();
     const [isLoading,setLoading]= useState(false);
 
-    const [name,setName] = useState("");
-    const [nickname, setNick] = useState("");
-    const [email,setEmail] = useState("");
+    //const [name,setName] = useState("");
+    const [id,setid] = useState("");
     const [password,setPassword] = useState("");
 
     const [error, setError] = useState("");
@@ -83,14 +82,10 @@ export default function CreateAccount(){
             target: {name, value},
         } = e;
 
-        if(name === "name"){
-            setName(value);
-        }else if(name === "email"){
-            setEmail(value);
+        if(name === "id"){
+            setid(value);
         }else if(name === "password"){
             setPassword(value);
-        }else if(name === "nick"){
-            setNick(value);
         }
     };
 
@@ -98,11 +93,11 @@ export default function CreateAccount(){
         e.preventDefault();
         setError("");
 
-        if(name === "" || email==="" || password === "" || isLoading) return;
+        if(id === "" || password === "" || isLoading) return;
 
 
         const postData = {
-          "username" : email,
+          "username" : id,
           "password" : password,
         };
 
@@ -138,9 +133,7 @@ export default function CreateAccount(){
         <Wrapper>
             <Title>회원가입</Title>
             <Form onSubmit={onSubmit}>
-                <Input name="name" value = {name} onChange={onChange} placeholder="본명" type="text" required/>
-                <Input name="nick" value={nickname} onChange={onChange} placeholder="닉네임" type="text" required/>
-                <Input name="email" value={email} onChange={onChange} placeholder="이메일" type="email" required/>
+                <Input name="id" value={id} onChange={onChange} placeholder="아이디" type="text" required/>
                 <Input name="password" value={password} onChange={onChange} placeholder="비밀번호" type="password" required/>
                 <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value= "회원가입" />
             </Form>
