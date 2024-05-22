@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Title, TitleDiv, LogoImage } from "../../styles/Styles";
 
@@ -8,9 +8,9 @@ import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/ot
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
-  "username": "",
-  "region1": "",
-  "region2": ""
+  username: "",
+  region1: "",
+  region2: "",
 };
 
 // 프로필 정보를 가져오는 함수
@@ -28,15 +28,14 @@ const Blank = styled.div`
   width: 35px;
 `;
 
-
 const LogoutBtn = styled.div`
-    border: none;
-    background-color: white;
-    color: #A3CCAA;
-    font-size: 16px;
-    font-weight: bold;
-`;  
-
+  border: none;
+  background-color: white;
+  color: #a3ccaa;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+`;
 
 const ProfileWrapper = styled.div`
   display: flex;
@@ -47,7 +46,6 @@ const ProfileWrapper = styled.div`
   background-color: #eaf4ec;
   padding: 20px;
 `;
-
 
 const ProfileImage = styled.img`
   width: 100px;
@@ -76,7 +74,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 30px 0;
-  background-color: #F6F6F6;
+  background-color: #f6f6f6;
   border-radius: 20px;
   overflow: hidden;
 `;
@@ -89,18 +87,18 @@ const SlidingButton = styled.button`
   cursor: pointer;
   font-size: 18px;
   transition: all 0.3s ease;
-  background-color: ${({ active }) => (active ? "#534340" : "#F6F6F6")};
-  color: ${({ active }) => (active ? "#ffffff" : "#E8E8E8")};
+  background-color: ${({ active }) => (active ? "#534340" : "#f6f6f6")};
+  color: ${({ active }) => (active ? "#ffffff" : "#e8e8e8")};
 
   &:hover {
-    background-color: ${({ active }) => (active ? "#534340" : "#F0F0F0")};
+    background-color: ${({ active }) => (active ? "#534340" : "#f0f0f0")};
   }
 `;
 
 const ContentBox2 = styled.div`
   height: 300px;
   width: 100%;
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   border-radius: 10px;
   margin: 15px 0 0;
   overflow: auto;
@@ -108,7 +106,7 @@ const ContentBox2 = styled.div`
   > div {
     font-size: 20px;
     margin-bottom: 20px;
-    border-bottom: 1px solid #C9B6A9;
+    border-bottom: 1px solid #c9b6a9;
   }
 
   h3 {
@@ -134,6 +132,7 @@ const MyPage = () => {
   const [selectedButton, setSelectedButton] = useState("my-posts");
   const [posts, setPosts] = useState([]);
   const [roadmap, setRoadmap] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -155,19 +154,19 @@ const MyPage = () => {
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=1');
+      const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=1");
       setPosts(response.data.data);
     } catch (error) {
-      console.error('Error fetching posts:', error);
+      console.error("Error fetching posts:", error);
     }
   };
 
   const fetchMyRoadmap = async () => {
     try {
-      const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=1');
+      const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=1");
       setRoadmap(response.data.data);
     } catch (error) {
-      console.error('Error fetching roadmap:', error);
+      console.error("Error fetching roadmap:", error);
     }
   };
 
@@ -175,12 +174,24 @@ const MyPage = () => {
     setSelectedButton(buttonName);
   };
 
+  const handleLogout = () => {
+    // 세션의 모든 값을 지우기 위해 로컬 스토리지를 비움
+    localStorage.clear();
+    // /intro 페이지로 리다이렉트
+    navigate("/intro");
+  };
+
   return (
     <>
       <Title>
         <Blank></Blank>
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>마이페이지</span></TitleDiv>
-        <div><Link to ="/intro" style={{textDecoration: "none"}}><LogoutBtn>로그아웃</LogoutBtn></Link></div>
+        <TitleDiv>
+          <LogoImage src={logo} alt="Logo" />
+          <span>마이페이지</span>
+        </TitleDiv>
+        <div>
+          <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
+        </div>
       </Title>
 
       <ProfileWrapper>
@@ -210,8 +221,8 @@ const MyPage = () => {
         {selectedButton === "my-posts" && posts.length > 0 ? (
           posts.map((post) => (
             <Link key={post.id} to={`/feed-info/${post.id}`}>
-              <div style={{display: 'flex'}}>
-                <ContentImg src="/"></ContentImg>
+              <div style={{ display: "flex" }}>
+                <ContentImg src="/" alt="content" />
                 <div>
                   <h3>{post.subject}</h3>
                   <p>{post.content}</p>
@@ -222,8 +233,8 @@ const MyPage = () => {
         ) : selectedButton === "my-roadmap" && roadmap.length > 0 ? (
           roadmap.map((place) => (
             <Link key={place.id} to={`/place-info/${place.id}`}>
-              <div style={{display: 'flex'}}>
-                <ContentImg src="/"></ContentImg>
+              <div style={{ display: "flex" }}>
+                <ContentImg src="/" alt="content" />
                 <div>
                   <h3>{place.name}</h3>
                   <p>{place.content}</p>
