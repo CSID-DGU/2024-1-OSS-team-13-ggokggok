@@ -19,6 +19,7 @@ import Place_list from "./pages/community/list/place_list";
 import Feed_info from "./pages/community/info/feed_info"
 import Place_info from "./pages/community/info/place_info"
 import MyPage from "./pages/mypage/mypage";
+import SearchPlace from "./pages/community/upload_feed/search-place";
 
 
 
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
         path:"mypage",
         element: <MyPage/>,
       },
+      {
+        path:"searchplace",
+        element: <SearchPlace/>,
+      }
 
     ]
   },
