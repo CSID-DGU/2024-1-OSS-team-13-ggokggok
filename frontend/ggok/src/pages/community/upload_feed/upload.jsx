@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
 
+
+// 스타일 정의
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -13,9 +15,7 @@ const Form = styled.form`
   width: 90%;
 `;
 
-
 const SubArea = styled.input`
-
   height: 50px;
   border: none;
   border-bottom: 2px solid #E8E8E8;
@@ -28,14 +28,14 @@ const SubArea = styled.input`
     font-family: "laundryR";
     color: #959595;
   }
-
 `;
 
 const TextArea = styled.textarea`
   border: none;
   width: 90%;
   resize: none;
-  
+  font-size: 20px;
+
   &::placeholder {
     font-size: 20px;
     font-family: "laundryR";
@@ -78,99 +78,119 @@ const SubmitBtn = styled.input`
     opacity: 0.9;
   }
 `;
-export default function upload() {
+
+
+axios.defaults.withCredentials = true;
+
+export default function Upload() {
+
+
   const [isLoading, setLoading] = useState(false);
-  
-  const [sub, setsub] = useState("");
-  const [text, settext] = useState("");
-  
-  
+  const [sub, setSub] = useState("");
+  const [text, setText] = useState("");
   const [file, setFile] = useState(null);
-  
+
   const onChange = (e) => {
-    settext(e.target.value);
+    setText(e.target.value);
   };
 
   const onSub = (e) => {
-    setsub(e.target.value);
+    setSub(e.target.value);
   };
-
-
 
   const onFileChange = (e) => {
     const { files } = e.target;
-    if (files && files.length === 1 && files[0].size < 1024*1024) {
+    if (files && files.length === 1 && files[0].size < 1024 * 1024) {
       setFile(files[0]);
-    }else{
-        alert(`Please select one file that is 1MB or less.`);
+    } else {
+      alert('Please select one file that is 1MB or less.');
     }
   };
-  
-
-
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    
+    setSub("");
+    setText("");
+    setFile(null);
     const currentDate = new Date().toISOString();
     const postData = {
-        "subject": sub,
-        "content": text,
-        "create_date": currentDate,
-        "post_region": "string",
-        "author": 1,
-      
+      subject: sub,
+      content: text,
+      // create_date: currentDate,
+      post_region: "string",
+      author: userId(),
     };
-    console.log(postData);
 
-    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/', postData)
-    .then(response => {
+
+
+    try {
+      const response = await axios.post(
+        'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/',
+        postData,
+
+        
+      );
+      console.log(postData);
       console.log('Post successful:', response.data);
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error posting:', error);
-    });
+    }
   };
+
+
+  function userId() {
+    const sessionData = sessionStorage.getItem('user');
+    if (sessionData) {
+      try {
+        const userData = JSON.parse(sessionData);
+        return parseInt(userData.data.id);
+      } catch (error) {
+        console.error('Error parsing session data:', error);
+        return null;
+      }
+    } else {
+      console.error('Session data not found.');
+      return null;
+    }
+  }
 
   return (
     <Wrapper>
-
       <Title>
-        <div><BackButton><img src={leftlogo}/></BackButton></div>
+        <div><BackButton><img src={leftlogo} /></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
-       
       </Title>
-        
-        <Form onSubmit={onSubmit}>
-           <SubArea
-           required
-           maxLength={10}
-           onChange={onSub}
-           value={sub}
-           placeholder="제목"
-           />
-            <TextArea
-            required
-            rows={5}
-            maxLength={180}
-            onChange={onChange}
-            value={text}
-            placeholder="자유롭게 게시물을 등록해주세요!"
-            />
-            <AttachFileButton htmlFor="file">
-            {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
-            </AttachFileButton>
-            <AttachFileInput
-            onChange={onFileChange}
-            type="file"
-            id="file"
-            accept="image/*"
-            />
-            <SubmitBtn
-            type="submit"
-            value={isLoading ? "등록중..." : "게시글 등록!"}
-            />
-        </Form>
+      
+      <Form onSubmit={onSubmit}>
+        <SubArea
+          required
+          maxLength={10}
+          onChange={onSub}
+          value={sub}
+          placeholder="제목"
+        />
+        <TextArea
+          required
+          rows={5}
+          maxLength={180}
+          onChange={onChange}
+          value={text}
+          placeholder="자유롭게 게시물을 등록해주세요!"
+        />
+        <AttachFileButton htmlFor="file">
+          {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
+        </AttachFileButton>
+        <AttachFileInput
+          onChange={onFileChange}
+          type="file"
+          id="file"
+          accept="image/*"
+        />
+        <SubmitBtn
+          type="submit"
+          value={isLoading ? "등록중..." : "게시글 등록!"}
+        />
+      </Form>
     </Wrapper>
   );
 }

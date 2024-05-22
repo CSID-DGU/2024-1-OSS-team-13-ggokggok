@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import axios from "axios";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -99,10 +100,29 @@ export default function CreateAccount(){
 
         if(name === "" || email==="" || password === "" || isLoading) return;
 
+
+        const postData = {
+          "username" : email,
+          "password" : password,
+        };
+
         try {
             setLoading(true);
             //회원가입
-            nav("/");
+            const fetchData = async () => {
+              try {
+                const response = await axios.post("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/join/",postData);
+                console.log('data');
+                console.log(response);
+                if(response.data.success == true){
+                  nav("/");
+                }
+              } catch (error) {
+                console.error('Error fetching data:', error);
+              }
+
+            }
+            fetchData();
 
         } catch (e) {
             //에러처리
