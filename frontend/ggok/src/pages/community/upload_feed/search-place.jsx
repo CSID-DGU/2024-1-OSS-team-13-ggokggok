@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -128,6 +129,8 @@ export default function SearchPlace() {
   const [lat, setlat] = useState();
   const [lng, setlng] = useState();
 
+  const nav = useNavigate();
+
   const handleSearch = async () => {
     try {
 
@@ -160,7 +163,7 @@ export default function SearchPlace() {
 
   const convertCoordinates = (mapx, mapy) => {
     const longitude = (mapx / 10000000).toFixed(6);
-    const latitude = (mapy / 10000000).toFixed(7);
+    const latitude = (mapy / 10000000).toFixed(6);
     return { longitude, latitude };
   };
   
@@ -187,8 +190,7 @@ export default function SearchPlace() {
     sessionStorage.setItem('lat', lat);
     sessionStorage.setItem('lng', lng);
     sessionStorage.setItem('add', add);
-
-    
+    nav('/upload-place');
   }
   
   
