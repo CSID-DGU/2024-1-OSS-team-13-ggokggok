@@ -15,11 +15,7 @@ class LoginSerializer(serializers.Serializer):
 class UserPostQuerySerializer(serializers.Serializer):
     community = serializers.CharField(required=False)
     place = serializers.CharField(required=False)
-
-    def validate(self, data):
-        if not data.get('community') and not data.get('place'):
-            raise serializers.ValidationError("Either 'community' or 'place' parameter must be provided.")
-        return data
+    myuser = serializers.CharField(required=False)
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
@@ -30,4 +26,10 @@ class PlacePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlacePost
         fields = '__all__'
+
+
+class MyUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
+        fields = ['username', 'region1', 'region2']
 

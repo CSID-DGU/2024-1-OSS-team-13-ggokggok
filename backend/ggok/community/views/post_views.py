@@ -8,6 +8,8 @@ from community.serializers import CommunityPostSerializer, CommunityPostVoteSeri
 from rest_framework import status, permissions
 from rest_framework.authentication import SessionAuthentication
 from user.models import UserInfo
+from rest_framework.parsers import MultiPartParser, FormParser #이미지업로드
+from drf_yasg import openapi
 
 
 def extract_region(full_region):
@@ -20,6 +22,7 @@ def extract_region(full_region):
 class PostListAndCreate(APIView):
     serializer_class = CommunityPostSerializer
     queryset = Post.objects.all()
+    parser_classes = (MultiPartParser, FormParser)
 
     @swagger_auto_schema( tags=['커뮤니티 게시글 List'])
     def get(self, request, *args, **kwargs):
