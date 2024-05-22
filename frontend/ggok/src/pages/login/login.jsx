@@ -1,6 +1,8 @@
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import axios from "axios";
 
 
 const Wrapper = styled.div`
@@ -66,7 +68,7 @@ const Switcher = styled.span`
 `;
 
 export default function Login() {
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const [isLoading, setLoading] = useState(false);
 
 
@@ -76,13 +78,72 @@ export default function Login() {
   const [error, setError] = useState("");
 
 
+  
 
   const onSubmit = async (e) => {
-    
+    e.preventDefault();
+    setError("");
+
+    if(email==="" || password === "" || isLoading) return;
+
+
+    const postData = {
+      "username" : email,
+      "password" : password,
+    };
+
+    try {
+        setLoading(true);
+
+        const fetchData = async () => {
+          try {
+            const response = await axios.post("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/login/",postData);
+            console.log('data');
+            console.log(response);
+            if(response.data.success == true){
+              sessionStorage.clear();
+              sessionStorage.setItem('user', JSON.stringify(response.data));
+              console.log(sessionStorage.getItem("user"));
+              //sessionStorage.setItem("token", token);
+
+
+
+              {/* 
+                    sessionStorage.clear();
+                    setSavedLoginId(sessionStorage.getItem("loginId"));
+                    setSavedLoginPassword(sessionStorage.getItem("loginPassword"));
+            */}
+              
+              nav("/");
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+
+        }
+        fetchData();
+
+    } catch (e) {
+        //에러처리
+        console.error("Error occurred:", e);
+    } finally {
+      setLoading(false);
+    }
+   
   };
 
   const onChange = async (e) => {
-    
+  
+    const {
+        target: {name, value},
+    } = e;
+
+
+    if(name === "email"){
+        setEmail(value);
+    }else if(name === "password"){
+        setPassword(value);
+    }
   };
 
   return (
@@ -96,7 +157,7 @@ export default function Login() {
           name="email"
           value={email}
           placeholder="이메일"
-          type="email"
+          type="text"
           required
         />
         <Input
@@ -108,7 +169,7 @@ export default function Login() {
           required
         />
         
-        <Link style={{ textDecoration: "none"}}><div color="A3CCAA">Forgot your passoword?</div></Link>
+        <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원가입</div></Link>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
         
       </Form>

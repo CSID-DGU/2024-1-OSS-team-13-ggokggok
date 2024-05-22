@@ -96,6 +96,7 @@ const SubmitBtn = styled.input`
   }
 `;
 
+
 export default function upload_place() {
   const [isLoading, setLoading] = useState(false);
   const navigate = useNavigate(); // useNavigate 훅 사용
@@ -150,7 +151,7 @@ export default function upload_place() {
     
     const currentDate = new Date().toISOString();
     const postData = {
-        "title": sub,
+        "subject": sub,
         "content": text,
         "public" : ispublic,
         "review" : stars,
@@ -169,7 +170,7 @@ export default function upload_place() {
     };
     console.log(postData);
 
-    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//place/post/', postData)
+    axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', postData)
     .then(response => {
       console.log('Post successful:', response.data);
     })
