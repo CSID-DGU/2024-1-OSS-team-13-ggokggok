@@ -15,6 +15,7 @@ class LoginSerializer(serializers.Serializer):
 class UserPostQuerySerializer(serializers.Serializer):
     community = serializers.CharField(required=False)
     place = serializers.CharField(required=False)
+    myuser = serializers.CharField(required=False)
 
     def validate(self, data):
         if not data.get('community') and not data.get('place'):
@@ -29,5 +30,11 @@ class PostSerializer(serializers.ModelSerializer):
 class PlacePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = PlacePost
+        fields = '__all__'
+
+
+class MyUserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserInfo
         fields = '__all__'
 
