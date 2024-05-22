@@ -6,9 +6,6 @@ import { Title, Blank, TitleDiv, LogoImage, Wrapper } from "../../styles/Styles"
 import axios from "axios";
 import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
-
-
-
 const Form = styled.form`
   align-items: center;
   margin-top: 50px;
@@ -18,7 +15,6 @@ const Form = styled.form`
   width: 100%;
   text-align: center;
 `;
-
 
 const Input = styled.input`
   padding: 0px 20px;
