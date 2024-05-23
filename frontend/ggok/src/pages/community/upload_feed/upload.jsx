@@ -144,7 +144,7 @@ export default function Upload() {
     formData.append('image', file);
     formData.append('subject', sub);
     formData.append('content', text);
-    formData.append('post_region', '서울시');
+    formData.append('post_region', 'string');
     formData.append('author', userId());
 
 
@@ -159,6 +159,9 @@ export default function Upload() {
     } catch (error) {
       console.error('Error uploading file:', error);
     }
+    setSub("");
+    setText("");
+    setFile(null);
 
 
   };
