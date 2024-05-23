@@ -79,7 +79,10 @@ const MainMap = () => {
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
     console.log(`Selected location: ${location}`);
-    navigate(`/place-info/${location.id}`);
+
+    navigate(`/total-info/${location.name}`);
+
+
   };
 
   const updateLocation = () => {
@@ -123,14 +126,17 @@ const MainMap = () => {
 
   const [getplace, setplace] = useState([]);
 
-  async function fetchPlace() {
-    try {
-      const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
-      setplace(response.data.data);
-      console.log("get");
-      console.log(getplace);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    async function fetchPlace() {
+        try {
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/');
+          setplace(response.data.data);
+          console.log("get");
+          console.log(getplace);
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }   
+
     }
   }
 

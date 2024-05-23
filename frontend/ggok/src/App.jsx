@@ -21,6 +21,7 @@ import Place_info from "./pages/community/info/place_info"
 import My_map from "./pages/roadmap/my_map"
 import MyPage from "./pages/mypage/mypage";
 import SearchPlace from "./pages/community/upload_feed/search-place";
+import Total_info from "./pages/community/info/total_info";
 
 
 
@@ -110,6 +111,11 @@ const router = createBrowserRouter([
       {
         path:"searchplace",
         element: <SearchPlace/>,
+      }
+      , 
+      {
+        path: "total-info/:id",
+        element: <Total_info/>,
       }
 
     ]

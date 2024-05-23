@@ -99,7 +99,7 @@ const Button = styled.input`
   `;
 
 
-export default function Place_info(){
+export default function Total_info(){
 
     const [data, setData] = useState(null);
 
@@ -109,8 +109,9 @@ export default function Place_info(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}/`);
           setData(response.data.data);
+          console.log(response);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -132,66 +133,15 @@ export default function Place_info(){
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
-
-    const [getData, setGetData] = useState([]);
-
-    async function fetchData() {
-        try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${parseInt(id)}/`);
-          setGetData(response.data.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-    }
-
-    useEffect(() => {fetchData(); console.log(data )}, []);
-
-    const [comment, setcomment] = useState([]);
-
     const onChange = (e) => {
       setcomment(e.target.value);
     };
 
     const onSubmit = async (e) => {
       e.preventDefault();
-      setcomment('');
-      const currentDate = new Date().toISOString();
-      const postData = 
-      {
-            "content": comment,
-          // "create_date": currentDate,
-            "post": parseInt(id),
-            "author": userId(),
-          
-        
-      };
-      console.log(postData);
-  
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${id}/`, postData)
-      .then(response => {
-        console.log('Post successful:', response.data);
-      })
-      .catch(error => {
-        console.error('Error posting:', error);
-      });
       
     };
-  
-    function userId() {
-      const sessionData = sessionStorage.getItem('user');
-      if (sessionData) {
-        try {
-          const userData = JSON.parse(sessionData);
-          return parseInt(userData.data.id);
-        } catch (error) {
-          console.error('Error parsing session data:', error);
-          return null;
-        }
-      } else {
-        console.error('Session data not found.');
-        return null;
-      }
-    }
+
 
 
     return (
@@ -215,32 +165,6 @@ export default function Place_info(){
                     <h2>{data.content}</h2>       
                   </div>   
                 ): (<></>)}
-
-
-                <FormContainer>
-                  <form onSubmit={onSubmit}>
-                    <InputField
-                      required
-                      maxLength={100}
-                      onChange={onChange}
-                      value={comment}
-                      placeholder="댓글을 입력해주세요"
-                    />
-                    <Button type="submit" value={"등록"} />
-                  </form>
-                </FormContainer>
-                
-                {<h1>댓글</h1>}
-                {getData.length > 0 ? (
-                        getData.map((data) => (
-                            <div style={{display: 'flex'}}>
-                                <div>
-                                    <h3>{data.content}</h3>
-                                    <p>{formatTimestamp(data.create_date)}</p>
-                                </div>
-                            </div>
-                    ))): (<></>)}
-
 
                 </ContentBox2>
             </SubTitle>
