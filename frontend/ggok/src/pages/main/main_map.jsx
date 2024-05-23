@@ -8,7 +8,7 @@ import logo from "../../others/img/logo-icon.png";
 import leftlogo from "../../others/img/left-button.png";
 import locationLogo from "../../others/img/LocationPinned.png";
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank } from "../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, MainContainer } from "../../styles/Styles";
 import { Link } from "react-router-dom";
 
 import Cookies from 'js-cookie';
@@ -80,7 +80,7 @@ const MainMap = () => {
     setSelectedLocation(location);
     console.log(`Selected location: ${location}`);
 
-    navigate(`/total-info/${location.name}`);
+    navigate(`/total-info/${location.address}`);
 
 
   };
@@ -138,7 +138,7 @@ const MainMap = () => {
         }   
 
     }
-  }
+  
 
   useEffect(() => {
     fetchPlace();
@@ -151,7 +151,6 @@ const MainMap = () => {
   return (
     <Wrapper>
       <Title>
-        <Blank></Blank>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
         <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소 <span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white" }}> + </span></WriteBtn></Link></div>
       </Title>
@@ -201,6 +200,6 @@ const MainMap = () => {
       </MainContainer>
     </Wrapper>
   );
-};
+}
 
 export default MainMap;
