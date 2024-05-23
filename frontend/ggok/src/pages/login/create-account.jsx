@@ -2,23 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { Title, Blank, TitleDiv, LogoImage, Wrapper } from "../../styles/Styles";
 import axios from "axios";
-
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 393px;
-  padding: 50px 0px;
-  margin : 50px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 30px;
-  color: #534340;
-  
-`;
+import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 const Form = styled.form`
   align-items: center;
@@ -29,7 +15,6 @@ const Form = styled.form`
   width: 100%;
   text-align: center;
 `;
-
 
 const Input = styled.input`
   padding: 0px 20px;
@@ -136,7 +121,15 @@ export default function CreateAccount(){
     return(
       
         <Wrapper>
-            <Title>회원가입</Title>
+          <Title>
+            <Blank/><Blank/><Blank/>
+              <TitleDiv>
+              <LogoImage src={logo} alt="Logo" />
+                <span>회원가입</span>
+              </TitleDiv>
+            <Blank/>
+          </Title>
+      
             <Form onSubmit={onSubmit}>
                 <Input name="name" value = {name} onChange={onChange} placeholder="본명" type="text" required/>
                 <Input name="nick" value={nickname} onChange={onChange} placeholder="닉네임" type="text" required/>
