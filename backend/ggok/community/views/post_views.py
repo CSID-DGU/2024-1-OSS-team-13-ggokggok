@@ -69,14 +69,15 @@ class PostListAndCreate(APIView):
 
         if temp1 or temp2:
             serializer = CommunityPostSerializer(data=request.data)
-            try:
-                post_image = request.FILES.get('image')
-                if post_image:
-                    serializer.validated_data['image'] = post_image
-            except Exception as e:
-                print(f"An error occurred while uploading image: {e}")
-                serializer.validated_data['image'] = None
             if serializer.is_valid():
+                try:
+                    post_image = request.FILES.get('image')
+                    if post_image:
+                        serializer.validated_data['image'] = post_image
+                except Exception as e:
+                    print(f"An error occurred while uploading image: {e}")
+                    serializer.validated_data['image'] = None
+                # if serializer.is_valid():
                 serializer.save()
                 response_data = {
                     'success': True,

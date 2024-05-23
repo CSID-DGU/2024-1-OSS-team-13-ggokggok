@@ -16,6 +16,7 @@ class PlacePost(models.Model):
     public = models.BooleanField(default=False)
     review = models.FloatField()
     category = models.CharField(max_length=50)
+    image = models.ImageField(blank=True, null=True, upload_to='place/') #사진 경로는 media/place/파일명
     objects = models.Manager()
     def __str__(self):
         return self.subject

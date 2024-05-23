@@ -46,6 +46,13 @@ class PostListAndCreate(APIView):
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         if serializer.is_valid():
+            try:
+                post_image = request.FILES.get('image')
+                if post_image:
+                    serializer.validated_data['image'] = post_image
+            except Exception as e:
+                print(f"An error occurred while uploading image: {e}")
+                serializer.validated_data['image'] = None
             serializer.save()
             response_data = {
                 'success': True,
