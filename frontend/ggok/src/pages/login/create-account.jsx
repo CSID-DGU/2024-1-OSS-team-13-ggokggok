@@ -8,7 +8,7 @@ import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/ot
 
 const Form = styled.form`
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -31,13 +31,12 @@ const Input = styled.input`
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 250px;
+    margin-top: 230px;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
-
 
 
 export const Error = styled.span`

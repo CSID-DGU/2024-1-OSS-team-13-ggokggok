@@ -9,7 +9,7 @@ import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/ot
 
 const Form = styled.form`
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -33,13 +33,12 @@ const Input = styled.input`
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 370px;
+    margin-top: 330px;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
-
 
 
 const Error = styled.span`
@@ -60,14 +59,11 @@ export default function Login() {
   const nav = useNavigate();
   const [isLoading, setLoading] = useState(false);
 
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [error, setError] = useState("");
 
-
-  
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -91,8 +87,6 @@ export default function Login() {
             if(response.data.success == true){
               sessionStorage.clear();
               sessionStorage.setItem('user', JSON.stringify(response.data));
-     
-
 
 
               {/* 
@@ -143,7 +137,6 @@ export default function Login() {
           <LogoImage src={logo} alt="Logo" />
             <span>로그인</span>
           </TitleDiv>
-        
       </Title>
 
       <Form onSubmit={onSubmit}>
@@ -164,7 +157,7 @@ export default function Login() {
           required
         />
         
-        <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원가입</div></Link>
+        <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원이 아니신가요?</div></Link>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
         
       </Form>

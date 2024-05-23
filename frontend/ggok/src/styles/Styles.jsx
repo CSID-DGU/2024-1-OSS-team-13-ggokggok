@@ -6,6 +6,10 @@ export const Wrapper = styled.div`
 
 `;
 
+export const Blank = styled.div`
+  width: 35px;
+`;
+
 export const Title = styled.h1`
   width: 100%;
   display: flex;
@@ -15,7 +19,6 @@ export const Title = styled.h1`
 
 export const SubTitle = styled.h1`
   color: #534340;
-
 `;
 
 export const LogoImage = styled.img`

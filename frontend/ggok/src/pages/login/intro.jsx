@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import { Wrapper, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
+import { Wrapper } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png"
 
 const Title = styled.h1`
@@ -45,32 +45,10 @@ const Button = styled.button`
     }
 `;
 
-const Form = styled.form`
-  margin-top: 50px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-`;
 
 
 export default function Main() {
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  
-
-  const onSubmit = async (e) => {
-    
-  };
-
-  const onChange = async (e) => {
-    
-  };
 
   const create_account = (e)=> {
     e.preventDefault();
