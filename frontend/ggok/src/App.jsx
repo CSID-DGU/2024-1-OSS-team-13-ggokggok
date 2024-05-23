@@ -112,8 +112,9 @@ const router = createBrowserRouter([
         path:"searchplace",
         element: <SearchPlace/>,
       }
-      , {
-        path:"/total-info:id",
+      , 
+      {
+        path: "total-info/:id",
         element: <Total_info/>,
       }
 

@@ -84,7 +84,7 @@ const MainMap = () => {
     setSelectedLocation(location); // 선택된 위치 업데이트
     console.log(`Selected location: ${location}`);
 
-    navigate(`/place-info/${location.name}`);
+    navigate(`/total-info/${location.name}`);
 
   };
 

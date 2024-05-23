@@ -111,6 +111,7 @@ export default function Total_info(){
         try {
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}/`);
           setData(response.data.data);
+          console.log(response);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
