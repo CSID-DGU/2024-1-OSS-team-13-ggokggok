@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { Title, Blank, TitleDiv, LogoImage, Wrapper } from "../../styles/Styles";
 import axios from "axios";
+import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -18,6 +20,7 @@ const Title = styled.h1`
   font-size: 30px;
   color: #534340;
 `;
+
 
 const Form = styled.form`
   align-items: center;
@@ -93,6 +96,7 @@ export default function CreateAccount() {
       password: password,
     };
 
+
     setLoading(true);
     try {
       const response = await axios.post(
@@ -158,3 +162,4 @@ export default function CreateAccount() {
     </Wrapper>
   );
 }
+

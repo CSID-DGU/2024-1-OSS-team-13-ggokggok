@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import { Title, Blank, TitleDiv, LogoImage, Wrapper } from "../../styles/Styles";
 import axios from "axios";
+import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -157,6 +159,7 @@ export default function Login() {
         </div>
       )}
       {error && <Error>{error}</Error>}
+
     </Wrapper>
   );
 }
