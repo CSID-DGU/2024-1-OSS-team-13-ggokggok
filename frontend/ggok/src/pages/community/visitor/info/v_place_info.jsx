@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
-import logo from "../../../others/img/logo-icon.png"
-import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, Blank } from "../../../styles/Styles"
+import logo from "../../../../others/img/logo-icon.png"
+import leftlogo from "../../../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import StarRating from "../../../components/starrating";
+import StarRating from "../../../../components/starrating";
 
 
 const SubTitle = styled.h2`
@@ -99,7 +99,7 @@ const Button = styled.input`
   `;
 
 
-export default function Place_info(){
+export default function V_Place_info(){
 
     const [data, setData] = useState(null);
 
@@ -201,7 +201,7 @@ export default function Place_info(){
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
           </Title>            
             <SubTitle>
-            <h2>우리 지역 소식</h2>
+            <h2>{} 지역 소식</h2>
               <ContentBox2>
                 {data ? (
                   <div>
@@ -215,20 +215,6 @@ export default function Place_info(){
                     <h2>{data.content}</h2>       
                   </div>   
                 ): (<></>)}
-
-
-                <FormContainer>
-                  <form onSubmit={onSubmit}>
-                    <InputField
-                      required
-                      maxLength={100}
-                      onChange={onChange}
-                      value={comment}
-                      placeholder="댓글을 입력해주세요"
-                    />
-                    <Button type="submit" value={"등록"} />
-                  </form>
-                </FormContainer>
                 
                 {<h1>댓글</h1>}
                 {getData.length > 0 ? (

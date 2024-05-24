@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import { Title, Blank, TitleDiv, LogoImage, Wrapper } from "../../styles/Styles";
+import logo from "../..//others/img/logo-icon.png";
+import { Title, Wrapper, Blank, TitleDiv, LogoImage } from "../../styles/Styles";
 import axios from "axios";
-import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 const Form = styled.form`
   align-items: center;
@@ -24,14 +24,14 @@ const Input = styled.input`
   width: 303px;
   font-size: 16px;
   background-color: #F6F6F6;
-  
+
   &[type="submit"] {
     width: 343px;
     height: 51px;
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 230px;
+    margin-top: 350px;
     &:hover {
       opacity: 0.8;
     }
@@ -51,93 +51,106 @@ export const Switcher = styled.span`
   }
 `;
 
-export default function CreateAccount(){
-    const nav = useNavigate();
-    const [isLoading,setLoading]= useState(false);
+export default function CreateAccount() {
+  const nav = useNavigate();
+  const [isLoading, setLoading] = useState(false);
+  const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-    const [name,setName] = useState("");
-    const [nickname, setNick] = useState("");
-    const [email,setEmail] = useState("");
-    const [password,setPassword] = useState("");
+  const onChange = (e) => {
+    const {
+      target: { name, value },
+    } = e;
 
-    const [error, setError] = useState("");
+    if (name === "id") {
+      setId(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
+  };
 
-    const onChange = (e) => {
-        const {
-            target: {name, value},
-        } = e;
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-        if(name === "name"){
-            setName(value);
-        }else if(name === "email"){
-            setEmail(value);
-        }else if(name === "password"){
-            setPassword(value);
-        }else if(name === "nick"){
-            setNick(value);
-        }
+    if (id === "" || password === "" || isLoading) return;
+
+    const postData = {
+      username: id,
+      password: password,
     };
 
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
 
-        if(name === "" || email==="" || password === "" || isLoading) return;
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/join/",
+        postData
+      );
+      console.log("data");
+      console.log(response);
+      if (response.data.success) {
+        nav("/");
+      } else {
+        setError("회원가입 실패. 아이디와 비밀번호를 확인하세요.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError("회원가입 중 오류가 발생했습니다.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Wrapper>
 
 
-        const postData = {
-          "username" : email,
-          "password" : password,
-        };
+<Title>
+        <Blank/><Blank/><Blank/>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>회원가입</span></TitleDiv>
 
-        try {
-            setLoading(true);
-            //회원가입
-            const fetchData = async () => {
-              try {
-                const response = await axios.post("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/join/",postData);
-                console.log('data');
-                console.log(response);
-                if(response.data.success == true){
-                  nav("/");
-                }
-              } catch (error) {
-                console.error('Error fetching data:', error);
-              }
-
-            }
-            fetchData();
-
-        } catch (e) {
-            //에러처리
-            console.error("Error occurred:", e);
-        } finally {
-          setLoading(false);
-        }
-       
-    };
-
-    return(
-      
-        <Wrapper>
-          <Title>
-            <Blank/><Blank/><Blank/>
-              <TitleDiv>
-              <LogoImage src={logo} alt="Logo" />
-                <span>회원가입</span>
-              </TitleDiv>
-            <Blank/>
-          </Title>
-      
-            <Form onSubmit={onSubmit}>
-                <Input name="name" value = {name} onChange={onChange} placeholder="본명" type="text" required/>
-                <Input name="nick" value={nickname} onChange={onChange} placeholder="닉네임" type="text" required/>
-                <Input name="email" value={email} onChange={onChange} placeholder="이메일" type="email" required/>
-                <Input name="password" value={password} onChange={onChange} placeholder="비밀번호" type="password" required/>
-                <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value= "회원가입" />
-            </Form>
-            {error !== "" ? <Error>{error}</Error> : null}
-        </Wrapper>
-      
-    );
+      </Title>
+      {!isLoading ? (
+        <Form onSubmit={onSubmit}>
+          <Input
+            name="id"
+            value={id}
+            onChange={onChange}
+            placeholder="아이디"
+            type="text"
+            required
+          />
+          <Input
+            name="password"
+            value={password}
+            onChange={onChange}
+            placeholder="비밀번호"
+            type="password"
+            required
+          />
+          <Input
+            style={{ backgroundColor: "#A3CCAA" }}
+            type="submit"
+            value="회원가입"
+          />
+        </Form>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+            fontSize: "30px",
+          }}
+        >
+          <h1>Loading...</h1>
+        </div>
+      )}
+      {error && <Error>{error}</Error>}
+    </Wrapper>
+  );
 }
+

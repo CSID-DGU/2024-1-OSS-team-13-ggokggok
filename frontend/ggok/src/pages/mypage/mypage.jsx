@@ -2,9 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Title, TitleDiv, LogoImage } from "../../styles/Styles";
+import { Title, TitleDiv, LogoImage, Blank } from "../../styles/Styles";
 
-import logo from "/Users/seoeunjeong/DGU/2024-1/OSS_project/frontend/ggok/src/others/img/logo-icon.png";
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
@@ -24,9 +23,7 @@ const fetchProfileInfo = async () => {
   }
 };
 
-const Blank = styled.div`
-  width: 35px;
-`;
+
 
 const LogoutBtn = styled.div`
   border: none;
@@ -187,7 +184,6 @@ const MyPage = () => {
       <Title>
         <Blank></Blank>
         <TitleDiv>
-          <LogoImage src={logo} alt="Logo" />
           <span>마이페이지</span>
         </TitleDiv>
         <div>

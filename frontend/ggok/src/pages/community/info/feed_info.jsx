@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, Blank } from "../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -188,6 +188,8 @@ export default function Feed_info(){
       .catch(error => {
         console.error('Error posting:', error);
       });
+
+      
     };
 
     const onlike = async (e) => {

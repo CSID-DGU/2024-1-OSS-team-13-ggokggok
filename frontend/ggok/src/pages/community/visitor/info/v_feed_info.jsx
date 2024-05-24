@@ -1,13 +1,13 @@
 import { styled } from "styled-components";
-import logo from "../../../others/img/logo-icon.png"
-import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, Blank } from "../../../styles/Styles"
+import logo from "../../../../others/img/logo-icon.png"
+import leftlogo from "../../../../others/img/left-button.png"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import StarRating from "../../../components/starrating";
+
 
 
 const SubTitle = styled.h2`
@@ -70,7 +70,6 @@ const WriteBtn = styled.div`
 `;  
 
 
-
 const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
@@ -99,7 +98,20 @@ const Button = styled.input`
   `;
 
 
-export default function Place_info(){
+  const Like = styled.input`
+  display: inline-block; /* 인라인 블록 요소로 설정하여 옆으로 배치됩니다. */
+  padding: 10px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  `;
+
+
+
+export default function V_Feed_info(){
 
     const [data, setData] = useState(null);
 
@@ -109,8 +121,9 @@ export default function Place_info(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`);
-          setData(response.data.data);
+          const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//community/post/");
+          const foundData = response.data.data.find(item => item.id === parseInt(id)); // id를 정수로 변환하여 일치하는 데이터 찾기
+          setData(foundData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -131,20 +144,20 @@ export default function Place_info(){
     
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
-
+    
 
     const [getData, setGetData] = useState([]);
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${parseInt(id)}/`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${parseInt(id)}/`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
     }
 
-    useEffect(() => {fetchData(); console.log(data )}, []);
+    useEffect(() => {fetchData();}, []);
 
     const [comment, setcomment] = useState([]);
 
@@ -153,30 +166,62 @@ export default function Place_info(){
     };
 
     const onSubmit = async (e) => {
+
       e.preventDefault();
       setcomment('');
+
       const currentDate = new Date().toISOString();
       const postData = 
       {
             "content": comment,
           // "create_date": currentDate,
             "post": parseInt(id),
-            "author": userId(),
-          
-        
+            "author": userId(),        
       };
       console.log(postData);
   
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${id}/`, postData)
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/comments/${id}/`, 
+      postData)
       .then(response => {
         console.log('Post successful:', response.data);
       })
       .catch(error => {
         console.error('Error posting:', error);
       });
+
       
     };
-  
+
+    const onlike = async (e) => {
+      e.preventDefault();
+
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/post/${id}/`,{},
+      )
+      .then(response => {
+        console.log('Post successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error posting:', error);
+      });
+    };
+
+
+    const colike = async (coid) => {
+    //  e.preventDefault();
+    const sessionData = sessionStorage.getItem('user');
+    const userData = JSON.parse(sessionData);
+
+      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/vote/comment/${coid}/`,{'author' : userData.data.id
+    },
+      )
+      .then(response => {
+        console.log('Post successful:', response.data);
+      })
+      .catch(error => {
+        console.error('Error posting:', error);
+      });
+    };
+
     function userId() {
       const sessionData = sessionStorage.getItem('user');
       if (sessionData) {
@@ -193,29 +238,30 @@ export default function Place_info(){
       }
     }
 
+    
 
     return (
         <Wrapper>
           <Title>
             <div><BackButton><img src={leftlogo}/></BackButton></div>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물</span></TitleDiv>
           </Title>            
             <SubTitle>
             <h2>우리 지역 소식</h2>
-              <ContentBox2>
-                {data ? (
+              <ContentBox2> 
+                { data ? (
                   <div>
-                    <h1>{data.title}</h1><br></br>
-                    <h1>{data.address}</h1><br></br>
-                    <StarRating 
-                      totalStars={5} 
-                      selectedStars={data.review}
-                    />
+                    <h1>{data.subject}</h1><br></br>
                     <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
-                    <h2>{data.content}</h2>       
+                    <h2>{data.content}</h2> 
                   </div>   
                 ): (<></>)}
 
+                <FormContainer>
+                  <form onSubmit={onlike}>
+                    <Like type="submit" value={"❤️"} />
+                  </form>
+                </FormContainer>
 
                 <FormContainer>
                   <form onSubmit={onSubmit}>
@@ -237,11 +283,13 @@ export default function Place_info(){
                                 <div>
                                     <h3>{data.content}</h3>
                                     <p>{formatTimestamp(data.create_date)}</p>
+                                    <form onSubmit={colike(data.id)}>
+                                      <Like type="submit" value={"❤️"} />
+                                    </form>
                                 </div>
                             </div>
                     ))): (<></>)}
-
-
+                    
                 </ContentBox2>
             </SubTitle>
         </Wrapper>

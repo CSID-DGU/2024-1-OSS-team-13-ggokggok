@@ -7,7 +7,7 @@ import "../../others/font/font.css";
 import logo from "../../others/img/logo-icon.png";
 import locationLogo from "../../others/img/LocationPinned.png";
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank } from "../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank} from "../../styles/Styles";
 import { Link } from "react-router-dom";
 
 const Icon = styled.div``;
@@ -105,13 +105,16 @@ const MainMap = () => {
   const handleConfirmClick = () => {
     setPopupVisible(false);
     if (selectedLocation) {
-      navigate(`/place-info/${selectedLocation.id}`);
+  
+    navigate(`/total-info/${selectedLocation.address}`);
     }
   };
 
   const handleCancelClick = () => {
     setPopupVisible(false);
     setSelectedLocation(null);
+
+
   };
 
 
@@ -155,16 +158,19 @@ const MainMap = () => {
 
   const [getplace, setplace] = useState([]);
 
-  async function fetchPlace() {
-    try {
-      const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
-      setplace(response.data.data);
-      console.log("get");
-      console.log(getplace);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    async function fetchPlace() {
+        try {
+          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/');
+          setplace(response.data.data);
+          console.log("get");
+          console.log(getplace);
+
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }   
+
     }
-  }
+  
 
   useEffect(() => {
     fetchPlace();
@@ -177,7 +183,6 @@ const MainMap = () => {
   return (
     <Wrapper>
       <Title>
-        <Blank></Blank>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
         <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소 <span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white" }}> + </span></WriteBtn></Link></div>
       </Title>
@@ -245,6 +250,6 @@ const MainMap = () => {
 
     </Wrapper>
   );
-};
+}
 
 export default MainMap;
