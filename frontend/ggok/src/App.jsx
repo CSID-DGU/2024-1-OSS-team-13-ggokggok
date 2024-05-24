@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Protected_login from "./components/protected_login";
 import Layout from "./components/layout";
+import NoNavLayout from './components/noNavLayout';
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
 import Upload from "./pages/community/upload_feed/upload";
@@ -87,15 +88,6 @@ const router = createBrowserRouter([
         element: <Place_info/>,
 
       },
-      {
-        path:"/set-region",
-        element: <SetRegion/>
-      },
-    
-      {
-        path:"/search-region",
-        element: <SearchRegion/>
-      },
     
       {
         path:"/info-region",
@@ -142,6 +134,7 @@ const router = createBrowserRouter([
         element: <V_Place_info/>
       },
     ]
+    
   },
   {
     path:"/login",
@@ -154,7 +147,17 @@ const router = createBrowserRouter([
   {
     path:"/intro",
     element: <Intro/>
-  }
+  },
+
+  {
+    path:"/set-region",
+    element: <Protected_login><SetRegion/></Protected_login> 
+  },
+
+  {
+    path:"/search-region",
+    element: <Protected_login><SearchRegion/></Protected_login>
+  },
 
 ]);
 
