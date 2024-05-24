@@ -97,7 +97,7 @@ export default function CreateAccount() {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("회원가입 중 오류가 발생했습니다.");
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -118,7 +118,7 @@ export default function CreateAccount() {
             name="id"
             value={id}
             onChange={onChange}
-            placeholder="아이디"
+            placeholder="이메일"
             type="text"
             required
           />

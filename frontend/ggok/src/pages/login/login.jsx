@@ -98,13 +98,14 @@ export default function Login() {
     const {
       target: { name, value },
     } = e;
-
-    if (name === "id") {
-      setId(value);
+  
+    if (name === "email") { // name이 "email"인 경우에만 setEmail 호출
+      setEmail(value);
     } else if (name === "password") {
       setPassword(value);
     }
   };
+  
 
   return (
     <Wrapper>
