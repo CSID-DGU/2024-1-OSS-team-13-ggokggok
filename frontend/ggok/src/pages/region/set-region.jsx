@@ -1,28 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 393px;
-  padding: 55px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 30px;
-  color: #534340;
-  
-`;
-
-const Subtitle = styled.h2`
-  text-align: center;
-  color: #534340;
-  margin-bottom: 70px;
-`;
-
+import { Wrapper, Title, TitleDiv, Blank, LogoImage } from "../../styles/Styles";
+import logo from '../../others/img/logo-icon.png';
 
 const SVGImage = (
   <svg width="140" height="140" viewBox="0 0 115 115" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,13 +10,19 @@ const SVGImage = (
   </svg>
 );
 
-const Info = styled.h3`
-  text-align: center;
-  color: #717171;
-  margin: 90px 0px; 
+const SubTitle = styled.h2`
+  font-size: 20px;
+  margin: 15px;
+  line-height: 30px;
 `;
 
 
+const Info = styled.h3`
+  text-align: center;
+  color: #717171;
+  margin: 100px 0px; 
+  
+`;
 
 const Button = styled.button`
     height: 46px;
@@ -50,7 +36,6 @@ const Button = styled.button`
     color: #FFFFFF;
    
 `;
-
 
 
 const Button2 = styled.button`
@@ -68,23 +53,6 @@ const Button2 = styled.button`
 
 export default function SetRegion() {
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);
-
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const [error, setError] = useState("");
-
-
-
-  const onSubmit = async (e) => {
-    
-  };
-
-  const onChange = async (e) => {
-    
-  };
 
   const search_region = (e)=> {
     e.preventDefault();
@@ -96,15 +64,19 @@ export default function SetRegion() {
     navigate("/")
   }
 
-
   return (
     <Wrapper>
-    <Title>내 지역 설정</Title>
-    <Subtitle>OO0님의 지역을 <br /> 알려주세요</Subtitle>
-    {SVGImage}
-    <Info>내 지역으로 등록하면 ~ <br />에 대한 서비스를 제공 받을 수 있어요</Info>
-    <Button onClick={search_region}>내 지역 등록하기</Button>
-    <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>
+      <Title>
+        <Blank/><Blank/>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>내 지역 설정</span></TitleDiv>
+        </Title>
+
+      <Info>
+        <SubTitle>회원님의 지역 정보를 등록하고 <br/>꼭꼭에서 여러 지역을 더욱 가깝게 느껴보세요!</SubTitle>
+        {SVGImage}    
+      </Info>
+      <Button onClick={search_region}>내 지역 등록하기</Button>
+      <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>
     </Wrapper>
-  );
+  );  
 }

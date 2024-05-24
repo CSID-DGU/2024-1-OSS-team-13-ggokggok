@@ -5,18 +5,15 @@ import axios from "axios";
 import config from "../../others/apikey";
 import "../../others/font/font.css";
 import logo from "../../others/img/logo-icon.png";
-import leftlogo from "../../others/img/left-button.png";
 import locationLogo from "../../others/img/LocationPinned.png";
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, LogoImage, TitleDiv, MainContainer } from "../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank} from "../../styles/Styles";
 import { Link } from "react-router-dom";
-
-import Cookies from 'js-cookie';
 
 const Icon = styled.div``;
 
 const LocationInfo = styled.div`
-  font-size: 24px;
+  font-size: 26px;
   margin-left: 5px;
 `;
 
@@ -64,8 +61,31 @@ const WriteBtn = styled.div`
   border: none;
   background-color: white;
   color: #A3CCAA;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
+`;
+
+const Popup = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+`;
+
+
+const PopupOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
 
 const MainMap = () => {
@@ -73,17 +93,30 @@ const MainMap = () => {
   const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
   const [address, setAddress] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [popupVisible, setPopupVisible] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
-    console.log(`Selected location: ${location}`);
+    setPopupVisible(true);
+  };
 
-    navigate(`/total-info/${location.address}`);
+  const handleConfirmClick = () => {
+    setPopupVisible(false);
+    if (selectedLocation) {
+  
+    navigate(`/total-info/${selectedLocation.address}`);
+    }
+  };
+
+  const handleCancelClick = () => {
+    setPopupVisible(false);
+    setSelectedLocation(null);
 
 
   };
+
 
   const updateLocation = () => {
     setLoading(true);
@@ -105,8 +138,7 @@ const MainMap = () => {
   const fetchAddress = async (lat, lng) => {
     try {
       const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`;
-      const response = await axios.get(url, { withCredentials: false });  // 자격 증명 없이 요청
-      console.log(response.data.results[0]);
+      const response = await axios.get(url, { withCredentials: false });
       const addressComponents = response.data.results[0].address_components;
 
       let dongAddress = "";
@@ -151,6 +183,7 @@ const MainMap = () => {
   return (
     <Wrapper>
       <Title>
+      <Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
         <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소 <span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white" }}> + </span></WriteBtn></Link></div>
       </Title>
@@ -163,11 +196,10 @@ const MainMap = () => {
 
         <div>
           {loading ? (<span style={{ alignItems: "center", height: "385px", margin: "auto" }}>Loading...</span>) : (
-            <MapComponent
-              lon={location.longitude}
-              lat={location.latitude}
-              onLocationClick={handleLocationClick}
-              pins={getplace}
+           <MapComponent 
+            onLocationClick={handleLocationClick} 
+            apiKey={config.MAP_API_KEY} 
+            pins={getplace} 
             />
           )}
         </div>
@@ -176,28 +208,47 @@ const MainMap = () => {
           {!selectedLocation && (
             <div className="under">
               <div className="visit">
-                <p>어느 곳</p><h2>에 방문할까요?</h2>
+                <p>어느 지역</p><h2>에 방문할까요?</h2>
               </div>
               <div className="buttonContainer">
-                <div className="unSelected"><UnVisitButton>장소를 선택해주세요</UnVisitButton> </div>
-                <div className="locButton"><SetCurrentButton><img style={{ width: "50px", height: "50px" }} src={locationLogo}></img></SetCurrentButton></div>
+                <div className="unSelected"><UnVisitButton>지도를 움직여보세요</UnVisitButton> </div>
+                <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo}></img></SetCurrentButton></div>
               </div>
             </div>
           )}
           {selectedLocation && (
             <div className="under">
               <div className="visit">
-                <p>{selectedLocation}</p>
+                <p>{selectedLocation.title}</p>
                 <h2>에 방문할까요?</h2>
               </div>
               <div className="buttonContainer">
                 <div className="Selected"><VisitButton>방문하기</VisitButton> </div>
-                <div className="locButton"><SetCurrentButton><img style={{ width: "50px", height: "50px" }} src={locationLogo} /></SetCurrentButton></div>
+                <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo} /></SetCurrentButton></div>
               </div>
             </div>
           )}
         </div>
       </MainContainer>
+
+
+    
+
+{popupVisible && (
+  <>
+    <PopupOverlay onClick={handleCancelClick} />
+    <Popup>
+      <h3>{selectedLocation.name}에 방문할까요?</h3>
+      <div>
+        <UnVisitButton onClick={handleCancelClick}>취소</UnVisitButton>
+        <VisitButton onClick={handleConfirmClick}>이동</VisitButton>
+      </div>
+    </Popup>
+  </>
+)}
+
+
+
     </Wrapper>
   );
 }

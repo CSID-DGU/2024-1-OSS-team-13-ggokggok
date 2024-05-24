@@ -8,12 +8,8 @@ import logo from "../../others/img/logo-icon.png"
 import leftlogo from "../../others/img/left-button.png"
 import locationLogo from "../../others/img/LocationPinned.png"
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, Blank, MainContainer } from "../../styles/Styles";
 import { Link } from "react-router-dom";
-
-const Icon = styled.div`
-
-`;
 
 const LocationInfo = styled.div`
   font-size: 24px;
@@ -134,7 +130,7 @@ const MainMap = () => {
 
     async function fetchPlace() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app//user/post_search/?place=${userId()}`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${userId()}`);
           setplace(response.data.data);
           console.log("get");
           console.log(getplace);
@@ -181,22 +177,23 @@ const MainMap = () => {
     <Wrapper>
 
       <Title>
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
+        <Blank></Blank>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>로드맵</span></TitleDiv>
+        <Blank></Blank>
       </Title>
 
 
       <MainContainer>
 
-        <div>
-          {loading ? ( <span> Loading...</span> ) : (
-            <MapComponent
-              lon={location.longitude}
-              lat={location.latitude}
-              onLocationClick={handleLocationClick} // 추가: 위치 클릭 핸들러 전달
-              pins={getplace}
-            />
-           )}
-        </div>
+      <div>
+        <MapComponent
+          lon={location.longitude}
+          lat={location.latitude}
+          onLocationClick={handleLocationClick}
+          pins={getplace}
+          style={{ height: '500px' }}
+        />
+      </div>
 
       </MainContainer>
 

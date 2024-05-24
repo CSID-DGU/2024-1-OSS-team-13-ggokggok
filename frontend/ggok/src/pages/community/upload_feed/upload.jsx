@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank } from "../../../styles/Styles";
 
 
 // 스타일 정의

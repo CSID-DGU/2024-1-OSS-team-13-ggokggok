@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
-import { Title, Wrapper } from "../../styles/Styles";
+import logo from "../..//others/img/logo-icon.png";
+import { Title, Wrapper, Blank, TitleDiv, LogoImage } from "../../styles/Styles";
 import axios from "axios";
 
 const Form = styled.form`
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -30,12 +31,13 @@ const Input = styled.input`
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 250px;
+    margin-top: 350px;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
+
 
 export const Error = styled.span`
   font-weight: 600;
@@ -95,7 +97,7 @@ export default function CreateAccount() {
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      setError("회원가입 중 오류가 발생했습니다.");
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
@@ -103,14 +105,20 @@ export default function CreateAccount() {
 
   return (
     <Wrapper>
-      <Title>회원가입</Title>
+
+
+<Title>
+        <Blank/><Blank/><Blank/>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>회원가입</span></TitleDiv>
+
+      </Title>
       {!isLoading ? (
         <Form onSubmit={onSubmit}>
           <Input
             name="id"
             value={id}
             onChange={onChange}
-            placeholder="아이디"
+            placeholder="이메일"
             type="text"
             required
           />

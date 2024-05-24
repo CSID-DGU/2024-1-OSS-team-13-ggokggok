@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Title, TitleDiv, LogoImage } from "../../styles/Styles";
+import { Title, TitleDiv, LogoImage, Blank } from "../../styles/Styles";
 
 
 // 초기 프로필 상태 정의
@@ -23,9 +23,7 @@ const fetchProfileInfo = async () => {
   }
 };
 
-const Blank = styled.div`
-  width: 35px;
-`;
+
 
 const LogoutBtn = styled.div`
   border: none;
@@ -43,7 +41,7 @@ const ProfileWrapper = styled.div`
   justify-content: center;
   margin: 10px 0 20px;
   background-color: #eaf4ec;
-  padding: 20px;
+  padding: 15px;
 `;
 
 const ProfileImage = styled.img`
@@ -72,7 +70,7 @@ const UserName = styled.div`
 const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 30px 0;
+  margin: 0;
   background-color: #f6f6f6;
   border-radius: 20px;
   overflow: hidden;
@@ -96,7 +94,7 @@ const SlidingButton = styled.button`
 
 const ContentBox2 = styled.div`
   height: 300px;
-  width: 100%;
+  width: 95%;
   border: 1px solid #ffffff;
   border-radius: 10px;
   margin: 15px 0 0;
@@ -120,6 +118,7 @@ const ContentBox2 = styled.div`
 `;
 
 const ContentImg = styled.img`
+  width: 95%;
   height: 50px;
   width: 50px;
   border-radius: 10px;
@@ -175,7 +174,7 @@ const MyPage = () => {
 
   const handleLogout = () => {
     // 세션의 모든 값을 지우기 위해 로컬 스토리지를 비움
-    localStorage.clear();
+    sessionStorage.clear();
     // /intro 페이지로 리다이렉트
     navigate("/intro");
   };
