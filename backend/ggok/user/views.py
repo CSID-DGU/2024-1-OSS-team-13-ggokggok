@@ -82,36 +82,52 @@ class JoinView(APIView):
     #permission_classes = [IsAuthenticated]
     serializer_class = JoinSerializer
     queryset = UserInfo.objects.all()
+
     @swagger_auto_schema(request_body=JoinSerializer, tags=['유저 관리'])
     def post(self, request, *args, **kwargs):
         serializer = JoinSerializer(data=request.data)
+        new_username = request.data.get('username')
+        new_password = request.data.get('password')
+
+        # 이미 사용중인 아이디인지 확인
+        if UserInfo.objects.filter(username=new_username).exists():
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "이미 사용중인 아이디입니다.",
+                'data': {}
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
+        # 입력된 데이터가 유효한지 확인
         if serializer.is_valid():
-            new_username = serializer.validated_data['username']
-            new_password = serializer.validated_data['password']
-            if UserInfo.objects.filter(username=new_username).exists():
+            # 아이디가 존재하지 않는 경우에만 사용자 생성
+            if not UserInfo.objects.filter(username=new_username).exists():
+                UserInfo.objects.create_user(username=new_username, password=new_password)
+                response_data = {
+                    'success': True,
+                    'status code': status.HTTP_201_CREATED,
+                    'message': "회원가입 되었습니다.",
+                    'data': serializer.data
+                }
+                return Response(response_data, status=status.HTTP_201_CREATED)
+            else:
                 response_data = {
                     'success': False,
                     'status code': status.HTTP_400_BAD_REQUEST,
                     'message': "이미 사용중인 아이디입니다.",
-                    'data': serializer.data
+                    'data': {}
                 }
                 return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-            else:
-                UserInfo.objects.create_user(username=new_username, password=new_password)
-                response_data = {
-                    'success': True,
-                    'status code': status.HTTP_200_OK,
-                    'message': "회원가입 되었습니다.",
-                    'data': serializer.data
-                }
-                return Response(response_data,status = status.HTTP_201_CREATED)
-        response_data = {
-            'success': False,
-            'status code': status.HTTP_400_BAD_REQUEST,
-            'message': "요청 실패.",
-            'data': serializer.data
-        }
-        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            response_data = {
+                'success': False,
+                'status code': status.HTTP_400_BAD_REQUEST,
+                'message': "요청 실패.",
+                'data': serializer.errors
+            }
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
+
 
 @swagger_auto_schema(method='get', query_serializer=UserPostQuerySerializer, tags=['유저별 게시글 검색'])
 @api_view(['GET'])
@@ -129,12 +145,13 @@ def UserPostSearch(request):
 
     if community:
         post_list = post_list.filter(
+            #author=community
             Q(author__icontains=community)
         ).distinct()
         serializer = PostSerializer(post_list, many=True)
     elif place:
         place_post_list = place_post_list.filter(
-            Q(author__icontains=place)
+            author_id=place
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
     elif myuser:

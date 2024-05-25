@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 class CommunityPostSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
-
+    #image = serializers.CharField(required=False, allow_blank=True, allow_null=True)
     class Meta:
         model = Post
         fields = '__all__'
@@ -13,7 +13,7 @@ class CommunityPostVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ['voter']
+        fields = ['author','voter']
     #CommentSerializer
 class CommunityCommentSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,4 +29,4 @@ class CommunityCommentVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
         model = Post
-        fields = ['voter']
+        fields = ['author','voter']
