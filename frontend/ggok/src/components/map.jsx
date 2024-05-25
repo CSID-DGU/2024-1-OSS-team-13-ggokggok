@@ -6,6 +6,10 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
   const markers = useRef([]);
   const [map, setMap] = useState(null);
 
+  const [address, setAddress] = useState('');
+  const [geocoder, setGeocoder] = useState(null);
+
+
   const loadMap = () => {
     if (!apiKey) {
       console.error('API key is missing.');
@@ -74,12 +78,21 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
       }
 
       // 이동이 멈출 때마다 onMapMoveEnd 함수 실행
+      const geocoderInstance = new window.google.maps.Geocoder();
+      setGeocoder(geocoderInstance);
+
       newMap.addListener('idle', () => {
-        const center = newMap.getCenter();
-        const lat = center.lat();
-        const lng = center.lng();
-      
-        onMapMoveEnd({ lat, lng });
+        if (geocoderInstance) {
+          const center = newMap.getCenter();
+          geocoderInstance.geocode({ location: center }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              //setAddress(results[0].formatted_address);
+              onMapMoveEnd(results[0].formatted_address);
+            } else {
+              //setAddress('주소를 찾을 수 없습니다.');
+            }
+          });
+        }
       });
     };
   };
@@ -90,7 +103,7 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
       const script = document.querySelector(`script[src^="https://maps.googleapis.com/maps/api/js?key=${apiKey}"]`);
       if (script) document.head.removeChild(script);
     };
-  }, [apiKey, pins, onLocationClick, onMapMoveEnd]); // onMapMoveEnd 추가
+  }, [apiKey, pins]); 
 
   useEffect(() => {
     if (map && currentLocation) {

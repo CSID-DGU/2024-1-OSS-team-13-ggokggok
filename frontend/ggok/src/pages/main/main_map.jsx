@@ -192,14 +192,7 @@ const MainMap = () => {
       const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`;
       const response = await axios.get(url, { withCredentials: false });
       const addressComponents = response.data.results[0].address_components;
-
-      const data = response;
-      
-      if (data.results && data.results.length > 0) {
-        const address = data.results[0].formatted_address;
-        //centerAdd == address;
-        setcenterAdd(address);
-      }
+    
       
       let dongAddress = "";
       for (let component of addressComponents) {
@@ -235,31 +228,11 @@ const MainMap = () => {
     updateLocation();
   }, []);
 
-  const moveend = async ({ lat, lng }) => {
-    const addPromise = getAddressFromLatLng(lat, lng);
-    addPromise.then(add => {
-      setcenterAdd(add);
-
-      console.log(add);
-    });
+  const moveend =  (add) => {
+    setcenterAdd(add)
   };
   
   
-  const getAddressFromLatLng = async (lat, lng) => {
-    try {
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`);
-      const data = await response.json();
-      
-      if (data.results && data.results.length > 0) {
-        const address = data.results[0].formatted_address;
-        return address;
-      } else {
-        console.log("주소를 찾을 수 없습니다.");
-      }
-    } catch (error) {
-      console.error("주소 가져오기 오류:", error);
-    }
-  };
   
 
   return (
