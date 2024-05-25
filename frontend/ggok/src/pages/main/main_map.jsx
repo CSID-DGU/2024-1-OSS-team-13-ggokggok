@@ -10,7 +10,9 @@ import { useNavigate } from "react-router-dom";
 import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank } from "../../styles/Styles";
 import { Link } from "react-router-dom";
 
-const Icon = styled.div``;
+const Icon = styled.div`
+
+`;
 
 const LocationInfo = styled.div`
   font-size: 26px;
@@ -67,7 +69,7 @@ const WriteBtn = styled.div`
 
 const Popup = styled.div`
   position: fixed;
-  top: 50%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   background: white;
@@ -75,6 +77,19 @@ const Popup = styled.div`
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px;
+  width: 345px; 
+  align-items: center;
+
+
+  .loc {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+  }
 `;
 
 const PopupOverlay = styled.div`
@@ -85,6 +100,40 @@ const PopupOverlay = styled.div`
   bottom: 0;
   background: rgba(0, 0, 0, 0.5);
   z-index: 999;
+`;
+
+const Popup_UnVisitButton = styled.button`
+  padding: 10px;
+  border-radius: 50px;
+  border: 1px solid #A3CCAA;
+  width: 250px;
+  font-size: 18px;
+  background-color: #FFFFFF;
+  color: #A3CCAA;
+  margin: 5px;
+
+  &[type="submit"] {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
+`;
+
+const Popup_VisitButton = styled.button`
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  width: 250px;
+  font-size: 18px;
+  background-color: #A3CCAA;
+  color: #FFFFFF;
+  margin: 30px 5px 5px 5px;
+
+  &[type="submit"] {
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+    }
 `;
 
 const MainMap = () => {
@@ -212,6 +261,7 @@ const MainMap = () => {
           {selectedLocation && (
             <div className="under">
               <div className="visit">
+
                 <p>{selectedLocation.title}</p>
                 <h2>에 방문할까요?</h2>
               </div>
@@ -228,10 +278,11 @@ const MainMap = () => {
         <>
           <PopupOverlay onClick={handleCancelClick} />
           <Popup>
-            <h3>{selectedLocation.name}에 방문할까요?</h3>
+          <div class="loc"><Icon><svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.4443 15.3505C17.8885 13.9056 18.6998 11.9462 18.6998 9.90331C18.6998 7.86038 17.8885 5.90106 16.4443 4.45611C15.7294 3.74076 14.8806 3.17328 13.9463 2.7861C13.012 2.39893 12.0106 2.19965 10.9993 2.19965C9.98798 2.19965 8.98657 2.39893 8.05229 2.7861C7.11801 3.17328 6.26918 3.74076 5.55431 4.45611C4.11011 5.90106 3.29883 7.86038 3.29883 9.90331C3.29883 11.9462 4.11011 13.9056 5.55431 15.3505L7.22741 16.9994L9.47471 19.1829L9.62101 19.3127C10.4735 20.0035 11.722 19.9595 12.525 19.1829L15.2035 16.5759L16.4443 15.3505ZM10.9993 13.2C10.1241 13.2 9.28472 12.8523 8.66585 12.2335C8.04698 11.6146 7.69931 10.7752 7.69931 9.90001C7.69931 9.0248 8.04698 8.18543 8.66585 7.56656C9.28472 6.94769 10.1241 6.60001 10.9993 6.60001C11.8745 6.60001 12.7139 6.94769 13.3328 7.56656C13.9516 8.18543 14.2993 9.0248 14.2993 9.90001C14.2993 10.7752 13.9516 11.6146 13.3328 12.2335C12.7139 12.8523 11.8745 13.2 10.9993 13.2Z" fill="#77605B" /></svg></Icon>{selectedLocation.name}</div>
+            <h3> 해당 장소에 방문할까요?</h3>
             <div>
-              <UnVisitButton onClick={handleCancelClick}>취소</UnVisitButton>
-              <VisitButton onClick={handleConfirmClick}>이동</VisitButton>
+              <div><Popup_VisitButton onClick={handleConfirmClick}>이동</Popup_VisitButton></div>
+              <div><Popup_UnVisitButton onClick={handleCancelClick}>취소</Popup_UnVisitButton></div>
             </div>
           </Popup>
         </>
