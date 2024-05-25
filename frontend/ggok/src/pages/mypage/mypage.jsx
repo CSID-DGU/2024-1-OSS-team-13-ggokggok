@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Title, TitleDiv, LogoImage, Blank } from "../../styles/Styles";
-
+import logo from "../../others/img/logo-icon.png";
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
@@ -15,7 +15,7 @@ const initialProfileState = {
 // 프로필 정보를 가져오는 함수
 const fetchProfileInfo = async () => {
   try {
-    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=1`);
+    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=${sessionStorage.getItem('user').data.id}`);
     return response.data.data[0]; // API 응답 데이터에서 첫 번째 객체를 반환
   } catch (error) {
     console.error("Error fetching profile info:", error);
@@ -152,7 +152,7 @@ const MyPage = () => {
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=1");
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=${sessionStorage.getItem('user').data.id}`);
       setPosts(response.data.data);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -161,7 +161,7 @@ const MyPage = () => {
 
   const fetchMyRoadmap = async () => {
     try {
-      const response = await axios.get("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=1");
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${sessionStorage.getItem('user').data.id}`);
       setRoadmap(response.data.data);
     } catch (error) {
       console.error("Error fetching roadmap:", error);
@@ -181,10 +181,9 @@ const MyPage = () => {
 
   return (
     <>
-      <Title>
-        <Blank></Blank>
-        <TitleDiv>
-          <span>마이페이지</span>
+      <Title> 
+        <Blank/>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>마이페이지</span>
         </TitleDiv>
         <div>
           <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
