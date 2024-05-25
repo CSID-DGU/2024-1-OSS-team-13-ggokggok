@@ -98,8 +98,7 @@ const Button = styled.input`
   transition: background-color 0.3s ease;
   `;
 
-
-export default function Total_info(){
+  export default function Total_info(){
 
     const [data, setData] = useState(null);
 
@@ -110,8 +109,7 @@ export default function Total_info(){
       const fetchData = async () => {
         try {
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}`);
-          console.log(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}/`);
-          setData(response.data.data);
+          setData(response.data.data[0]); // data 배열의 첫 번째 객체를 가져옴
           console.log(response);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -152,17 +150,18 @@ export default function Total_info(){
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
           </Title>            
             <SubTitle>
-            <h2>우리 지역 소식</h2>
               <ContentBox2>
                 {data ? (
                   <div>
+                    <h1>{data.name}</h1>
                     <h1>{data.title}</h1><br></br>
                     <h1>{data.address}</h1><br></br>
+                    <h1>명소 평점</h1>
                     <StarRating 
                       totalStars={5} 
-                      selectedStars={data.review}
+                      selectedStars={data.average_review}
                     />
-                    <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
+                  
                     <h2>{data.content}</h2>       
                   </div>   
                 ): (<></>)}
