@@ -144,7 +144,13 @@ const MainMap = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [currentLocationPin, setCurrentLocationPin] = useState(null);
 
+  //let centerAdd ='';
+
   const navigate = useNavigate();
+
+  const [centerAdd, setcenterAdd] = useState("");
+
+
 
   const handleLocationClick = (location) => {
     setSelectedLocation(location);
@@ -187,6 +193,14 @@ const MainMap = () => {
       const response = await axios.get(url, { withCredentials: false });
       const addressComponents = response.data.results[0].address_components;
 
+      const data = response;
+      
+      if (data.results && data.results.length > 0) {
+        const address = data.results[0].formatted_address;
+        //centerAdd == address;
+        setcenterAdd(address);
+      }
+      
       let dongAddress = "";
       for (let component of addressComponents) {
         if (component.types.includes("political", "sublocality", "sublocality_level_2")) {
@@ -221,6 +235,31 @@ const MainMap = () => {
     updateLocation();
   }, []);
 
+  const moveend = async ({ lat, lng }) => {
+    const addPromise = getAddressFromLatLng(lat, lng);
+    const add = await addPromise;
+    console.loga(add);
+    setcenterAdd(add);
+  };
+  
+  
+  const getAddressFromLatLng = async (lat, lng) => {
+    try {
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${config.MAP_API_KEY}`);
+      const data = await response.json();
+      
+      if (data.results && data.results.length > 0) {
+        const address = data.results[0].formatted_address;
+        return address;
+      } else {
+        console.log("주소를 찾을 수 없습니다.");
+      }
+    } catch (error) {
+      console.error("주소 가져오기 오류:", error);
+    }
+  };
+  
+
   return (
     <>
       <Title>
@@ -242,6 +281,7 @@ const MainMap = () => {
               apiKey={config.MAP_API_KEY} 
               pins={getplace}
               currentLocation={currentLocationPin} 
+              onMapMoveEnd = {moveend}
             />
           )}
         </div>
@@ -250,7 +290,7 @@ const MainMap = () => {
           {!selectedLocation && (
             <div className="under">
               <div className="visit">
-                <p>어느 지역</p><h2>에 방문할까요?</h2>
+                <p>{centerAdd}</p><h2>에 방문할까요?</h2>
               </div>
               <div className="buttonContainer">
                 <div className="unSelected"><UnVisitButton>지도를 움직여보세요</UnVisitButton> </div>
@@ -292,3 +332,4 @@ const MainMap = () => {
 }
 
 export default MainMap;
+

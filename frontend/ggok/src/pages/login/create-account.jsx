@@ -118,7 +118,7 @@ export default function CreateAccount() {
             name="id"
             value={id}
             onChange={onChange}
-            placeholder="이메일"
+            placeholder="아이디"
             type="text"
             required
           />

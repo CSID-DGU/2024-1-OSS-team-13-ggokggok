@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import config from '../others/apikey';
 
-const MapComponent = ({ onLocationClick, apiKey = config.MAP_API_KEY, pins, currentLocation }) => {
+const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_KEY, pins, currentLocation }) => {
   const mapRef = useRef();
   const markers = useRef([]);
   const [map, setMap] = useState(null);
@@ -72,6 +72,15 @@ const MapComponent = ({ onLocationClick, apiKey = config.MAP_API_KEY, pins, curr
         markers.current.push(currentLocationMarker);
         newMap.setCenter({ lat: currentLocation.latitude, lng: currentLocation.longitude });
       }
+
+      // 이동이 멈출 때마다 onMapMoveEnd 함수 실행
+      newMap.addListener('idle', () => {
+        const center = newMap.getCenter();
+        const lat = center.lat();
+        const lng = center.lng();
+      
+        onMapMoveEnd({ lat, lng });
+      });
     };
   };
 
@@ -81,7 +90,7 @@ const MapComponent = ({ onLocationClick, apiKey = config.MAP_API_KEY, pins, curr
       const script = document.querySelector(`script[src^="https://maps.googleapis.com/maps/api/js?key=${apiKey}"]`);
       if (script) document.head.removeChild(script);
     };
-  }, [apiKey, pins, onLocationClick]);
+  }, [apiKey, pins, onLocationClick, onMapMoveEnd]); // onMapMoveEnd 추가
 
   useEffect(() => {
     if (map && currentLocation) {
