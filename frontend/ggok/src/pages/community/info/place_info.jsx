@@ -234,8 +234,11 @@ export default function Place_info() {
   };
 
   const handleDeletePost = async () => {
+    console.log(parseInt(id));
     try {
-      await axios.delete(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`);
+      await axios.delete(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`, {
+        data: { post_id: parseInt(id) }
+      });
       navigate('/community');
     } catch (error) {
       console.error('Error deleting post:', error);
@@ -253,6 +256,14 @@ export default function Place_info() {
       const postData = {
         subject: editTitle,
         content: editContent,
+        lat: data.lat,
+        long: data.long,
+        address: data.address,
+        name: data.name,
+        public: data.public,
+        review: data.review,
+        category: data.category,
+        author: data.author,
       };
       console.log("Sending POST data:", postData);
       const response = await axios.put(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`, postData);
@@ -294,6 +305,8 @@ export default function Place_info() {
                   placeholder="내용"
                   rows="10"
                 />
+               
+
                 <ButtonContainer>
                   <Button onClick={handleSaveEdit}>저장</Button>
                   <Button onClick={handleCancelEdit}>취소</Button>

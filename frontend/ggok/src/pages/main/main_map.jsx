@@ -187,7 +187,7 @@ const MainMap = () => {
         </div>
 
         <div>
-          {loading ? (<span style={{ alignItems: "center", height: "590px", margin: "auto" }}>Loading...</span>) : (
+          {loading ? (<span style={{ alignItems: "center", height: "385px", margin: "auto" }}>Loading...</span>) : (
             <MapComponent 
               onLocationClick={handleLocationClick} 
               apiKey={config.MAP_API_KEY} 

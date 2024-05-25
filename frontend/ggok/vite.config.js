@@ -13,7 +13,7 @@ export default defineConfig({
       '/api': {
         target: 'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app',
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '/api')
+        rewrite: path => path.replace(/^\/api/, '/api', /^\/place/, '/place' )
       }
     }
   }
