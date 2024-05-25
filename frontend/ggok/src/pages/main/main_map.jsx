@@ -7,14 +7,14 @@ import "../../others/font/font.css";
 import logo from "../../others/img/logo-icon.png";
 import locationLogo from "../../others/img/LocationPinned.png";
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank} from "../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, MainContainer, Blank } from "../../styles/Styles";
 import { Link } from "react-router-dom";
 
 const Icon = styled.div``;
 
 const LocationInfo = styled.div`
   font-size: 26px;
-  margin-left: 5px;
+  margin-left: 10px;
 `;
 
 const UnVisitButton = styled.button`
@@ -77,7 +77,6 @@ const Popup = styled.div`
   z-index: 1000;
 `;
 
-
 const PopupOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -94,6 +93,7 @@ const MainMap = () => {
   const [address, setAddress] = useState("");
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [currentLocationPin, setCurrentLocationPin] = useState(null);
 
   const navigate = useNavigate();
 
@@ -105,18 +105,14 @@ const MainMap = () => {
   const handleConfirmClick = () => {
     setPopupVisible(false);
     if (selectedLocation) {
-  
-    navigate(`/total-info/${selectedLocation.address}`);
+      navigate(`/total-info/${selectedLocation.address}`);
     }
   };
 
   const handleCancelClick = () => {
     setPopupVisible(false);
     setSelectedLocation(null);
-
-
   };
-
 
   const updateLocation = () => {
     setLoading(true);
@@ -127,6 +123,7 @@ const MainMap = () => {
         setLocation({ latitude, longitude });
         setLoading(false);
         fetchAddress(latitude, longitude);
+        setCurrentLocationPin({ latitude, longitude });
       },
       (error) => {
         console.error('Error getting location:', error.message);
@@ -158,19 +155,14 @@ const MainMap = () => {
 
   const [getplace, setplace] = useState([]);
 
-    async function fetchPlace() {
-        try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/');
-          setplace(response.data.data);
-          console.log("get");
-          console.log(getplace);
-
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }   
-
+  async function fetchPlace() {
+    try {
+      const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/');
+      setplace(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-  
+  }
 
   useEffect(() => {
     fetchPlace();
@@ -181,9 +173,9 @@ const MainMap = () => {
   }, []);
 
   return (
-    <Wrapper>
+    <>
       <Title>
-      <Blank/>
+        <Blank />
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
         <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소 <span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white" }}> + </span></WriteBtn></Link></div>
       </Title>
@@ -195,11 +187,12 @@ const MainMap = () => {
         </div>
 
         <div>
-          {loading ? (<span style={{ alignItems: "center", height: "385px", margin: "auto" }}>Loading...</span>) : (
-           <MapComponent 
-            onLocationClick={handleLocationClick} 
-            apiKey={config.MAP_API_KEY} 
-            pins={getplace} 
+          {loading ? (<span style={{ alignItems: "center", height: "590px", margin: "auto" }}>Loading...</span>) : (
+            <MapComponent 
+              onLocationClick={handleLocationClick} 
+              apiKey={config.MAP_API_KEY} 
+              pins={getplace}
+              currentLocation={currentLocationPin} 
             />
           )}
         </div>
@@ -231,25 +224,19 @@ const MainMap = () => {
         </div>
       </MainContainer>
 
-
-    
-
-{popupVisible && (
-  <>
-    <PopupOverlay onClick={handleCancelClick} />
-    <Popup>
-      <h3>{selectedLocation.name}에 방문할까요?</h3>
-      <div>
-        <UnVisitButton onClick={handleCancelClick}>취소</UnVisitButton>
-        <VisitButton onClick={handleConfirmClick}>이동</VisitButton>
-      </div>
-    </Popup>
-  </>
-)}
-
-
-
-    </Wrapper>
+      {popupVisible && (
+        <>
+          <PopupOverlay onClick={handleCancelClick} />
+          <Popup>
+            <h3>{selectedLocation.name}에 방문할까요?</h3>
+            <div>
+              <UnVisitButton onClick={handleCancelClick}>취소</UnVisitButton>
+              <VisitButton onClick={handleConfirmClick}>이동</VisitButton>
+            </div>
+          </Popup>
+        </>
+      )}
+    </>
   );
 }
 
