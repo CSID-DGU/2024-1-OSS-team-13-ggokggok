@@ -146,37 +146,12 @@ export default function V_Place_info(){
 
     useEffect(() => {fetchData(); console.log(data )}, []);
 
-    const [comment, setcomment] = useState([]);
 
     const onChange = (e) => {
-      setcomment(e.target.value);
+
     };
 
-    const onSubmit = async (e) => {
-      e.preventDefault();
-      setcomment('');
-      const currentDate = new Date().toISOString();
-      const postData = 
-      {
-            "content": comment,
-          // "create_date": currentDate,
-            "post": parseInt(id),
-            "author": userId(),
-          
-        
-      };
-      console.log(postData);
-  
-      axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${id}/`, postData)
-      .then(response => {
-        console.log('Post successful:', response.data);
-      })
-      .catch(error => {
-        console.error('Error posting:', error);
-      });
-      
-    };
-  
+   
     function userId() {
       const sessionData = sessionStorage.getItem('user');
       if (sessionData) {
