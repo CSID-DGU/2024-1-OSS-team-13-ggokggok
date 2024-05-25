@@ -15,15 +15,13 @@ const initialProfileState = {
 // 프로필 정보를 가져오는 함수
 const fetchProfileInfo = async () => {
   try {
-    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=${sessionStorage.getItem('user').data.id}`);
-    return response.data.data[0]; // API 응답 데이터에서 첫 번째 객체를 반환
+    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=${sessionStorage.getItem('user').id}`);
+    return response.data.data; // API 응답 데이터 반환
   } catch (error) {
     console.error("Error fetching profile info:", error);
     return null;
   }
 };
-
-
 
 const LogoutBtn = styled.div`
   border: none;
@@ -128,8 +126,7 @@ const ContentImg = styled.img`
 const MyPage = () => {
   const [profile, setProfile] = useState(initialProfileState);
   const [selectedButton, setSelectedButton] = useState("my-posts");
-  const [posts, setPosts] = useState([]);
-  const [roadmap, setRoadmap] = useState([]);
+  const [contents, setContents] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -152,8 +149,8 @@ const MyPage = () => {
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=${sessionStorage.getItem('user').data.id}`);
-      setPosts(response.data.data);
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=${profile.id}`);
+      setContents(response.data.data);
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
@@ -161,8 +158,8 @@ const MyPage = () => {
 
   const fetchMyRoadmap = async () => {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${sessionStorage.getItem('user').data.id}`);
-      setRoadmap(response.data.data);
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${profile.id}`);
+      setContents(response.data.data);
     } catch (error) {
       console.error("Error fetching roadmap:", error);
     }
@@ -214,36 +211,24 @@ const MyPage = () => {
       </ButtonContainer>
 
       <ContentBox2>
-        {selectedButton === "my-posts" && posts.length > 0 ? (
-          posts.map((post) => (
-            <Link key={post.id} to={`/feed-info/${post.id}`}>
-              <div style={{ display: "flex" }}>
-                <ContentImg src="/" alt="content" />
-                <div>
-                  <h3>{post.subject}</h3>
-                  <p>{post.content}</p>
-                </div>
+        {contents.length > 0 ? (
+          contents.map((content) => (
+            <Link key={content.id} to={selectedButton === "my-posts" ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
+            <div style={{ display: "flex" }}>
+              <ContentImg src="/" alt="content" />
+              <div>
+                <h3>{content.subject || content.name}</h3>
+                <p>{content.content}</p>
               </div>
-            </Link>
-          ))
-        ) : selectedButton === "my-roadmap" && roadmap.length > 0 ? (
-          roadmap.map((place) => (
-            <Link key={place.id} to={`/place-info/${place.id}`}>
-              <div style={{ display: "flex" }}>
-                <ContentImg src="/" alt="content" />
-                <div>
-                  <h3>{place.name}</h3>
-                  <p>{place.content}</p>
-                </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <p>게시물이 없습니다.</p>
-        )}
-      </ContentBox2>
-    </>
-  );
+            </div>
+          </Link>
+        ))
+      ) : (
+        <p>게시물이 없습니다.</p>
+      )}
+    </ContentBox2>
+  </>
+);
 };
 
 export default MyPage;
