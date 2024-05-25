@@ -237,9 +237,11 @@ const MainMap = () => {
 
   const moveend = async ({ lat, lng }) => {
     const addPromise = getAddressFromLatLng(lat, lng);
-    const add = await addPromise;
-    console.loga(add);
-    setcenterAdd(add);
+    addPromise.then(add => {
+      setcenterAdd(add);
+
+      console.log(add);
+    });
   };
   
   
