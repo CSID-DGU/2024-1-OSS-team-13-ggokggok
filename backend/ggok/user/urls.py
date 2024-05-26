@@ -6,5 +6,5 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('join/', JoinView.as_view(), name='join'),
     path('', UserPostSearch, name='post_search'),
-    path('region/<int:id>/', putRegion, name='put_region'), #지역등록
+    path('<int:id>/', putRegion, name='put_region'), #지역등록
 ]
