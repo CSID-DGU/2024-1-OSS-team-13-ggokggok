@@ -28,6 +28,7 @@ import V_Feed_list from "./pages/community/visitor/list/v_feed_list";
 import V_Place_list from "./pages/community/visitor/list/v_place_list";
 import V_Feed_info from "./pages/community/visitor/info/v_feed_info";
 import V_Place_info from "./pages/community/visitor/info/v_place_info";
+import Test from "./pages/main/test";
 
 
 
@@ -133,6 +134,10 @@ const router = createBrowserRouter([
         path: 'visitor-place-info/:id',
         element: <V_Place_info/>
       },
+      {
+        path: 'test',
+        element: <Test/>
+      },
     ]
     
   },
@@ -158,6 +163,7 @@ const router = createBrowserRouter([
     path:"/search-region",
     element: <Protected_login><SearchRegion/></Protected_login>
   },
+
 
 ]);
 

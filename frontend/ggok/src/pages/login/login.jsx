@@ -45,7 +45,7 @@ const Error = styled.span`
 export default function Login() {
   const nav = useNavigate();
   const [isLoading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
+  const [id, setid] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -53,10 +53,10 @@ export default function Login() {
     e.preventDefault();
     setError("");
 
-    if (email === "" || password === "" || isLoading) return;
+    if (id === "" || password === "" || isLoading) return;
 
     const postData = {
-      username: email,
+      username: id,
       password: password,
     };
 
@@ -89,8 +89,8 @@ export default function Login() {
 
   const onChange = (e) => {
     const { name, value } = e.target;
-    if (name === "email") {
-      setEmail(value);
+    if (name === "id") {
+      setid(value);
     } else if (name === "password") {
       setPassword(value);
     }
@@ -108,9 +108,9 @@ export default function Login() {
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
-          name="email"
-          value={email}
-          placeholder="이메일"
+          name="id"
+          value={id}
+          placeholder="아이디"
           type="text"
           required
         />

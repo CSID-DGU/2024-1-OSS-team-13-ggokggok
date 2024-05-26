@@ -72,9 +72,12 @@ export default function main_feed(){
 
     const [getData, setGetData] = useState([]);
 
+    const region1 = sessionStorage.getItem('user').region1;
+    const region2 = sessionStorage.getItem('user').region2;
+
     async function fetchData() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/');
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -85,7 +88,7 @@ export default function main_feed(){
 
     async function fetchPlace() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/');
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
           setplace(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
