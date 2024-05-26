@@ -10,6 +10,7 @@ from community.models import Post
 from place.models import PlacePost
 from django.db.models import Q
 from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
 class LoginView(APIView):
     #permission_classes = [IsAuthenticated]
@@ -169,3 +170,27 @@ def UserPostSearch(request):
         'data': serializer.data
     }
     return Response(response_data, status=status.HTTP_200_OK)
+
+@swagger_auto_schema(method='put', request_body=MyUserInfoSerializer, tags=['유저 관리'])
+@api_view(['PUT'])
+def putRegion(request, id):
+    user_info = get_object_or_404(UserInfo, id=id)
+    serializer = MyUserInfoSerializer(user_info, data=request.data, partial=True)  # 부분 업데이트를 허용하기 위해 partial=True 사용
+
+    if serializer.is_valid():
+        serializer.save()
+        response_data = {
+            'success': True,
+            'status code': status.HTTP_200_OK,
+            'message': '지역 정보가 성공적으로 업데이트되었습니다.',
+            'data': serializer.data
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
+    else:
+        response_data = {
+            'success': False,
+            'status code': status.HTTP_400_BAD_REQUEST,
+            'message': '유효하지 않은 데이터입니다.',
+            'data': serializer.errors
+        }
+        return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
