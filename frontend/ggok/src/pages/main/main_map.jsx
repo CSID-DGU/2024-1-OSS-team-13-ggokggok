@@ -232,6 +232,9 @@ const MainMap = () => {
     setcenterAdd(add)
   };
   
+  const onvisit =  () => {
+    navigate(`/visitor-feed/${centerAdd}`);  
+  };
   
   
 
@@ -262,30 +265,15 @@ const MainMap = () => {
         </div>
 
         <div>
-          {!selectedLocation && (
-            <div className="under">
-              <div className="visit">
-                <p>{centerAdd}</p><h2>에 방문할까요?</h2>
-              </div>
-              <div className="buttonContainer">
-                <div className="unSelected"><UnVisitButton>지도를 움직여보세요</UnVisitButton> </div>
-                <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo}></img></SetCurrentButton></div>
-              </div>
+          <div className="under">
+            <div className="visit">
+              <p>{centerAdd}</p><h2>에 방문할까요?</h2>
             </div>
-          )}
-          {selectedLocation && (
-            <div className="under">
-              <div className="visit">
-
-                <p>{selectedLocation.title}</p>
-                <h2>에 방문할까요?</h2>
-              </div>
-              <div className="buttonContainer">
-                <div className="Selected"><VisitButton>방문하기</VisitButton> </div>
-                <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo} /></SetCurrentButton></div>
-              </div>
+            <div className="buttonContainer">
+              <div className="unSelected"><UnVisitButton onClick={onvisit}>방문하기</UnVisitButton> </div>
+              <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo}></img></SetCurrentButton></div>
             </div>
-          )}
+          </div>
         </div>
       </MainContainer>
 
