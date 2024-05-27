@@ -15,13 +15,19 @@ const initialProfileState = {
 // 프로필 정보를 가져오는 함수
 const fetchProfileInfo = async () => {
   try {
-    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=${sessionStorage.getItem('user').id}`);
-    return response.data.data; // API 응답 데이터 반환
+    const userData = JSON.parse(sessionStorage.getItem('user'));
+    const userId = userData ? userData.data.id : null;
+    
+    if (!userId) return null; // userId가 없으면 요청하지 않음
+
+    const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?myuser=${userId}`);
+    return response.data.data[0]; // API 응답 데이터에서 첫 번째 객체를 반환
   } catch (error) {
     console.error("Error fetching profile info:", error);
     return null;
   }
 };
+
 
 const LogoutBtn = styled.div`
   border: none;
@@ -118,7 +124,6 @@ const ContentBox2 = styled.div`
 const ContentImg = styled.img`
   width: 95%;
   height: 50px;
-  width: 50px;
   border-radius: 10px;
   margin: 0 10px 0 0;
 `;
@@ -128,6 +133,10 @@ const MyPage = () => {
   const [selectedButton, setSelectedButton] = useState("my-posts");
   const [contents, setContents] = useState([]);
   const navigate = useNavigate();
+
+  // 세션에서 사용자 데이터 가져오기
+  const userData = JSON.parse(sessionStorage.getItem('user'));
+  const userId = userData ? userData.data.id : null;
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -145,11 +154,12 @@ const MyPage = () => {
     } else if (selectedButton === "my-roadmap") {
       fetchMyRoadmap();
     }
-  }, [selectedButton]);
+  }, [selectedButton, userId]);
 
   const fetchMyPosts = async () => {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=${profile.id}`);
+      if (!userId) return; // userId가 없으면 요청하지 않음
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?community=${userId}`);
       setContents(response.data.data);
     } catch (error) {
       console.error("Error fetching posts:", error);
@@ -158,13 +168,15 @@ const MyPage = () => {
 
   const fetchMyRoadmap = async () => {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${profile.id}`);
+      if (!userId) return; // userId가 없으면 요청하지 않음
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/?place=${userId}`);
+      console.log(response.data); // 응답 데이터를 콘솔에 출력
       setContents(response.data.data);
     } catch (error) {
       console.error("Error fetching roadmap:", error);
     }
   };
-
+  
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
   };
@@ -191,19 +203,19 @@ const MyPage = () => {
         <ProfileImage src={profile.profileImage} alt="Profile" />
         <UserInfoWrapper>
           <ResidentInfo>{profile.region1} 주민</ResidentInfo>
-          <UserName>{profile.username}</UserName>
+          <UserName>{profile.username.split('@')[0]}</UserName>
+
         </UserInfoWrapper>
       </ProfileWrapper>
 
       <ButtonContainer>
-        <SlidingButton
-          active={selectedButton === "my-posts"}
-          onClick={() => handleButtonClick("my-posts")}
-        >
+        <SlidingButton active={selectedButton === "my-posts"} onClick={() => handleButtonClick("my-posts")}>
           내 게시물
         </SlidingButton>
         <SlidingButton
           active={selectedButton === "my-roadmap"}
+         
+
           onClick={() => handleButtonClick("my-roadmap")}
         >
           내 명소 게시물
@@ -213,7 +225,8 @@ const MyPage = () => {
       <ContentBox2>
         {contents.length > 0 ? (
           contents.map((content) => (
-            <Link key={content.id} to={selectedButton === "my-posts" ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
+            <Link key={content.id} to={selectedButton === "my-posts"
+            ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
             <div style={{ display: "flex" }}>
               <ContentImg src="/" alt="content" />
               <div>
