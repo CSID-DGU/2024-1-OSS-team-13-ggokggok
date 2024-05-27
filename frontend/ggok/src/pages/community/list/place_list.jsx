@@ -89,7 +89,6 @@ export default function Place_list(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
             <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
           </Title>            

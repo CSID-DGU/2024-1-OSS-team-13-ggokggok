@@ -172,7 +172,6 @@ export default function V_Place_info(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
           </Title>            
             <SubTitle>

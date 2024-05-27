@@ -102,7 +102,6 @@ export default function Visitor_main(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>{id} 지역</span></TitleDiv>
           </Title>
           

@@ -102,7 +102,6 @@ export default function main_feed(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>
