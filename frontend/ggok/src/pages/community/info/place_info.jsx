@@ -286,7 +286,6 @@ export default function Place_info() {
   return (
     <Wrapper>
       <Title>
-        <div><BackButton><img src={leftlogo} alt="Back" onClick={() => navigate(-1)}/></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
       </Title>
       <Container>

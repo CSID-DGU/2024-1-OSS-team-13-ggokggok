@@ -257,7 +257,6 @@ export default function upload_place() {
   return (
     <>
       <Title>
-        <div><BackButton><img src={leftlogo}/></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>명소 등록</span></TitleDiv>
         
       </Title>
