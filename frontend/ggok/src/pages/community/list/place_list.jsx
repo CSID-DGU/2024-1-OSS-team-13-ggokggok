@@ -105,10 +105,10 @@ export default function Place_list(){
                             style={{textDecoration: "none"}}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
-                                <ContentImg src={`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/${ㅁ}`}></ContentImg>
+                                <ContentImg src={`${data.image}`}></ContentImg>
                                 <div>
                                     <h3>{data.title}</h3>
-                                    <p>{data.content}</p>
+                                    <p>{data.content}</p>ㅈ
                                 </div>
                             </div>
                             </ContentBox>
