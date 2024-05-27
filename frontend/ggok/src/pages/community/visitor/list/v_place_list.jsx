@@ -100,7 +100,7 @@ export default function V_Place_list(){
                             style={{textDecoration: "none"}}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
+                                <ContentImg src= {`${data.image}`}></ContentImg>
                                 <div>
                                     <h3>{data.title}</h3>
                                     <p>{data.content}</p>
