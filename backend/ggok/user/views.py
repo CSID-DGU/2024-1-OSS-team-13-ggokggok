@@ -176,15 +176,17 @@ def UserPostSearch(request):
 def putRegion(request, id):
     user_info = get_object_or_404(UserInfo, id=id)
     serializer = MyUserInfoSerializer(user_info, data=request.data, partial=True)  # 부분 업데이트를 허용하기 위해 partial=True 사용
+    requested_user = request.data.get('id')
 
     if serializer.is_valid():
-        serializer.save()
-        response_data = {
-            'success': True,
-            'status code': status.HTTP_200_OK,
-            'message': '지역 정보가 성공적으로 업데이트되었습니다.',
-            'data': serializer.data
-        }
+        if requested_user == user_info.id:
+            serializer.save()
+            response_data = {
+                'success': True,
+                'status code': status.HTTP_200_OK,
+                'message': '지역 정보가 성공적으로 업데이트되었습니다.',
+                'data': serializer.data
+            }
         return Response(response_data, status=status.HTTP_200_OK)
     else:
         response_data = {
