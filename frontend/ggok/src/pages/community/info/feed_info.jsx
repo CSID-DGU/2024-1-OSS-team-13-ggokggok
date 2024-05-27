@@ -293,58 +293,7 @@ export default function Feed_info(){
     
 
     return (
-        /*<Wrapper>
-          <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물</span></TitleDiv>
-          </Title>            
-            <SubTitle>
-            <h2>우리 지역 소식</h2>
-              <ContentBox2> 
-                { data ? (
-                  <div>
-                    <h1>{data.subject}</h1><br></br>
-                    <h3>{formatTimestamp(data.create_date)}</h3><br></br>       
-                    <h2>{data.content}</h2> 
-                  </div>   
-                ): (<></>)}
-
-                <FormContainer>
-                  <form onSubmit={onlike}>
-                    <Like type="submit" value={"❤️"} />
-                  </form>
-                </FormContainer>
-
-                <FormContainer>
-                  <form onSubmit={onSubmit}>
-                    <InputField
-                      required
-                      maxLength={100}
-                      onChange={onChange}
-                      value={comment}
-                      placeholder="댓글을 입력해주세요"
-                    />
-                    <Button type="submit" value={"등록"} />
-                  </form>
-                </FormContainer>
-                
-                {<h1>댓글</h1>}
-                {getData.length > 0 ? (
-                        getData.map((data) => (
-                            <div style={{display: 'flex'}}>
-                                <div>
-                                    <h3>{data.content}</h3>
-                                    <p>{formatTimestamp(data.create_date)}</p>
-                                    <form onSubmit={colike(data.id)}>
-                                      <Like type="submit" value={"❤️"} />
-                                    </form>
-                                </div>
-                            </div>
-                    ))): (<></>)}
-                    
-                </ContentBox2>
-            </SubTitle>
-        </Wrapper>*/
-
+      
         <Wrapper>
         <Title>
           <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
