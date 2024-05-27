@@ -186,7 +186,6 @@ export default function Upload() {
   return (
     <Wrapper>
       <Title>
-        <div><BackButton><img src={leftlogo} /></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
       </Title>
       

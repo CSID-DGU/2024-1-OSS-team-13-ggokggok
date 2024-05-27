@@ -243,7 +243,6 @@ export default function V_Feed_info(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물</span></TitleDiv>
           </Title>            
             <SubTitle>
