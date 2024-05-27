@@ -100,7 +100,7 @@ export default function V_Feed_list(){
                           style={{textDecoration: "none"}}>
 
                             <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
+                                <ContentImg src={`${data.image}`}></ContentImg>
                                 <div>
                                     <h3>{data.subject}</h3>
                                     <p>{data.content}</p>
