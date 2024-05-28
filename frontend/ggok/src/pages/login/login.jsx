@@ -99,7 +99,7 @@ export default function Login() {
   return (
     <Wrapper>
       <Title>
-        <Blank/><Blank/>
+      <Blank/><Blank/><Blank/> <Blank/><Blank/><Blank/> <Blank/><Blank/>
         <TitleDiv>
           <LogoImage src={logo} alt="Logo" />
           <span>로그인</span>
