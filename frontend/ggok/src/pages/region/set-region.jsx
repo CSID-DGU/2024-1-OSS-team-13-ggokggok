@@ -72,7 +72,7 @@ export default function SetRegion() {
   return (
     <Wrapper>
       <Title>
-      <Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/>
+      <Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>내 지역 설정</span></TitleDiv>
         </Title>
 
