@@ -71,9 +71,12 @@ export default function Feed_list(){
 
     const [getData, setGetData] = useState([]);
 
+    const region1 = sessionStorage.getItem('user').region1;
+    const region2 = sessionStorage.getItem('user').region2;
+
     async function fetchData() {
         try {
-          const response = await axios.get('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/');
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -88,7 +91,6 @@ export default function Feed_list(){
     return (
         <Wrapper>
           <Title>
-            <div><BackButton><img src={leftlogo}/></BackButton></div>
             <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>            
@@ -101,7 +103,7 @@ export default function Feed_list(){
                           style={{textDecoration: "none"}}>
 
                             <div style={{display: 'flex'}}>
-                                <ContentImg src="/"></ContentImg>
+                                <ContentImg src= {`${data.image}`}></ContentImg>
                                 <div>
                                     <h3>{data.subject}</h3>
                                     <p>{data.content}</p>

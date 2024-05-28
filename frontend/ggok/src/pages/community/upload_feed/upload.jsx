@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank } from "../../../styles/Styles";
 
 
 // 스타일 정의
@@ -109,6 +109,8 @@ export default function Upload() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    /*
     setSub("");
     setText("");
     setFile(null);
@@ -119,6 +121,7 @@ export default function Upload() {
       // create_date: currentDate,
       post_region: "string",
       author: userId(),
+      image : null,
     };
 
 
@@ -135,6 +138,32 @@ export default function Upload() {
     } catch (error) {
       console.error('Error posting:', error);
     }
+    */
+
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('subject', sub);
+    formData.append('content', text);
+    formData.append('post_region', 'string');
+    formData.append('author', userId());
+
+
+
+    try {
+      const response = await axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Server Response:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
+    setSub("");
+    setText("");
+    setFile(null);
+
+
   };
 
 
@@ -157,7 +186,6 @@ export default function Upload() {
   return (
     <Wrapper>
       <Title>
-        <div><BackButton><img src={leftlogo} /></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
       </Title>
       
@@ -178,7 +206,7 @@ export default function Upload() {
           placeholder="자유롭게 게시물을 등록해주세요!"
         />
         <AttachFileButton htmlFor="file">
-          {file ? "사진 추가 완료! ✅" : "사진도 추가하실래요?"}
+          {file ? "사진 추가 완료! ✅" : "사진 첨부"}
         </AttachFileButton>
         <AttachFileInput
           onChange={onFileChange}

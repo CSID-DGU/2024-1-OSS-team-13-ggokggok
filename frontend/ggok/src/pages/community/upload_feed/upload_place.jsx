@@ -3,7 +3,7 @@ import { styled } from "styled-components";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank} from "../../../styles/Styles";
 import StarRating from "../../../components/starrating";
 import SearchRegion from "./search-place";
 import { useNavigate } from "react-router-dom"; // useNavigate import 추가
@@ -35,18 +35,16 @@ const Icon = styled.div`
   display: flex;
 `;
 
-const LocArea = styled.input`
-    width: 200px;
+const LocArea = styled.button`
+    width: 250px;
     height: 30px;
     border: none;
-    outline: none; 
+    background-color: white;
     margin-bottom: 5px;
-
-    &::placeholder {
-      font-size: 20px;
-      font-family: "laundryR";
-      color: #717171;
-    }
+    font-size: 20px;
+    color: #717171;
+    font-family: "laundryR";
+      
 `;
 
 const TextArea = styled.textarea`
@@ -169,7 +167,7 @@ export default function upload_place() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    /*
     const currentDate = new Date().toISOString();
     const postData = {
         "subject": sub,
@@ -183,6 +181,7 @@ export default function upload_place() {
         "address": sessionStorage.getItem('add'),
         "name" : sessionStorage.getItem('name'),
         "category" : "cafe",
+        "image" : null,
 
     };
     console.log(postData);
@@ -195,6 +194,33 @@ export default function upload_place() {
     .catch(error => {
       console.error('Error posting:', error);
     });
+    */
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append('subject', sub);
+    formData.append('content', text);
+    formData.append('author', userId());
+    formData.append('public', ispublic);
+    formData.append('review', stars);
+    formData.append('category', "cafe");
+    formData.append('name', sessionStorage.getItem('name'));
+    formData.append('address', sessionStorage.getItem('add'));
+    formData.append('lat', sessionStorage.getItem('lat'));
+    formData.append('long', sessionStorage.getItem('lng'));
+
+
+
+
+    try {
+      const response = await axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      console.log('Server Response:', response.data);
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
 
     setsub("");
     settext("");
@@ -231,7 +257,6 @@ export default function upload_place() {
   return (
     <>
       <Title>
-        <div><BackButton><img src={leftlogo}/></BackButton></div>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>명소 등록</span></TitleDiv>
         
       </Title>
@@ -244,23 +269,15 @@ export default function upload_place() {
            value={sub}
            placeholder="제목"
            />
-      
-            <button onClick={handleButtonClick}>
-            <div style={{display: 'flex'}}>
-              <Icon>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M16.4443 15.3505C17.8885 13.9056 18.6998 11.9462 18.6998 9.90331C18.6998 7.86038 17.8885 5.90106 16.4443 4.45611C15.7294 3.74076 14.8806 3.17328 13.9463 2.7861C13.012 2.39893 12.0106 2.19965 10.9993 2.19965C9.98798 2.19965 8.98657 2.39893 8.05229 2.7861C7.11801 3.17328 6.26918 3.74076 5.55431 4.45611C4.11011 5.90106 3.29883 7.86038 3.29883 9.90331C3.29883 11.9462 4.11011 13.9056 5.55431 15.3505L7.22741 16.9994L9.47471 19.1829L9.62101 19.3127C10.4735 20.0035 11.722 19.9595 12.525 19.1829L15.2035 16.5759L16.4443 15.3505ZM10.9993 13.2C10.1241 13.2 9.28472 12.8523 8.66585 12.2335C8.04698 11.6146 7.69931 10.7752 7.69931 9.90001C7.69931 9.0248 8.04698 8.18543 8.66585 7.56656C9.28472 6.94769 10.1241 6.60001 10.9993 6.60001C11.8745 6.60001 12.7139 6.94769 13.3328 7.56656C13.9516 8.18543 14.2993 9.0248 14.2993 9.90001C14.2993 10.7752 13.9516 11.6146 13.3328 12.2335C12.7139 12.8523 11.8745 13.2 10.9993 13.2Z" fill="#A3CCAA"/>
-                </svg>
-              </Icon>
-              {
-                sessionStorage.getItem('sub') == null ?
-                <p style={{display: 'flex', alignItems: 'center'}}>명소 주소를 등록하세요</p>
-                :
-                <p style={{display: 'flex', alignItems: 'center'}}>{sessionStorage.getItem('name')}</p>
-              }
-            </div>
-          </button>
 
+          <Icon>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M16.4443 15.3505C17.8885 13.9056 18.6998 11.9462 18.6998 9.90331C18.6998 7.86038 17.8885 5.90106 16.4443 4.45611C15.7294 3.74076 14.8806 3.17328 13.9463 2.7861C13.012 2.39893 12.0106 2.19965 10.9993 2.19965C9.98798 2.19965 8.98657 2.39893 8.05229 2.7861C7.11801 3.17328 6.26918 3.74076 5.55431 4.45611C4.11011 5.90106 3.29883 7.86038 3.29883 9.90331C3.29883 11.9462 4.11011 13.9056 5.55431 15.3505L7.22741 16.9994L9.47471 19.1829L9.62101 19.3127C10.4735 20.0035 11.722 19.9595 12.525 19.1829L15.2035 16.5759L16.4443 15.3505ZM10.9993 13.2C10.1241 13.2 9.28472 12.8523 8.66585 12.2335C8.04698 11.6146 7.69931 10.7752 7.69931 9.90001C7.69931 9.0248 8.04698 8.18543 8.66585 7.56656C9.28472 6.94769 10.1241 6.60001 10.9993 6.60001C11.8745 6.60001 12.7139 6.94769 13.3328 7.56656C13.9516 8.18543 14.2993 9.0248 14.2993 9.90001C14.2993 10.7752 13.9516 11.6146 13.3328 12.2335C12.7139 12.8523 11.8745 13.2 10.9993 13.2Z" fill="#A3CCAA"/>
+              </svg>
+              <LocArea onClick={handleButtonClick} type="button">
+                우리 지역 명소 검색하기  ➡️ {sessionStorage.getItem('name')}
+              </LocArea>
+            </Icon>
 
            <div style={{display: 'flex'}}>
             <button onClick={toggle} type="button">{ispublic ? "공개" : "비공개" }</button>

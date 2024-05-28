@@ -1,28 +1,13 @@
-
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
+import logo from "../..//others/img/logo-icon.png";
+import { Title, Wrapper, Blank, TitleDiv, LogoImage } from "../../styles/Styles";
 import axios from "axios";
-
-
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 393px;
-  padding: 50px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 30px;
-  color: #534340;
-  
-`;
 
 const Form = styled.form`
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -30,9 +15,8 @@ const Form = styled.form`
   text-align: center;
 `;
 
-
 const Input = styled.input`
-  padding:0px 20px;
+  padding: 0px 20px;
   border: 1px solid #E8E8E8;
   border-radius: 8px;
   height: 50px;
@@ -46,117 +30,87 @@ const Input = styled.input`
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 370px;
+    margin-top: 330px;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
 
-
-
 const Error = styled.span`
   font-weight: 600;
   color: tomato;
 `;
 
-const Switcher = styled.span`
-  margin-top: 20px;
-  a {
-    color: #1d9bf0;
-  }
-`;
-
-
-
 export default function Login() {
   const nav = useNavigate();
   const [isLoading, setLoading] = useState(false);
-
-
-  const [email, setEmail] = useState("");
+  const [id, setid] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
-
-
-  
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if(email==="" || password === "" || isLoading) return;
-
+    if (id === "" || password === "" || isLoading) return;
 
     const postData = {
-      "username" : email,
-      "password" : password,
+      username: id,
+      password: password,
     };
 
+    setLoading(true);
     try {
-        setLoading(true);
-
-        const fetchData = async () => {
-          try {
-            const response = await axios.post("https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/login/",postData);
-            console.log('data');
-            if(response.data.success == true){
-              sessionStorage.clear();
-              sessionStorage.setItem('user', JSON.stringify(response.data));
-     
-
-
-
-              {/* 
-                    sessionStorage.clear();
-                    setSavedLoginId(sessionStorage.getItem("loginId"));
-                    setSavedLoginPassword(sessionStorage.getItem("loginPassword"));
-            */}
-              
-              nav("/");
-            }
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
-
+      const response = await axios.post(
+        "https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/login/",
+        postData
+      );
+      console.log("data", response.data);
+      if (response.data.success) {
+        sessionStorage.setItem("user", JSON.stringify(response.data));
+        const userData = JSON.parse(sessionStorage.getItem('user'));
+        if (userData.data.region1 === null && userData.data.region2 === null) {
+          nav("/set-region"); 
+        } else {
+          nav("/");
         }
-        fetchData();
-
-    } catch (e) {
-        //에러처리
-        console.error("Error occurred:", e);
+      }
+ else {
+        setError("로그인 실패. 아이디와 비밀번호를 확인하세요.");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
-   
   };
 
-  const onChange = async (e) => {
-  
-    const {
-        target: {name, value},
-    } = e;
-
-
-    if(name === "email"){
-        setEmail(value);
-    }else if(name === "password"){
-        setPassword(value);
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "id") {
+      setid(value);
+    } else if (name === "password") {
+      setPassword(value);
     }
   };
 
   return (
-    
     <Wrapper>
-      <Title>로그인</Title>
-
+      <Title>
+        <Blank/><Blank/>
+        <TitleDiv>
+          <LogoImage src={logo} alt="Logo" />
+          <span>로그인</span>
+        </TitleDiv>
+      </Title>
       <Form onSubmit={onSubmit}>
         <Input
           onChange={onChange}
-          name="email"
-          value={email}
-          placeholder="이메일"
+          name="id"
+          value={id}
+          placeholder="아이디"
           type="text"
           required
         />
@@ -168,12 +122,9 @@ export default function Login() {
           type="password"
           required
         />
-        
-        <Link to = "/create-account" style={{ textDecoration: "none"}}><div color="A3CCAA">회원가입</div></Link>
         <Input style={{backgroundColor: "#A3CCAA"}} type="submit" value={isLoading ? "Loading..." : "로그인"} />
-        
       </Form>
-      {error !== "" ? <Error>{error}</Error> : null}
+      {error !== "" && <Error>{error}</Error>}
     </Wrapper>
   );
 }

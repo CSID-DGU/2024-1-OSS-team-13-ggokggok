@@ -65,6 +65,7 @@ export default function Layout(){
                     </svg>
                 </MenuItem>
             </Link>
+
             <Link to="/">
                 <MenuItem>
                     <svg width="43" height="53" viewBox="0 -2 43 53" fill="none" xmlns="http://www.w3.org/2000/svg">

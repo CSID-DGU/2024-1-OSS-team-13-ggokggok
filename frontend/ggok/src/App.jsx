@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Protected_login from "./components/protected_login";
 import Layout from "./components/layout";
+import NoNavLayout from './components/noNavLayout';
 import Intro from "./pages/login/intro";
 import Feed from "./pages/main/main_feed";
 import Upload from "./pages/community/upload_feed/upload";
@@ -21,6 +22,13 @@ import Place_info from "./pages/community/info/place_info"
 import My_map from "./pages/roadmap/my_map"
 import MyPage from "./pages/mypage/mypage";
 import SearchPlace from "./pages/community/upload_feed/search-place";
+import Total_info from "./pages/community/info/total_info";
+import Visitor_main from "./pages/community/visitor/visitor_main";
+import V_Feed_list from "./pages/community/visitor/list/v_feed_list";
+import V_Place_list from "./pages/community/visitor/list/v_place_list";
+import V_Feed_info from "./pages/community/visitor/info/v_feed_info";
+import V_Place_info from "./pages/community/visitor/info/v_place_info";
+import Test from "./pages/main/test";
 
 
 
@@ -81,15 +89,6 @@ const router = createBrowserRouter([
         element: <Place_info/>,
 
       },
-      {
-        path:"/set-region",
-        element: <SetRegion/>
-      },
-    
-      {
-        path:"/search-region",
-        element: <SearchRegion/>
-      },
     
       {
         path:"/info-region",
@@ -111,8 +110,36 @@ const router = createBrowserRouter([
         path:"searchplace",
         element: <SearchPlace/>,
       }
-
+      , 
+      {
+        path: "total-info/:id",
+        element: <Total_info/>,
+      },
+      {
+        path: 'visitor-feed/:id',
+        element: <Visitor_main/>
+      },
+      {
+        path: 'visitor-feed-list/:id',
+        element: <V_Feed_list/>
+      },      {
+        path: 'visitor-place-list/:id',
+        element: <V_Place_list/>
+      },      
+      {
+        path: 'visitor-feed-info/:id',
+        element: <V_Feed_info/>
+      },
+      {
+        path: 'visitor-place-info/:id',
+        element: <V_Place_info/>
+      },
+      {
+        path: 'test',
+        element: <Test/>
+      },
     ]
+    
   },
   {
     path:"/login",
@@ -125,7 +152,18 @@ const router = createBrowserRouter([
   {
     path:"/intro",
     element: <Intro/>
-  }
+  },
+
+  {
+    path:"/set-region",
+    element: <Protected_login><SetRegion/></Protected_login> 
+  },
+
+  {
+    path:"/search-region",
+    element: <Protected_login><SearchRegion/></Protected_login>
+  },
+
 
 ]);
 

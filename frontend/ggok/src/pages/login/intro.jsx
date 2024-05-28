@@ -1,24 +1,17 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
-import { Wrapper, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer } from "../../styles/Styles";
+import { Wrapper } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png"
 
 const Title = styled.h1`
   font-size: 130px;
-  @font-face {
-    font-family: "GeekbleMalang2TTF";
-    src: local('../font/GeekbleMalang2TTF.ttf');
-    font-weight: 400;
-  }
   color: #534340;
- 
 `;
 
 const Subtitle = styled.h2`
   color: #534340;
   font-size: 30px;
-  margin-top: 60px;
   margin-bottom: 100px;
   line-height: 1.5;
 
@@ -26,6 +19,13 @@ const Subtitle = styled.h2`
     color: #A3CCAA;
   }
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+`;
+
 
 const Button = styled.button`
     height: 46px;
@@ -35,6 +35,7 @@ const Button = styled.button`
     margin: 10px;
     width: 315px;
     font-size: 17px;
+    
     background-color : #A3CCAA;
     color: #FFFFFF;
     &[type="submit"] {
@@ -44,32 +45,10 @@ const Button = styled.button`
     }
 `;
 
-const Form = styled.form`
-  margin-top: 50px;
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 100%;
-`;
 
 
 export default function Main() {
   const navigate = useNavigate();
-  const [isLoading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
-  
-
-  const onSubmit = async (e) => {
-    
-  };
-
-  const onChange = async (e) => {
-    
-  };
 
   const create_account = (e)=> {
     e.preventDefault();
@@ -86,9 +65,11 @@ export default function Main() {
       <Title>꼭꼭</Title>
       <img width="200px" src={logo}></img>
       <Subtitle><span>꼭꼭</span> 숨겨진 명소들 <br/><span>꼭꼭</span> 찾아주는 </Subtitle>
-
-      <Button onClick={create_account}>회원가입</Button>
-      <Button onClick={login}>로그인하기</Button>
+      <ButtonContainer>
+        <Button onClick={create_account}>회원가입</Button>
+        <Button onClick={login}>로그인하기</Button>
+      </ButtonContainer>
+     
     </Wrapper>
   );
 }

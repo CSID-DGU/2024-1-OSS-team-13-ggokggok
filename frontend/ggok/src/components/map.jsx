@@ -1,19 +1,21 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import config from '../others/apikey';
 
-const MapComponent = ({onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
+const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_KEY, pins, currentLocation }) => {
   const mapRef = useRef();
   const markers = useRef([]);
+  const [map, setMap] = useState(null);
 
-  console.log("pins");
-  console.log(pins);
-  useEffect(() => {
+  const [address, setAddress] = useState('');
+  const [geocoder, setGeocoder] = useState(null);
+
+
+  const loadMap = () => {
     if (!apiKey) {
       console.error('API key is missing.');
       return;
     }
 
-    // Google Maps API 스크립트를 동적으로 추가
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
     script.async = true;
@@ -22,43 +24,99 @@ const MapComponent = ({onLocationClick, apiKey = config.MAP_API_KEY, pins}) => {
 
     script.onload = () => {
       const mapOptions = {
-        center: { lat: 37.5665, lng: 126.978 }, // 초기 지도 중심 좌표 (서울)
-        zoom: 12, // 초기 줌 레벨
+        center: { lat: 37.5665, lng: 126.978 },
+        zoom: 12,
       };
 
-      // Google Maps 객체 생성 및 지도 연결
-      const map = new window.google.maps.Map(mapRef.current, mapOptions);
+      const newMap = new window.google.maps.Map(mapRef.current, mapOptions);
+      setMap(newMap);
 
-      // 기존 마커들 제거
       markers.current.forEach(marker => {
         marker.setMap(null);
       });
 
-      // 새로운 마커들 추가
       markers.current = pins.map(location => {
-        console.log(location.lat);
         const marker = new window.google.maps.Marker({
           position: { lat: parseFloat(location.lat), lng: parseFloat(location.long) },
-          map: map,
-          title: location.title
+          map: newMap,
+          title: location.title,
+          icon: {
+            url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
+            scaledSize: new window.google.maps.Size(32, 32),
+          },
         });
 
-        // 마커 클릭 이벤트 리스너 추가
         marker.addListener('click', () => {
+          const infoWindow = new window.google.maps.InfoWindow({
+            content: `<div>${location.title}</div>`,
+          });
+          infoWindow.open(newMap, marker);
           onLocationClick(location);
         });
 
         return marker;
       });
-    };
 
+      if (currentLocation) {
+        const currentLocationMarker = new window.google.maps.Marker({
+          position: { lat: currentLocation.latitude, lng: currentLocation.longitude },
+          map: newMap,
+          title: '현재 위치',
+          icon: {
+            url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+            scaledSize: new window.google.maps.Size(50, 50),
+          },
+        });
+        currentLocationMarker.addListener('click', () => {
+          const infoWindow = new window.google.maps.InfoWindow({
+            content: `<div>현재 위치</div>`,
+          });
+          infoWindow.open(newMap, currentLocationMarker);
+        });
+        markers.current.push(currentLocationMarker);
+        newMap.setCenter({ lat: currentLocation.latitude, lng: currentLocation.longitude });
+      }
+
+      // 이동이 멈출 때마다 onMapMoveEnd 함수 실행
+      const geocoderInstance = new window.google.maps.Geocoder();
+      setGeocoder(geocoderInstance);
+
+      newMap.addListener('idle', () => {
+        if (geocoderInstance) {
+          const center = newMap.getCenter();
+          geocoderInstance.geocode({ location: center }, (results, status) => {
+            if (status === 'OK' && results[0]) {
+              //setAddress(results[0].formatted_address);
+              onMapMoveEnd(results[0].formatted_address);
+            } else {
+              //setAddress('주소를 찾을 수 없습니다.');
+            }
+          });
+        }
+      });
+    };
+  };
+
+  useEffect(() => {
+    loadMap();
     return () => {
-      // 컴포넌트 언마운트 시 Google Maps API 스크립트 제거
-      document.head.removeChild(script);
+      const script = document.querySelector(`script[src^="https://maps.googleapis.com/maps/api/js?key=${apiKey}"]`);
+      if (script) document.head.removeChild(script);
     };
-  }, [apiKey, onLocationClick]);
+  }, [apiKey, pins]); 
 
-  return <div ref={mapRef} style={{ height: '380px', width: '100%', borderRadius: "20px", border: "1px solid #D9D9D9"}} />;
+  useEffect(() => {
+    if (map && currentLocation) {
+      map.setCenter({ lat: currentLocation.latitude, lng: currentLocation.longitude });
+      markers.current.forEach(marker => {
+        if (marker.getTitle() === '현재 위치') {
+          marker.setPosition({ lat: currentLocation.latitude, lng: currentLocation.longitude });
+        }
+      });
+    }
+  }, [currentLocation, map]);
+
+  return <div ref={mapRef} style={{ height: '380px', width: '100%', borderRadius: '20px', border: '1px solid #D9D9D9' }} />;
 };
 
 export default MapComponent;
