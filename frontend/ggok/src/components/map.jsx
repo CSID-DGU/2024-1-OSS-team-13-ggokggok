@@ -42,13 +42,13 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
           title: location.title,
           icon: {
             url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png',
-            scaledSize: new window.google.maps.Size(32, 32),
+            scaledSize: new window.google.maps.Size(40, 38),
           },
         });
 
         marker.addListener('click', () => {
           const infoWindow = new window.google.maps.InfoWindow({
-            content: `<div>${location.title}</div>`,
+            content: `<div>${location.name}</div>`,
           });
           infoWindow.open(newMap, marker);
           onLocationClick(location);
@@ -64,7 +64,7 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
           title: '현재 위치',
           icon: {
             url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png',
-            scaledSize: new window.google.maps.Size(50, 50),
+            scaledSize: new window.google.maps.Size(30, 28),
           },
         });
         currentLocationMarker.addListener('click', () => {
