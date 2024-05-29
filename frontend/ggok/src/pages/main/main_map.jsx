@@ -17,12 +17,14 @@ const Icon = styled.div`
 const LocationInfo = styled.div`
   font-size: 26px;
   margin-left: 10px;
+  
 `;
 
 const UnVisitButton = styled.button`
-  padding: 15px;
-  border-radius: 50px;
-  border: 1px solid #A3CCAA;
+  width: 70px;
+  padding: 10px 0;
+  border-radius: 30px;
+  border: 3px solid #A3CCAA;
   font-size: 18px;
   background-color: white;
   color: #A3CCAA;
@@ -50,6 +52,8 @@ const SetCurrentButton = styled.button`
   height: 50px;
   border: none;
   background: none;
+  margin: 0;
+  padding: 0;
 
   &[type="submit"] {
     cursor: pointer;
@@ -83,7 +87,6 @@ const Popup = styled.div`
   padding-top: 40px;
   width: 345px; 
   align-items: center;
-
 
   .loc {
     margin: 10px;
@@ -241,9 +244,11 @@ const MainMap = () => {
   return (
     <>
       <Title>
-        <Blank />
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span></TitleDiv>
-        <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소 <span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white" }}> + </span></WriteBtn></Link></div>
+        <Blank/><Blank/><Blank/><Blank/>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>꼭꼭</span>
+        <div><Link to="/upload-place" style={{ textDecoration: "none" }}><WriteBtn>명소<span style={{ padding: "0px 4px", width: "50px", borderRadius: "100%", backgroundColor: "#A3CCAA", color: "white", textAlign: "center"}}>+ </span></WriteBtn></Link></div>
+        </TitleDiv>
+        
       </Title>
 
       <MainContainer>
@@ -267,10 +272,10 @@ const MainMap = () => {
         <div>
           <div className="under">
             <div className="visit">
-              <p>{centerAdd}</p><h2>에 방문할까요?</h2>
+              <p>{centerAdd.split(' ').slice(1,4).join(' ')}</p>
             </div>
             <div className="buttonContainer">
-              <div className="unSelected"><UnVisitButton onClick={onvisit}>방문하기</UnVisitButton> </div>
+              <div className="unSelected"><UnVisitButton onClick={onvisit}>방문</UnVisitButton> </div>
               <div className="locButton"><SetCurrentButton onClick={updateLocation}><img style={{ width: "50px", height: "50px" }} src={locationLogo}></img></SetCurrentButton></div>
             </div>
           </div>
