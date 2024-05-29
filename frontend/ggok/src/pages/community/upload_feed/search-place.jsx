@@ -139,7 +139,7 @@ export default function SearchPlace() {
   const handleSearch = async () => {
     try {
 
-      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}&display=5`;
+      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}`;
 
       const response = await fetch(api_url, {
         headers: {

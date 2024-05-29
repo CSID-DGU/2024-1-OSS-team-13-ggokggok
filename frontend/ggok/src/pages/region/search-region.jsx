@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Title, Wrapper, Blank, TitleDiv } from "../../styles/Styles";
-import Modal from '../../components/modal'; // Ensure Modal component is imported
+import Modal from '../../components/modal';
 
 const SearchContainer = styled.div`
   display: flex;
@@ -87,7 +87,6 @@ const Line = styled.hr`
   border-radius: 50px;
 `;
 
-
 const Location = styled.div`
   border: none;
   background-color: white;
@@ -96,7 +95,6 @@ const Location = styled.div`
   font-size: 23px;
   width: 100%;
 `;
-
 
 const OptionContainer = styled.div` 
   width: 100%;
@@ -127,7 +125,6 @@ const Button = styled.input`
   transition: background-color 0.3s ease;
 `;
 
-
 const ButtonContainer = styled.div`
   width: 95%;
   align-items: center;
@@ -137,8 +134,7 @@ const ButtonContainer = styled.div`
   padding: 15px;
 `;
 
-
-const ModifyButton = styled.button`
+const RegistButton = styled.button`
   border: none;
   background-color: white;
   padding: 14px 0px;
@@ -182,11 +178,16 @@ export default function SearchPlace() {
   const [lng, setLng] = useState();
   const [modalOpen, setModalOpen] = useState(false);
 
+  const userData = JSON.parse(sessionStorage.getItem('user'));
+  const userId = userData ? userData.data.id : null;
+
   const nav = useNavigate();
 
   const handleSearch = async () => {
+    setError(''); // 검색을 시작할 때 에러 메시지를 초기화
+  
     try {
-      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}&display=5`;
+      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}`;
       const response = await fetch(api_url, {
         headers: {
           'X-Naver-Client-Id': 'WDVId7gO_fHzG7oRtf5w',
@@ -197,18 +198,24 @@ export default function SearchPlace() {
           start: 1,
         },
       });
-
+  
       if (!response.ok) {
         throw new Error('네이버 API 요청에 실패했습니다.');
       }
-
+  
       const data = await response.json();
-      setSearchResult(data);
+  
+      if (data && data.items && data.items.length === 0) {
+        setError('검색 결과가 없습니다.');
+      } else {
+        setSearchResult(data);
+      }
     } catch (error) {
       console.error(error);
       setError('검색어를 다시 입력해주세요.');
     }
   };
+  
 
   const convertCoordinates = (mapx, mapy) => {
     const longitude = (mapx / 10000000).toFixed(6);
@@ -231,11 +238,29 @@ export default function SearchPlace() {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    sessionStorage.setItem('name', name);
-    sessionStorage.setItem('lat', lat);
-    sessionStorage.setItem('lng', lng);
-    sessionStorage.setItem('address', address);
-    setModalOpen(true);
+    const dataToSend = {
+      region1: address.split(' ')[2],
+      region2: 'null region'
+    };
+
+    try {
+      const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error('지역 등록에 실패했습니다.');
+      }
+
+      setModalOpen(true);
+    } catch (error) {
+      console.error(error);
+      setError('지역 등록 중 오류가 발생했습니다.');
+    }
   };
 
   const uniqueByThirdWord = (items) => {
@@ -250,6 +275,14 @@ export default function SearchPlace() {
     });
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      setError(''); // 검색을 시작할 때 에러 메시지를 초기화
+      handleSearch();
+    }
+  };
+  
+
   return (
     <Wrapper>
       <Title>
@@ -262,11 +295,12 @@ export default function SearchPlace() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="🔍 'OO동' 으로 입력해주세요"
+          onKeyPress={handleKeyPress}
         />
         <SearchButton onClick={handleSearch}>검색</SearchButton>
       </SearchContainer>
 
-      {error && <p>{error}</p>} {/* 에러가 있을 경우에만 출력 */}
+      {error && <p>{error}</p>}
 
       {searchResult && searchResult.items && (
         <ResultsContainer>
@@ -288,10 +322,12 @@ export default function SearchPlace() {
       )}
 
       <form onSubmit={onSubmit}>
+      {address.split(' ')[2] && (
         <Button type="submit" value={address.split(' ')[2] + " 등록"} />
+      )}
+
       </form>
 
-     
       <div>
         {modalOpen && (
           <Modal onClose={() => setModalOpen(false)}>
@@ -307,22 +343,17 @@ export default function SearchPlace() {
               <button onClick={() => handleOptionClick("Option 2")}>Option 2</button>
             </RegionButton>
 
-            
-
-            
-
             <ButtonContainer>
-            <Location>{address.split(' ')[2]}</Location>
-            <OptionContainer>
-              <Option>거주지</Option>
-              <Option>직장 및 학교</Option>
-              <Option>기타</Option>
-            </OptionContainer>
+              <Location>{address.split(' ')[2]}</Location>
+              <OptionContainer>
+                <Option>거주지</Option>
+                <Option>직장 및 학교</Option>
+                <Option>기타</Option>
+              </OptionContainer>
 
-              <ModifyButton>수정하기</ModifyButton>
+              <RegistButton onClick={onSubmit}>등록하기</RegistButton>
               <DeleteButton>삭제하기</DeleteButton>
             </ButtonContainer>
-           
           </Modal>
         )}
       </div>
