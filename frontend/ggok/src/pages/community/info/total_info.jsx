@@ -1,14 +1,12 @@
 import { styled } from "styled-components";
-import logo from "../../../others/img/logo-icon.png"
-import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles"
+import logo from "../../../others/img/logo-icon.png";
+import leftlogo from "../../../others/img/left-button.png";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import StarRating from "../../../components/starrating";
-
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -37,22 +35,18 @@ const ContentBox2 = styled.div`
     font-size: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #C9B6A9;
-   
   }
 
   h3 {
     color: black;
     padding: 5px 0;
-
   }
 
   p {
     font-size: 14px;
     padding: 5px 0 15px;
-  
   }
 `;
-
 
 const ContentImg = styled.img`
   height: 50px;
@@ -62,20 +56,17 @@ const ContentImg = styled.img`
 `;
 
 const WriteBtn = styled.div`
-    border: none;
-    background-color: white;
-    color: #A3CCAA;
-    font-size: 16px;
-    font-weight: bold;
-`;  
-
-
+  border: none;
+  background-color: white;
+  color: #A3CCAA;
+  font-size: 16px;
+  font-weight: bold;
+`;
 
 const FormContainer = styled.div`
   margin-bottom: 20px;
 `;
 
-// 입력 필드 스타일 컴포넌트
 const InputField = styled.input`
   width: 100%;
   padding: 10px;
@@ -85,7 +76,6 @@ const InputField = styled.input`
   box-sizing: border-box;
 `;
 
-// 버튼 스타일 컴포넌트
 const Button = styled.input`
   display: block;
   width: 100%;
@@ -96,77 +86,82 @@ const Button = styled.input`
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  `;
+`;
 
-  export default function Total_info(){
+export default function Total_info() {
+  const [data, setData] = useState([]);
+  const { id } = useParams();
 
-    const [data, setData] = useState(null);
-
-    const {id} = useParams();
-
-
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}`);
-          setData(response.data.data[0]); // data 배열의 첫 번째 객체를 가져옴
-          console.log(response);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-
-      fetchData();
-    }, [id]); 
-
-    function formatTimestamp(timestamp) {
-      const date = new Date(timestamp);
-    
-      const year = date.getFullYear();
-      const month = (date.getMonth() + 1).toString().padStart(2, "0");
-      const day = date.getDate().toString().padStart(2, "0");
-      const hours = date.getHours().toString().padStart(2, "0");
-      const minutes = date.getMinutes().toString().padStart(2, "0");
-      const seconds = date.getSeconds().toString().padStart(2, "0");
-    
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-    }
-
-    const onChange = (e) => {
-      setcomment(e.target.value);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${id}`);
+        setData(response.data.data); // data 배열 전체를 가져옴
+        console.log(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
 
-    const onSubmit = async (e) => {
-      e.preventDefault();
-      
-    };
+    fetchData();
+  }, [id]);
 
+  function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
 
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    const seconds = date.getSeconds().toString().padStart(2, "0");
 
-    return (
-        <Wrapper>
-          <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-          </Title>            
-            <SubTitle>
-              <ContentBox2>
-                {data ? (
-                  <div>
-                    <h1>{data.name}</h1>
-                    <h1>{data.title}</h1><br></br>
-                    <h1>{data.address}</h1><br></br>
-                    <h1>명소 평점</h1>
-                    <StarRating 
-                      totalStars={5} 
-                      selectedStars={data.average_review}
-                    />
-                  
-                    <h2>{data.content}</h2>       
-                  </div>   
-                ): (<></>)}
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  }
 
-                </ContentBox2>
-            </SubTitle>
-        </Wrapper>
-    );
+  const onChange = (e) => {
+    setcomment(e.target.value);
+  };
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+  };
+
+  return (
+    <Wrapper>
+      <Title>
+        <div>
+          <BackButton>
+            <img src={leftlogo} />
+          </BackButton>
+        </div>
+        <TitleDiv>
+          <LogoImage src={logo} alt="Logo" />
+          <span>우리 지역</span>
+        </TitleDiv>
+      </Title>
+      <SubTitle>
+        <ContentBox2>
+          {data.length > 0 ? (
+            data.map((item, index) => (
+              <div key={index}>
+                <Link to={`/place-info/${item.id}`}>
+                  <h1>{item.name}</h1>
+                  <h1>{item.title}</h1>
+                  <br />
+                  <h1>{item.address}</h1>
+                  <br />
+                  <h1>명소 평점</h1>
+                  <StarRating totalStars={5} selectedStars={item.average_review} />
+                  <h2>{item.content}</h2>
+                </Link>
+              </div>
+            ))
+          ) : (
+            <></>
+          )}
+        </ContentBox2>
+      </SubTitle>
+    </Wrapper>
+  );
 }

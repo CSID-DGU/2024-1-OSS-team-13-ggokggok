@@ -10,6 +10,7 @@ const initialProfileState = {
   username: "",
   region1: "",
   region2: "",
+  profileImage: "", // 프로필 이미지 추가
 };
 
 // 프로필 정보를 가져오는 함수
@@ -27,7 +28,6 @@ const fetchProfileInfo = async () => {
     return null;
   }
 };
-
 
 const LogoutBtn = styled.div`
   border: none;
@@ -200,11 +200,10 @@ const MyPage = () => {
       </Title>
 
       <ProfileWrapper>
-        <ProfileImage src={profile.profileImage} alt="Profile" />
+        <ProfileImage src={profile.profileImage || "https://i.namu.wiki/i/zw-3hri_NINFShw4KfHezUemGvkhgHMYjfuXpYx7PhcOcpPdZCSaWK_H9HNAKm99TrALzQ_3XCmJGwpYQUX_vJ5tnZ-Am9gvK2CGNBNOQn-UNfV-NLwOn_RaaOtIQKLQ0X1Ql8hpM0SuhkyErHBhfw.webp"} alt="Profile" />
         <UserInfoWrapper>
           <ResidentInfo>{profile.region1} 주민</ResidentInfo>
           <UserName>{profile.username.split('@')[0]}</UserName>
-
         </UserInfoWrapper>
       </ProfileWrapper>
 
@@ -214,8 +213,6 @@ const MyPage = () => {
         </SlidingButton>
         <SlidingButton
           active={selectedButton === "my-roadmap"}
-         
-
           onClick={() => handleButtonClick("my-roadmap")}
         >
           내 명소 게시물
@@ -225,23 +222,22 @@ const MyPage = () => {
       <ContentBox2>
         {contents.length > 0 ? (
           contents.map((content) => (
-            <Link key={content.id} to={selectedButton === "my-posts"
-            ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
-            <div style={{ display: "flex" }}>
-              <ContentImg src="/" alt="content" />
-              <div>
-                <h3>{content.subject || content.name}</h3>
-                <p>{content.content}</p>
+            <Link key={content.id} to={selectedButton === "my-posts" ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
+              <div style={{ display: "flex" }}>
+                <ContentImg src="/" alt="content" />
+                <div>
+                  <h3>{content.subject || content.name}</h3>
+                  <p>{content.content}</p>
+                </div>
               </div>
-            </div>
-          </Link>
-        ))
-      ) : (
-        <p>게시물이 없습니다.</p>
-      )}
-    </ContentBox2>
-  </>
-);
+            </Link>
+          ))
+        ) : (
+          <p>게시물이 없습니다.</p>
+        )}
+      </ContentBox2>
+    </>
+  );
 };
 
 export default MyPage;

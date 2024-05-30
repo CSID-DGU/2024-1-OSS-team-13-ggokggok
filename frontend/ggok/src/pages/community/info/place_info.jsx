@@ -151,6 +151,29 @@ const EditButton = styled.button`
   margin-left: 10px;
 `;
 
+const SuccessModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SuccessModalContent = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+`;
+
+const SuccessModalButton = styled.button`
+  margin-top: 10px;
+  padding: 10px 20px;
+`;
+
 export default function Place_info() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -160,6 +183,7 @@ export default function Place_info() {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState("");
   const [editTitle, setEditTitle] = useState("");
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -227,19 +251,21 @@ export default function Place_info() {
     try {
       await axios.post(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/comments/${id}/`, postData);
       setComment("");
-      window.location.reload();
+      fetchComments(); // Reload comments
     } catch (error) {
       console.error('Error posting comment:', error);
     }
   };
 
   const handleDeletePost = async () => {
-    console.log(parseInt(id));
     try {
       await axios.delete(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`, {
-        data: { post_id: parseInt(id) }
+        data: { 
+          post_id: parseInt(id),
+          author: getUserId()
+        }
       });
-      navigate('/community');
+      setShowSuccessModal(true); // Show success modal
     } catch (error) {
       console.error('Error deleting post:', error);
     }
@@ -265,11 +291,10 @@ export default function Place_info() {
         category: data.category,
         author: data.author,
       };
-      console.log("Sending POST data:", postData);
       const response = await axios.put(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/post/${parseInt(id)}/`, postData);
-      console.log("Server response:", response.data);
       setIsEditing(false);
-      window.location.reload();
+      setData(response.data); // Update data
+      setShowSuccessModal(true); // Show success modal
     } catch (error) {
       if (error.response) {
         console.error('Server responded with error:', error.response.data);
@@ -281,6 +306,11 @@ export default function Place_info() {
 
   const handleCancelEdit = () => {
     setIsEditing(false);
+  };
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    navigate('/');
   };
 
   return (
@@ -304,7 +334,6 @@ export default function Place_info() {
                   placeholder="내용"
                   rows="10"
                 />
-               
 
                 <ButtonContainer>
                   <Button onClick={handleSaveEdit}>저장</Button>
@@ -360,6 +389,16 @@ export default function Place_info() {
           </form>
         </FormContainer>
       </Container>
+      {showSuccessModal && (
+        <SuccessModalOverlay>
+          <SuccessModalContent>
+            <h2>성공</h2>
+            <p>작업이 성공적으로 완료되었습니다.</p>
+            <SuccessModalButton onClick={handleCloseModal}>확인</SuccessModalButton>
+          </SuccessModalContent>
+        </SuccessModalOverlay>
+      )}
     </Wrapper>
   );
 }
+

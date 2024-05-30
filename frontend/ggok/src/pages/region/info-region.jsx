@@ -135,10 +135,6 @@ export default function SetRegion() {
     <Wrapper>
     <Title>내 지역 설정</Title>
 
-    <Map>
-     
-    </Map>
-
     <RegionButton>
       <button onClick={() => handleOptionClick("Option 1")}>Option 1</button>
       <button onClick={() => handleOptionClick("Option 2")}>Option 2</button>

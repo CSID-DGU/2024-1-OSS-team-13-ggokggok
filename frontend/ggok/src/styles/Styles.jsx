@@ -1,20 +1,21 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.div`
-  width: 100%;
-  height: 80%;
-
+  width: 400px;
+  height: 85%;
 `;
 
 export const Blank = styled.div`
-  width: 35px;
+  width: 25px;
+  margin: 0px;
 `;
 
 export const Title = styled.h1`
-  width: 100%;
+  width: 90%;
   display: flex;
   font-size: 35px;
   align-items: center;
+  text-align: center;
 `;
 
 export const SubTitle = styled.h1`
@@ -28,8 +29,9 @@ export const LogoImage = styled.img`
 `;
 
 export const TitleDiv = styled.div`
-  width: 70%;
+  width: 90%;
   align-items: center;
+  text-align: center;
 
   span { margin-left: 10px; }
 

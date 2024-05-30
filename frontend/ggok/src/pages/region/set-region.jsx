@@ -24,6 +24,11 @@ const Info = styled.h3`
   
 `;
 
+const ButtonContainer = styled.div`
+    display: grid;
+    justify-content: center;
+`;
+
 const Button = styled.button`
     height: 46px;
     padding: 10px 20px;
@@ -67,7 +72,7 @@ export default function SetRegion() {
   return (
     <Wrapper>
       <Title>
-        <Blank/><Blank/>
+      <Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>내 지역 설정</span></TitleDiv>
         </Title>
 
@@ -75,8 +80,12 @@ export default function SetRegion() {
         <SubTitle>회원님의 지역 정보를 등록하고 <br/>꼭꼭에서 여러 지역을 더욱 가깝게 느껴보세요!</SubTitle>
         {SVGImage}    
       </Info>
-      <Button onClick={search_region}>내 지역 등록하기</Button>
-      <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>
+
+      <ButtonContainer>
+        <Button onClick={search_region}>내 지역 등록하기</Button>
+        <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>
+      </ButtonContainer>
+     
     </Wrapper>
   );  
 }
