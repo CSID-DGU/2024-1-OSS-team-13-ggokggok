@@ -232,7 +232,8 @@ const MainMap = () => {
   }, []);
 
   const moveend =  (add) => {
-    setcenterAdd(add)
+    setcenterAdd(add.split(' ').slice(1,4).join(' '))
+    console.log(add);
   };
   
   const onvisit =  () => {
@@ -272,7 +273,7 @@ const MainMap = () => {
         <div>
           <div className="under">
             <div className="visit">
-              <p>{centerAdd.split(' ').slice(1,4).join(' ')}</p>
+              <p>{centerAdd}</p>
             </div>
             <div className="buttonContainer">
               <div className="unSelected"><UnVisitButton onClick={onvisit}>방문</UnVisitButton> </div>
