@@ -152,7 +152,7 @@ def UserPostSearch(request):
         serializer = PostSerializer(post_list, many=True)
     elif place:
         place_post_list = place_post_list.filter(
-            author_id=place
+            Q(author_id=place)
         ).distinct()
         serializer = PlacePostSerializer(place_post_list, many=True)
     elif myuser:
@@ -179,14 +179,14 @@ def putRegion(request, id):
     requested_user = request.data.get('id')
 
     if serializer.is_valid():
-        if requested_user == user_info.id:
-            serializer.save()
-            response_data = {
-                'success': True,
-                'status code': status.HTTP_200_OK,
-                'message': '지역 정보가 성공적으로 업데이트되었습니다.',
-                'data': serializer.data
-            }
+        #if requested_user == user_info.id:
+        serializer.save()
+        response_data = {
+            'success': True,
+            'status code': status.HTTP_200_OK,
+            'message': '지역 정보가 성공적으로 업데이트되었습니다.',
+            'data': serializer.data
+        }
         return Response(response_data, status=status.HTTP_200_OK)
     else:
         response_data = {
