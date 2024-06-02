@@ -315,17 +315,27 @@ export default function Feed_info(){
                     rows="10"
                   />
                  
-  
+                  {data.id == sessionStorage.getItem('user').id ?
+                  
                   <ButtonContainer>
                     <Button onClick={handleSaveEdit}>저장</Button>
                     <Button onClick={handleCancelEdit}>취소</Button>
                   </ButtonContainer>
+                  
+                : <> </>}
                 </>
               ) : (
                 <>
                   <PostTitle>{data.subject}
+                  {data.id == sessionStorage.getItem('user').id ?
+
                     <EditButton onClick={handleEditPost}>수정</EditButton>
+                  : <> </>}
+                  
+                  {data.id == sessionStorage.getItem('user').id ?
                     <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
+                  : <> </>}
+
                   </PostTitle>
                   <PostHeader>
                     <Nickname>{data.id}</Nickname>
