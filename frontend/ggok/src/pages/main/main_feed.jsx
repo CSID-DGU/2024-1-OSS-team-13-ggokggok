@@ -80,7 +80,7 @@ export default function main_feed(){
     async function fetchData() {
         try {
           console.log(region1);
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${id}`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
