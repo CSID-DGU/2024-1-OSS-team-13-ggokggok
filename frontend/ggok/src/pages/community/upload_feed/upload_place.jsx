@@ -196,7 +196,12 @@ export default function upload_place() {
     });
     */
     const formData = new FormData();
-    formData.append('image', file);
+
+    if(file){
+      formData.append('image', file);
+    }else{
+      formData.append('image', '');
+    }
     formData.append('subject', sub);
     formData.append('content', text);
     formData.append('author', userId());

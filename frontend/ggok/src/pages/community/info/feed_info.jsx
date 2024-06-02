@@ -289,6 +289,11 @@ export default function Feed_info(){
     setIsEditing(false);
   };
 
+  const userInfo = () => {
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    return user.data;
+  }
 
     
 
@@ -315,17 +320,27 @@ export default function Feed_info(){
                     rows="10"
                   />
                  
-  
+                  {data.author == userInfo().id ?
+                  
                   <ButtonContainer>
                     <Button onClick={handleSaveEdit}>저장</Button>
                     <Button onClick={handleCancelEdit}>취소</Button>
                   </ButtonContainer>
+                  
+                : <> </>}
                 </>
               ) : (
                 <>
                   <PostTitle>{data.subject}
+                  {data.author == userInfo().id ?
+
                     <EditButton onClick={handleEditPost}>수정</EditButton>
+                  : <> </>}
+
+                  {data.author == userInfo().id ?
                     <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
+                  : <> </>}
+
                   </PostTitle>
                   <PostHeader>
                     <Nickname>{data.id}</Nickname>

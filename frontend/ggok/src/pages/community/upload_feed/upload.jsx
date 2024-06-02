@@ -141,13 +141,15 @@ export default function Upload() {
     */
 
     const formData = new FormData();
-    formData.append('image', file);
+    if(file){
+      formData.append('image', file);
+    }else{
+      formData.append('image', '');
+    }
     formData.append('subject', sub);
     formData.append('content', text);
-    formData.append('post_region', 'string');
+    formData.append('post_region', userInfo().region1);
     formData.append('author', userId());
-
-
 
     try {
       const response = await axios.post('https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/', formData, {
@@ -155,6 +157,7 @@ export default function Upload() {
           'Content-Type': 'multipart/form-data',
         },
       });
+      console.log(formData);
       console.log('Server Response:', response.data);
     } catch (error) {
       console.error('Error uploading file:', error);
@@ -181,6 +184,12 @@ export default function Upload() {
       console.error('Session data not found.');
       return null;
     }
+  }
+
+  const userInfo = () => {
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    return user.data;
   }
 
   return (

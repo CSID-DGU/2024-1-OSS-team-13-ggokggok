@@ -72,11 +72,14 @@ export default function main_feed(){
 
     const [getData, setGetData] = useState([]);
 
-    const region1 = sessionStorage.getItem('user').region1;
-    const region2 = sessionStorage.getItem('user').region2;
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    const region1 = user.data.region1;
+    const region2 = user.data.region2;
 
     async function fetchData() {
         try {
+          console.log(region1);
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
           setGetData(response.data.data);
         } catch (error) {

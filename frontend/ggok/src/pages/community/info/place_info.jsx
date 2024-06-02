@@ -313,6 +313,12 @@ export default function Place_info() {
     navigate('/');
   };
 
+  const userInfo = () => {
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    return user.data;
+  }
+
   return (
     <Wrapper>
       <Title>
@@ -334,17 +340,23 @@ export default function Place_info() {
                   placeholder="내용"
                   rows="10"
                 />
-
+                {data.author == userInfo().id ?
                 <ButtonContainer>
                   <Button onClick={handleSaveEdit}>저장</Button>
                   <Button onClick={handleCancelEdit}>취소</Button>
                 </ButtonContainer>
+                : <></>}
               </>
             ) : (
               <>
                 <PostTitle>{data.subject}
+                {data.author == userInfo().id ?
                   <EditButton onClick={handleEditPost}>수정</EditButton>
+                : <></>}
+                {data.author == userInfo().id ?
                   <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
+                : <></>}
+                
                 </PostTitle>
                 <PostHeader>
                   <Nickname>{data.id}</Nickname>
