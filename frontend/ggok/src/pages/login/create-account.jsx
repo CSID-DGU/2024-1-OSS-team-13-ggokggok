@@ -105,9 +105,7 @@ export default function CreateAccount() {
 
   return (
     <Wrapper>
-
-
-<Title>
+        <Title>
         <Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>회원가입</span></TitleDiv>
 
