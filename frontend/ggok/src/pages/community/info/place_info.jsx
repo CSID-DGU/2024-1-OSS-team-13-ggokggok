@@ -334,17 +334,23 @@ export default function Place_info() {
                   placeholder="내용"
                   rows="10"
                 />
-
+                {data.author == sessionStorage.getItem('user').data.id ?
                 <ButtonContainer>
                   <Button onClick={handleSaveEdit}>저장</Button>
                   <Button onClick={handleCancelEdit}>취소</Button>
                 </ButtonContainer>
+                : <></>}
               </>
             ) : (
               <>
                 <PostTitle>{data.subject}
+                {data.author == sessionStorage.getItem('user').data.id ?
                   <EditButton onClick={handleEditPost}>수정</EditButton>
+                : <></>}
+                {data.author == sessionStorage.getItem('user').data.id ?
                   <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
+                : <></>}
+                
                 </PostTitle>
                 <PostHeader>
                   <Nickname>{data.id}</Nickname>
