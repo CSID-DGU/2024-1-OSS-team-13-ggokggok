@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import axios from "axios";
@@ -203,6 +203,7 @@ export default function SetRegion() {
   }, []);
 
   const handleSave = async () => {
+    sessionStorage.setItem('selectedRegion', selectedOption);
     setPopupVisible(true);
   };
 

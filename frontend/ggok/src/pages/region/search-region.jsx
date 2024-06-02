@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Title, Wrapper, Blank, TitleDiv } from "../../styles/Styles";
@@ -180,6 +180,7 @@ export default function SearchPlace() {
 
   const userData = JSON.parse(sessionStorage.getItem('user'));
   const userId = userData ? userData.data.id : null;
+  const selectedRegion = sessionStorage.getItem('selectedRegion');
 
   const nav = useNavigate();
 
@@ -253,14 +254,22 @@ export default function SearchPlace() {
         throw new Error('등록이 완료된 지역입니다.');
       }
 
-      if(!userSessionData.data.region1){
+      if (selectedRegion === 'region1') {
         dataToSend.region1 = searchRegion;
-        delete dataToSend.region2;
-      } else {
+        dataToSend.region2 = userSessionData.data.region2;
+      } else if (selectedRegion === 'region2') {
         dataToSend.region1 = userSessionData.data.region1;
         dataToSend.region2 = searchRegion;
+      } else {
+        if (!userSessionData.data.region1) {
+          dataToSend.region1 = searchRegion;
+          delete dataToSend.region2;
+        } else {
+          dataToSend.region1 = userSessionData.data.region1;
+          dataToSend.region2 = searchRegion;
+        }
       }
-      
+
       const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}/`, {
         method: 'PUT',
         headers: {
@@ -276,22 +285,16 @@ export default function SearchPlace() {
       const result = await response.json();
 
       if (result.success) {
-
-        if(Object.keys(dataToSend).length == 2){
-          userSessionData.data.region1 = dataToSend.region1;
-          userSessionData.data.region2 = dataToSend.region2;
-        } else if(Object.keys(dataToSend).length == 1) {
-          userSessionData.data.region1 = dataToSend.region1;
-        }
+        userSessionData.data.region1 = dataToSend.region1;
+        userSessionData.data.region2 = dataToSend.region2;
         sessionStorage.setItem('user', JSON.stringify(userSessionData));
       }
 
       setModalOpen(false);
     } catch (error) {
-
-      if(error.message === '등록이 완료된 지역입니다.') {
-        setError('등록이 완료된 지역입니다.')
-      } else{
+      if (error.message === '등록이 완료된 지역입니다.') {
+        setError('등록이 완료된 지역입니다.');
+      } else {
         setError('지역 등록 중 오류가 발생했습니다.');
       }
     }
@@ -389,19 +392,14 @@ export default function SearchPlace() {
         {modalOpen && (
           <Modal onClose={() => setModalOpen(false)}>
             <Title>
-              <Blank/><Blank/>
-              <TitleDiv>내 지역 정보</TitleDiv>
+              <Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/>
+              <TitleDiv> 지역 정보</TitleDiv>
             </Title>
 
             <Line/>
 
-            <RegionButton>
-              <button onClick={() => handleOptionClick("Option 1")}>Option 1</button>
-              <button onClick={() => handleOptionClick("Option 2")}>Option 2</button>
-            </RegionButton>
-
             <ButtonContainer>
-              <Location>{address.split(' ')[2]}</Location>
+              <Location>{address.split(' ').slice(0, 3).join(' ')}</Location>
               <OptionContainer>
                 <Option>거주지</Option>
                 <Option>직장 및 학교</Option>
