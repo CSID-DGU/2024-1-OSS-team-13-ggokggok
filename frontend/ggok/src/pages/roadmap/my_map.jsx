@@ -191,7 +191,7 @@ const MainMap = () => {
           lat={location.latitude}
           onLocationClick={handleLocationClick}
           pins={getplace}
-          style={{ height: '500px' }}
+          style={{ height: '800px' }}
         />
       </div>
 

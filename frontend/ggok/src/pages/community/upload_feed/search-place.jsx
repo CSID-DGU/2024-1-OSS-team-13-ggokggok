@@ -90,8 +90,6 @@ const TextContainer = styled.div`
   margin-left: 10px; 
 `;
 
-
-
 const ResultTitle = styled.h3`
   font-size: 25px;
   margin-bottom: 15px;
@@ -101,11 +99,7 @@ const ResultTitle = styled.h3`
 const ResultAddress = styled.p`
   font-size: 18px;
   color: #717171;
-
-  
 `;
-
-
 
 const Button = styled.input`
   display: block;
@@ -122,8 +116,6 @@ const Button = styled.input`
 const removeHtmlTags = (str) => {
   // HTML 태그 제거 로직
 };
-
-
 
 export default function SearchPlace() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -150,7 +142,6 @@ export default function SearchPlace() {
           display : 5,
           start : 1
         }
-        
        
       });
 
@@ -171,9 +162,6 @@ export default function SearchPlace() {
     const latitude = (mapy / 10000000).toFixed(6);
     return { longitude, latitude };
   };
-  
-  
-  
 
   const handleClickResult = (item) => {
     const { longitude, latitude } = convertCoordinates(item.mapx, item.mapy);
@@ -198,7 +186,6 @@ export default function SearchPlace() {
     nav('/upload-place');
   }
   
-  
   return (
     <Wrapper>
       <Title>명소 검색</Title>
@@ -214,24 +201,19 @@ export default function SearchPlace() {
 
       {error && <p>{error}</p>} {/* 에러가 있을 경우에만 출력 */}
 
-
       {searchResult && searchResult.items && (
         
         <ResultsContainer>
           {searchResult.items.map((item, index) => (
             <ResultItem key={index} onClick={() => handleClickResult(item)}>
-<ResultContent>
+        <ResultContent>
 
-<SVGContainer> {SVGImage}  </SVGContainer>
+        <SVGContainer> {SVGImage}  </SVGContainer>
               <TextContainer>
               <ResultTitle dangerouslySetInnerHTML={{ __html: item.title }} />
               <ResultAddress dangerouslySetInnerHTML={{ __html: item.address }} />
               </TextContainer>
-              
-</ResultContent>
-             
-             
-              
+              </ResultContent>
             </ResultItem>
           ))}
         </ResultsContainer>

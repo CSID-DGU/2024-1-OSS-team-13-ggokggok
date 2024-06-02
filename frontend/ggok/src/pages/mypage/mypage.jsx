@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Title, TitleDiv, LogoImage, Blank } from "../../styles/Styles";
+import { TitleDiv, LogoImage, Blank, ExtraButton } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png";
 
 // 초기 프로필 상태 정의
@@ -36,6 +36,9 @@ const LogoutBtn = styled.div`
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
+  width: 80px;
+  padding: 0;
+  margin: 0;
 `;
 
 const ProfileWrapper = styled.div`
@@ -46,6 +49,15 @@ const ProfileWrapper = styled.div`
   margin: 10px 0 20px;
   background-color: #eaf4ec;
   padding: 15px;
+  position: relative; // 위치 설정을 위해 추가
+`;
+
+export const Title = styled.h1`
+  width: 90%;
+  display: flex;
+  font-size: 29px;
+  align-items: center;
+  text-align: center;
 `;
 
 const ProfileImage = styled.img`
@@ -128,6 +140,22 @@ const ContentImg = styled.img`
   margin: 0 10px 0 0;
 `;
 
+const EditRegionButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #A3CCAA;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 15px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #89b492;
+  }
+`;
+
 const MyPage = () => {
   const [profile, setProfile] = useState(initialProfileState);
   const [selectedButton, setSelectedButton] = useState("my-posts");
@@ -188,15 +216,20 @@ const MyPage = () => {
     navigate("/intro");
   };
 
+  const handleEditRegion = () => {
+    // 지역 정보 수정 페이지로 이동
+    navigate("/info-region");
+  };
+
   return (
     <>
       <Title> 
         <Blank/>
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>마이페이지</span>
+        <TitleDiv>&nbsp; &nbsp; &nbsp; <LogoImage src={logo} alt="Logo" /><span>마이페이지</span>
         </TitleDiv>
-        <div>
+        <ExtraButton>
           <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
-        </div>
+        </ExtraButton>
       </Title>
 
       <ProfileWrapper>
@@ -205,6 +238,7 @@ const MyPage = () => {
           <ResidentInfo>{profile.region1} 주민</ResidentInfo>
           <UserName>{profile.username.split('@')[0]}</UserName>
         </UserInfoWrapper>
+        <EditRegionButton onClick={handleEditRegion}>지역 수정</EditRegionButton>
       </ProfileWrapper>
 
       <ButtonContainer>

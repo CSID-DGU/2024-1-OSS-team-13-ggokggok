@@ -75,7 +75,7 @@ const TextContainer = styled.div`
   margin-left: 10px; 
 `;
 
-const ResultTitle = styled.h3`
+const ResultTitle = styled.div`
   font-size: 25px;
   margin-bottom: 15px;
   color: #534340;
@@ -227,25 +227,42 @@ export default function SearchPlace() {
     const { longitude, latitude } = convertCoordinates(item.mapx, item.mapy);
     setLat(latitude);
     setLng(longitude);
-    setName(removeHTMLTags(item.title));
+    setName(removeHtmlTags(item.title));
     setAddress(item.address);
+
     console.log(item);
   };
 
-  function removeHTMLTags(str) {
-    return str.replace(/<[^>]*>/g, '');
-  }
-
-  const onSubmit = async (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
+    setModalOpen(true);
+  };
+
+  const onRegister = async (e) => {
+    e.preventDefault();
+
+    const userSessionData = JSON.parse(sessionStorage.getItem('user'));
+    const searchRegion = address.split(' ')[2];
     const dataToSend = {
-      region1: address.split(' ')[2],
-      region2: 'null region'
+      region1: null,
+      region2: null,
     };
 
     try {
-      const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}`, {
-        method: 'POST',
+      if(userSessionData.data.region1 === searchRegion || userSessionData.data.region2 === searchRegion){
+        throw new Error('등록이 완료된 지역입니다.');
+      }
+
+      if(!userSessionData.data.region1){
+        dataToSend.region1 = searchRegion;
+        delete dataToSend.region2;
+      } else {
+        dataToSend.region1 = userSessionData.data.region1;
+        dataToSend.region2 = searchRegion;
+      }
+      
+      const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}/`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -256,10 +273,51 @@ export default function SearchPlace() {
         throw new Error('지역 등록에 실패했습니다.');
       }
 
-      setModalOpen(true);
+      const result = await response.json();
+
+      if (result.success) {
+
+        if(Object.keys(dataToSend).length == 2){
+          userSessionData.data.region1 = dataToSend.region1;
+          userSessionData.data.region2 = dataToSend.region2;
+        } else if(Object.keys(dataToSend).length == 1) {
+          userSessionData.data.region1 = dataToSend.region1;
+        }
+        sessionStorage.setItem('user', JSON.stringify(userSessionData));
+      }
+
+      setModalOpen(false);
     } catch (error) {
-      console.error(error);
-      setError('지역 등록 중 오류가 발생했습니다.');
+
+      if(error.message === '등록이 완료된 지역입니다.') {
+        setError('등록이 완료된 지역입니다.')
+      } else{
+        setError('지역 등록 중 오류가 발생했습니다.');
+      }
+    }
+  };
+
+  const onDelete = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}/region`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('지역 삭제에 실패했습니다.');
+      }
+
+      // 세션 스토리지에서 지역 정보 삭제
+      sessionStorage.removeItem('region');
+
+      setModalOpen(false);
+    } catch (error) {
+      setError('지역 삭제 중 오류가 발생했습니다.');
     }
   };
 
@@ -322,10 +380,9 @@ export default function SearchPlace() {
       )}
 
       <form onSubmit={onSubmit}>
-      {address.split(' ')[2] && (
-        <Button type="submit" value={address.split(' ')[2] + " 등록"} />
-      )}
-
+        {address.split(' ')[2] && (
+          <Button type="submit" value={address.split(' ')[2] + " 등록"} />
+        )}
       </form>
 
       <div>
@@ -351,8 +408,8 @@ export default function SearchPlace() {
                 <Option>기타</Option>
               </OptionContainer>
 
-              <RegistButton onClick={onSubmit}>등록하기</RegistButton>
-              <DeleteButton>삭제하기</DeleteButton>
+              <RegistButton onClick={onRegister}>등록하기</RegistButton>
+              <DeleteButton onClick={onDelete}>삭제하기</DeleteButton>
             </ButtonContainer>
           </Modal>
         )}

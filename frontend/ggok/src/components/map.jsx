@@ -26,6 +26,16 @@ const MapComponent = ({ onLocationClick, onMapMoveEnd, apiKey = config.MAP_API_K
       const mapOptions = {
         center: { lat: 37.5665, lng: 126.978 },
         zoom: 12,
+        mapTypeControl: true, // 지도 타입 컨트롤 표시
+      mapTypeControlOptions: {
+        style: window.google.maps.MapTypeControlStyle.DEFAULT,
+        mapTypeIds: [
+          window.google.maps.MapTypeId.ROADMAP,
+          window.google.maps.MapTypeId.SATELLITE,
+        ],
+      },
+
+
       };
 
       const newMap = new window.google.maps.Map(mapRef.current, mapOptions);
