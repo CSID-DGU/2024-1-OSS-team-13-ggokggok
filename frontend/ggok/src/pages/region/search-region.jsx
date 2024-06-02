@@ -110,6 +110,11 @@ const Option = styled.button`
   padding: 14px;
   border-radius: 50px;
   font-size: 23px;
+  &:active,
+  &:focus,
+  &.active {
+    outline: 3px solid #4C7E6F;
+  }
 `;
 
 const Button = styled.input`
@@ -300,30 +305,6 @@ export default function SearchPlace() {
     }
   };
 
-  const onDelete = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await fetch(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}/region`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('지역 삭제에 실패했습니다.');
-      }
-
-      // 세션 스토리지에서 지역 정보 삭제
-      sessionStorage.removeItem('region');
-
-      setModalOpen(false);
-    } catch (error) {
-      setError('지역 삭제 중 오류가 발생했습니다.');
-    }
-  };
-
   const uniqueByThirdWord = (items) => {
     const seen = new Set();
     return items.filter(item => {
@@ -407,7 +388,7 @@ export default function SearchPlace() {
               </OptionContainer>
 
               <RegistButton onClick={onRegister}>등록하기</RegistButton>
-              <DeleteButton onClick={onDelete}>삭제하기</DeleteButton>
+              <DeleteButton onClick={() => setModalOpen(false)}> 다시 검색 하기</DeleteButton>
             </ButtonContainer>
           </Modal>
         )}

@@ -9,12 +9,8 @@ export default defineConfig({
         target: 'https://openapi.naver.com',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/v1/, '/v1')
-      },
-      '/api': {
-        target: 'https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app',
-        changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, '/api', /^\/place/, '/place' )
       }
+
     }
   }
 });
