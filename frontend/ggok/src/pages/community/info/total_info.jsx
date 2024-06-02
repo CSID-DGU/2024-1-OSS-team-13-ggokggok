@@ -92,10 +92,13 @@ export default function Total_info() {
   const [data, setData] = useState([]);
   const { id } = useParams();
 
+
+  const [feed, setfeed] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${id}`);
+        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?address=${id}`);
         setData(response.data.data); // data 배열 전체를 가져옴
         console.log(response);
       } catch (error) {
@@ -103,7 +106,19 @@ export default function Total_info() {
       }
     };
 
+    const fetchFeed = async () => {
+      try {
+        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${id}`);
+        setfeed(response.data.data); // data 배열 전체를 가져옴
+        console.log(response);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
     fetchData();
+    fetchFeed();
+
   }, [id]);
 
   function formatTimestamp(timestamp) {
@@ -127,6 +142,12 @@ export default function Total_info() {
     e.preventDefault();
   };
 
+  const userInfo = () => {
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    return user.data;
+  }
+
   return (
     <Wrapper>
       <Title>
@@ -142,23 +163,48 @@ export default function Total_info() {
       </Title>
       <SubTitle>
         <ContentBox2>
+
+          
           {data.length > 0 ? (
             data.map((item, index) => (
               <div key={index}>
-                <Link to={`/place-info/${item.id}`}>
                   <h1>{item.name}</h1>
                   <h1>{item.title}</h1>
-                  <br />
+                  <br/>
                   <h1>{item.address}</h1>
                   <br />
                   <h1>명소 평점</h1>
                   <StarRating totalStars={5} selectedStars={item.average_review} />
                   <h2>{item.content}</h2>
+                  <br></br>
+              </div>
+            ))
+            
+          ) : (
+            <>
+            <h1>아직 리뷰가 충분하지 않습니다</h1>
+            <br></br>
+            </>
+          )}
+
+          {feed.length > 0 ? (
+            feed.map((item, index) => (
+              <div key={index}>
+                {userInfo().region1 == item.address.split(' ').slice(1,4).join(' ') ?
+                <Link to={`/place-info/${item.id}`}>
+                  <h1>{item.subject}</h1>
+                  <StarRating totalStars={5} selectedStars={item.review} />
                 </Link>
+                :
+                <Link to={`/visitor-place-info/${item.id}`}>
+                  <h1>{item.subject}</h1>
+                  <StarRating totalStars={5} selectedStars={item.review} />
+                </Link>
+            }
               </div>
             ))
           ) : (
-            <></>
+            <h1>아직 남긴 리뷰들이 없습니다</h1>
           )}
         </ContentBox2>
       </SubTitle>

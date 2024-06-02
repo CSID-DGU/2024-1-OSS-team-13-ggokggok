@@ -237,11 +237,19 @@ const MainMap = () => {
   };
   
   const onvisit =  () => {
-    navigate(`/visitor-feed/${centerAdd}`);  
+    if(centerAdd == userInfo().region1){
+      navigate(`/feed`);  
+    }else{
+      navigate(`/visitor-feed/${centerAdd}`);  
+    }
   };
   
   
-
+  const userInfo = () => {
+    const session = sessionStorage.getItem('user');
+    const user = JSON.parse(session);
+    return user.data;
+  }
   return (
     <>
       <Title>
