@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 class UserInfo(AbstractUser):
     region1 = models.CharField(max_length=100, null=True, blank=True)
     region2 = models.CharField(max_length=100, null=True, blank=True)
+    objects = models.Manager()
 
 '''
     class user_info(models.Model):
