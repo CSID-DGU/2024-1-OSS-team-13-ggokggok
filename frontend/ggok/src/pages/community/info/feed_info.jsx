@@ -315,7 +315,7 @@ export default function Feed_info(){
                     rows="10"
                   />
                  
-                  {data.id == sessionStorage.getItem('user').id ?
+                  {data.author == sessionStorage.getItem('user').id ?
                   
                   <ButtonContainer>
                     <Button onClick={handleSaveEdit}>저장</Button>
@@ -327,12 +327,12 @@ export default function Feed_info(){
               ) : (
                 <>
                   <PostTitle>{data.subject}
-                  {data.id == sessionStorage.getItem('user').id ?
+                  {data.author == sessionStorage.getItem('user').data.id ?
 
                     <EditButton onClick={handleEditPost}>수정</EditButton>
                   : <> </>}
-                  
-                  {data.id == sessionStorage.getItem('user').id ?
+
+                  {data.author == sessionStorage.getItem('user').id ?
                     <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
                   : <> </>}
 
