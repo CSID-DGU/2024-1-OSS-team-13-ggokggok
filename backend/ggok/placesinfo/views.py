@@ -30,7 +30,7 @@ def RegionSearch(request):
     elif secret:  # review_count 가 5 이하 이고, average_review 가 4.7 이상인 경우
         post_list = PlaceInfo.objects.filter(review_count__lt=5, average_review__gte=4.7).order_by('-average_review')
         post_list = post_list.filter(
-            Q(address__icontains=address)
+            Q(address__icontains=secret)
         ).distinct()
         serializer = PlaceInfoSerializer(post_list, many=True)
         response_data = {
