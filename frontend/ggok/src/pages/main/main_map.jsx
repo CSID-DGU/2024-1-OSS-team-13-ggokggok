@@ -233,7 +233,7 @@ const MainMap = () => {
   }, []);
 
   const moveend =  (add) => {
-    setcenterAdd(add.split(' ').slice(1,4).join(' '))
+    setcenterAdd(add.split(' ').slice(1,4).join(' '));
     console.log(add);
   };
   
