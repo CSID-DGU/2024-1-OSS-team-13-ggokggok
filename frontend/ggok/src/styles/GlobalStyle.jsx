@@ -7,7 +7,7 @@ const GlobalStyle = createGlobalStyle`
     ${reset}
     @font-face {
     font-family: "basicWOfF";
-      src: url("/src/others/font/laundryRegular.woff") format("woff")
+      src: url("/src/others/font/laundryRegular.woff") format("woff");
     }
 
     @font-face {
