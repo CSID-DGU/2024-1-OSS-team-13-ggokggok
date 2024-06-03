@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import axios from "axios";
@@ -20,17 +20,19 @@ const Title = styled.h1`
 
 const RegionButton = styled.div`
   height: 46px;
-  width: 315px;
+  width: 80%;
+  margin: auto;
   border-radius: 50px;
   background-color: #A3CCAA;
   display: flex;
   position: relative;
+  margin-bottom: 10px;
 `;
 
 const Slider = styled.div`
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: 45%;
   background-color: #A3CCAA;
   border-radius: 50px;
   transition: transform 0.3s ease;
@@ -42,11 +44,11 @@ const RegionButtonText = styled.button`
   flex-grow: 1;
   border: none;
   background: none;
-  color: ${({ selected, theme }) => (selected ? theme.selectedColor : theme.defaultColor)};
+  color: ${({ selected, theme }) => (selected ? theme.defaultColor : theme.selectedColor)};
   font-size: 17px;
   z-index: 1;
   cursor: pointer;
-  background-color: ${({ selected, theme }) => (selected ? theme.selectedBg : theme.defaultBg)};
+  background-color: ${({ selected, theme }) => (selected ? theme.defaultBg : theme.selectedBg)};
   border-radius: 50px;
   &:focus {
     outline: none;
@@ -106,6 +108,12 @@ const Option = styled.button`
   padding: 14px;
   border-radius: 50px;
   font-size: 16px;
+
+ &:active,
+  &:focus,
+  &.active {
+    outline: 3px solid #4C7E6F;
+  }
 `;
 
 const Button = styled.button`
@@ -118,10 +126,10 @@ const Button = styled.button`
 `;
 
 const theme = {
-  selectedColor: "#FFFFFF",
-  defaultColor: "#A3CCAA",
-  selectedBg: "#A3CCAA",
-  defaultBg: "#FFFFFF",
+  selectedColor: "#A3CCAA",
+  defaultColor: "#FFFFFF",
+  selectedBg: "#FFFFFF",
+  defaultBg: "#A3CCAA",
 };
 
 const Popup = styled.div`
@@ -177,6 +185,7 @@ export default function SetRegion() {
   const [selectedOption, setSelectedOption] = useState("region1");
   const [error, setError] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -189,6 +198,11 @@ export default function SetRegion() {
         if (result.success) {
           const userData = result.data[0];
           setRegionInfo({ region1: userData.region1, region2: userData.region2 });
+          if (!userData.region1 && !userData.region2) {
+            setSelectedOption("region1");
+          } else if (userData.region1 && !userData.region2) {
+            setSelectedOption("region2");
+          }
         } else {
           setError("사용자 정보를 가져오는데 실패했습니다.");
         }
@@ -203,16 +217,32 @@ export default function SetRegion() {
   }, []);
 
   const handleSave = async () => {
+    sessionStorage.setItem('selectedRegion', selectedOption);
     setPopupVisible(true);
+  };
+
+  const handleDelete = async () => {
+    const sessionData = JSON.parse(sessionStorage.getItem('user'));
+    const userId = sessionData.data.id;
+    const dataToSend = selectedOption === "region1" ? { region1: "" } : { region2: "" };
+
+    try {
+      const response = await axios.put(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/user/${userId}/`, dataToSend);
+      if (response.data.success) {
+        const updatedRegionInfo = selectedOption === "region1" ? { ...regionInfo, region1: "" } : { ...regionInfo, region2: "" };
+        setRegionInfo(updatedRegionInfo);
+        setPopupVisible(false);
+        setConfirmDelete(false);
+      } else {
+        setError("지역 삭제에 실패했습니다.");
+      }
+    } catch (error) {
+      setError("지역 삭제 중 오류가 발생했습니다.");
+    }
   };
 
   const handleOptionChange = (option) => {
     setSelectedOption(option);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setRegionInfo(prevState => ({ ...prevState, [name]: value }));
   };
 
   const getLocation = () => {
@@ -235,49 +265,61 @@ export default function SetRegion() {
 
   const handleConfirm = () => {
     setPopupVisible(false);
-    navigate("/search-region"); // 새로운 페이지로 이동
+    navigate("/search-region"); 
   };
 
   const handleCancel = () => {
     setPopupVisible(false);
+    setConfirmDelete(false);
+  };
+
+  const handleDeleteClick = () => {
+    setConfirmDelete(true);
+    setPopupVisible(true);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
         <Title>내 지역 설정</Title>
-        <RegionButton>
-          <Slider selectedOption={selectedOption} />
-          <RegionButtonText
-            selected={selectedOption === "region1"}
-            theme={theme}
-            onClick={() => handleOptionChange("region1")}
-          >
-            {regionInfo.region1}
-          </RegionButtonText>
-          <RegionButtonText
-            selected={selectedOption === "region2"}
-            theme={theme}
-            onClick={() => handleOptionChange("region2")}
-          >
-            {regionInfo.region2}
-          </RegionButtonText>
-        </RegionButton>
 
         <InfoContainer>
           <RegionName> 내 지역 정보 </RegionName>
           <Line />
 
+          <RegionButton>
+            <Slider selectedOption={selectedOption} />
+            <RegionButtonText
+              selected={selectedOption === "region1"}
+              theme={theme}
+              onClick={() => handleOptionChange("region1")}
+            >
+              {regionInfo.region1}
+            </RegionButtonText>
+            <RegionButtonText
+              selected={selectedOption === "region2"}
+              theme={theme}
+              onClick={() => handleOptionChange("region2")}
+            >
+              {regionInfo.region2}
+            </RegionButtonText>
+          </RegionButton>
+
+          {getLocation() !== "" ? ( 
           <ButtonContainer>
             <Location>{getLocation()}</Location>
             <OptionContainer>
-              <Option onClick={() => handleOptionChange("region1")}>거주지</Option>
-              <Option onClick={() => handleOptionChange("region2")}>직장 및 학교</Option>
-              <Option onClick={() => handleOptionChange("other")}>기타</Option>
+              <Option>거주지</Option>
+              <Option>직장 및 학교</Option>
+              <Option>기타</Option>
             </OptionContainer>
             <Button onClick={handleSave}> 수정하기 </Button>
-            <Button> 삭제하기 </Button>
+            <Button onClick={handleDeleteClick}> 삭제하기 </Button>
           </ButtonContainer>
+          ) : (
+            <Button onClick={handleSave}> 지역 추가하기 </Button>
+          )}
+            
         </InfoContainer>
       </Wrapper>
 
@@ -285,9 +327,9 @@ export default function SetRegion() {
         <>
           <PopupOverlay onClick={handleCancel} />
           <Popup>
-            <h3>{`${getLocation()}을(를) 수정하시겠습니까?`}</h3>
+            <h3>{confirmDelete ? `${getLocation()} 삭제하시겠습니까?` : `${getLocation()} 수정하시겠습니까?`}</h3>
             <div>
-              <PopupButton confirm onClick={handleConfirm}>예</PopupButton>
+              <PopupButton confirm onClick={confirmDelete ? handleDelete : handleConfirm}>예</PopupButton>
               <PopupButton onClick={handleCancel}>아니오</PopupButton>
             </div>
           </Popup>
