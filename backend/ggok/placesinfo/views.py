@@ -42,12 +42,12 @@ def RegionSearch(request):
         return Response(response_data, status=status.HTTP_200_OK)
 
     else:
-        post_list = PlaceInfo.objects.order_by('-average_review')  # 평균 리뷰값이 높은 순으로 정렬
+        post_list = PlaceInfo.objects.filter(review_count__gte=5).order_by('-average_review')# 평균 리뷰값이 높은 순으로 정렬
         serializer = PlaceInfoSerializer(post_list, many=True)
         response_data = {
             'success': True,
             'status code': status.HTTP_200_OK,
-            'message': "모든 명소 리스트를 평점순으로 정렬합니다.",
+            'message': "게시글이 5개 이상인 장소를 평점순으로 정렬합니다.",
             'data': serializer.data
         }
         return Response(response_data, status=status.HTTP_200_OK)
