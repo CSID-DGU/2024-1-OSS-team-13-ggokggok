@@ -215,18 +215,9 @@ export default function V_Feed_info(){
                 <PostTitle>{data.subject}
                 </PostTitle>
                 <PostHeader>
-                  <Nickname>{data.id}</Nickname>
+                  <Nickname></Nickname>
                   <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
                 </PostHeader>
-                <LocationContainer>
-                  <LocationIcon>
-                    <LocationText>
-                      📍  {data.name}  <br /> 
-                      <span>{data.address}</span>
-                      <StarRating totalStars={5} selectedStars={data.review} /><br /> 
-                    </LocationText>
-                  </LocationIcon>
-                </LocationContainer>
                 <PostContent>
                   <p>{data.content}</p>
                   {data.image && <PostImage src={data.image} alt="Post" />}

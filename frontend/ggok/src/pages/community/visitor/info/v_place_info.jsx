@@ -213,7 +213,7 @@ export default function V_Place_info(){
                 <PostTitle>{data.subject}
                 </PostTitle>
                 <PostHeader>
-                  <Nickname>{data.id}</Nickname>
+                  <Nickname></Nickname>
                   <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
                 </PostHeader>
                 <LocationContainer>

@@ -28,7 +28,7 @@ import V_Feed_list from "./pages/community/visitor/list/v_feed_list";
 import V_Place_list from "./pages/community/visitor/list/v_place_list";
 import V_Feed_info from "./pages/community/visitor/info/v_feed_info";
 import V_Place_info from "./pages/community/visitor/info/v_place_info";
-
+import Protected_visitor from "./components/protected_visitor";
 
 
 const Wrapper = styled.div`
@@ -80,12 +80,12 @@ const router = createBrowserRouter([
       },
       {
         path:"feed-info/:id",
-        element: <Feed_info/>,
+        element: <Protected_visitor><Feed_info/></Protected_visitor>,
 
       },
       {
         path:"place-info/:id",
-        element: <Place_info/>,
+        element: <Protected_visitor><Place_info/></Protected_visitor>,
 
       },
     
