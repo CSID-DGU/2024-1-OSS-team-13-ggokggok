@@ -11,22 +11,17 @@ class PlaceFrequentWordsAPIView(APIView):
         # 현재 시간 계산
         now = timezone.now()
 
-        # 30분 전 시간 계산
-        thirty_minutes_ago = now - timedelta(minutes=30)
+        # 오늘 날짜의 시작 시간 계산 (시간을 모두 00:00:00으로 설정)
+        today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
 
-        # 30분 이내에 생성된 게시글들 필터링
-        recent_posts = PlacePost.objects.filter(create_date__gte=thirty_minutes_ago)
-
-        # 30분 이내의 게시글이 5개 미만일 경우 1시간까지 고려.
-        if recent_posts.count() < 5:
-            one_hour_ago = now - timedelta(minutes=60)
-            recent_posts = PlacePost.objects.filter(create_date__gte=one_hour_ago)
+        # 오늘의 모든 게시글 필터링
+        today_posts = PlacePost.objects.filter(create_date__gte=today_start)
 
         # 전체 이름과 주소 빈도 계산을 위한 Counter 초기화
         total_info_counts = Counter()
 
         # 각 게시글의 이름과 주소 빈도 계산
-        for post in recent_posts:
+        for post in today_posts:
             # 이름과 주소 단어를 소문자로 변환하여 빈도 계산
             name = post.name.lower()
             address = post.address.lower()
