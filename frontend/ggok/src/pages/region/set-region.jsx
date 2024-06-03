@@ -11,7 +11,7 @@ const SVGImage = (
 );
 
 const SubTitle = styled.h2`
-  font-size: 20px;
+  font-size: 24px;
   margin: 15px;
   line-height: 30px;
 `;
@@ -27,15 +27,16 @@ const Info = styled.h3`
 const ButtonContainer = styled.div`
     display: grid;
     justify-content: center;
+    margin-top: 80px;
 `;
 
 const Button = styled.button`
-    height: 46px;
+    height: 55px;
     padding: 10px 20px;
     border-radius: 50px;
     border: none;
     margin: 10px;
-    width: 315px;
+    width: 350px;
     font-size: 17px;
     background-color : #A3CCAA;
     color: #FFFFFF;
@@ -44,12 +45,12 @@ const Button = styled.button`
 
 
 const Button2 = styled.button`
-    height: 46px;
+  height: 55px;
     padding: 10px 20px;
     border-radius: 50px;
     border: 2px solid #A3CCAA;
     margin: 10px;
-    width: 315px;
+    width: 350px;
     font-size: 17px;
     color : #A3CCAA;
     background-color: #FFFFFF;
@@ -72,15 +73,15 @@ export default function SetRegion() {
   return (
     <Wrapper>
       <Title>
-      <Blank/>
+      <Blank/> <Blank/> <Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>내 지역 설정</span></TitleDiv>
         </Title>
 
       <Info>
-        <SubTitle>회원님의 지역 정보를 등록하고 <br/>꼭꼭에서 여러 지역을 더욱 가깝게 느껴보세요!</SubTitle>
-        {SVGImage}    
+        <SubTitle>지역 정보를 등록하고 <br/>꼭꼭에서 여러 지역을 <br/>더욱 가깝게 느껴보세요!</SubTitle>
+       
       </Info>
-
+      {SVGImage}    
       <ButtonContainer>
         <Button onClick={search_region}>내 지역 등록하기</Button>
         <Button2 onClick={main}>위치 등록 없이 사용하기</Button2>

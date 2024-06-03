@@ -11,7 +11,7 @@ export const Blank = styled.div`
 `;
 
 export const Title = styled.h1`
-  width: 90%;
+  width: 100%;
   display: flex;
   font-size: 35px;
   align-items: center;
@@ -29,7 +29,7 @@ export const LogoImage = styled.img`
 `;
 
 export const TitleDiv = styled.div`
-  width: 80%;
+  // width: 80%;
   align-items: center;
   text-align: center;
   display: flex;

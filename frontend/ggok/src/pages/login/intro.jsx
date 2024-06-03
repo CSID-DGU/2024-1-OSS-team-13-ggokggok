@@ -7,6 +7,8 @@ import logo from "../../others/img/logo-icon.png"
 const Title = styled.h1`
   font-size: 130px;
   color: #534340;
+  margin-top: 30px;
+  margin-bottom: 40px;
 `;
 
 const Subtitle = styled.h2`
@@ -28,12 +30,12 @@ const ButtonContainer = styled.div`
 
 
 const Button = styled.button`
-    height: 46px;
+    height: 55px;
     padding: 10px 20px;
     border-radius: 50px;
     border: none;
     margin: 10px;
-    width: 315px;
+    width: 95%;
     font-size: 17px;
     
     background-color : #A3CCAA;

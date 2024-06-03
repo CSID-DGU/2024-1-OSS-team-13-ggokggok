@@ -13,16 +13,16 @@ const SearchContainer = styled.div`
 
 const SearchInput = styled.input`
   flex: 1;
-  height: 50px;
+  height: 55px;
   padding: 0 20px;
   border: 1px solid #ccc;
   border-radius: 50px;
-  font-size: 16px;
+  font-size: 18px;
 `;
 
 const SearchButton = styled.button`
-  height: 50px;
-  width: 50px;
+  height: 55px;
+  width: 55px;
   padding: 0 10px;
   margin-left: 10px;
   background-color: #A3CCAA;
@@ -92,8 +92,11 @@ const Location = styled.div`
   background-color: white;
   padding: 14px 0px;
   border-radius: 50px;
-  font-size: 23px;
+  font-size: 24px;
   width: 100%;
+  text-align: center;
+  align-content: center;
+  height: 60px;
 `;
 
 const OptionContainer = styled.div` 
@@ -128,6 +131,7 @@ const Button = styled.input`
   border-radius: 50px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  height: 55px;
 `;
 
 const ButtonContainer = styled.div`
@@ -146,6 +150,7 @@ const RegistButton = styled.button`
   width: 100%;
   border-radius: 50px;
   font-size: 23px;
+  height: 60px;
 `;
 
 const DeleteButton = styled.button`
@@ -155,6 +160,7 @@ const DeleteButton = styled.button`
   width: 100%;
   border-radius: 50px;
   font-size: 23px;
+  height: 60px;
 `;
 
 const RegionButton = styled.button`
@@ -248,7 +254,7 @@ export default function SearchPlace() {
     e.preventDefault();
 
     const userSessionData = JSON.parse(sessionStorage.getItem('user'));
-    const searchRegion = address.split(' ')[2];
+    const searchRegion = address.split(' ').slice(0, 3).join(' ');
     const dataToSend = {
       region1: null,
       region2: null,
@@ -328,8 +334,8 @@ export default function SearchPlace() {
   return (
     <Wrapper>
       <Title>
-        <Blank />
-        <TitleDiv>내 지역 검색</TitleDiv>
+        <Blank /><Blank /><Blank /><Blank /><Blank />
+        <TitleDiv>지역 검색</TitleDiv>
       </Title>
       <SearchContainer>
         <SearchInput
@@ -373,8 +379,9 @@ export default function SearchPlace() {
         {modalOpen && (
           <Modal onClose={() => setModalOpen(false)}>
             <Title>
-              <Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/><Blank/>
-              <TitleDiv> 지역 정보</TitleDiv>
+              <Blank/><Blank/><Blank/><Blank/>
+              {SVGImage}
+              <TitleDiv>지역 정보</TitleDiv>
             </Title>
 
             <Line/>
