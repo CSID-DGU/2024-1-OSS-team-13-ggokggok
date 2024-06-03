@@ -80,12 +80,12 @@ const router = createBrowserRouter([
       },
       {
         path:"feed-info/:id",
-        element: <Protected_visitor><Feed_info/></Protected_visitor>,
+        element: <><Feed_info/></>,
 
       },
       {
         path:"place-info/:id",
-        element: <Protected_visitor><Place_info/></Protected_visitor>,
+        element: <><Place_info/></>,
 
       },
     

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const CarouselContainer = styled.div`
   width: auto;
@@ -51,8 +52,9 @@ const Carousel = ({ items }) => {
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/word/`);
           setGetData(response.data.data);
+          console.log(getData);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -64,13 +66,17 @@ const Carousel = ({ items }) => {
   return (
     <CarouselContainer>
       <CarouselInner translateY={currentIndex * 30}>
-        {items.map((item, index) => (
+      {items.length > 0 ? 
+        items.map((item, index) => (
           <Link to = {`/total-info/${item.address}`}>
           <CarouselItem key={index}>
             {`${index+1}. ${item}`}
           </CarouselItem>
           </Link>
-        ))}
+        ))
+      :
+      <></>
+      }
       </CarouselInner>
     </CarouselContainer>
   );
