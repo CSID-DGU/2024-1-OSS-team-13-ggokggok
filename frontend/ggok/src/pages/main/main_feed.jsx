@@ -131,7 +131,7 @@ export default function main_feed(){
                             </div>
                             </ContentBox>
                           </Link>
-                ))): (<></>)}
+                ))): (<h1>게시글이 없습니다</h1>)}
                 </div>
             </SubTitle>
             
@@ -162,7 +162,7 @@ export default function main_feed(){
                             </div>
                         </div>
                       </Link>
-                ))): (<></>)}
+                ))): (<h1>게시글이 없습니다</h1>)}
                 </ContentBox2>
             </SubTitle>
 

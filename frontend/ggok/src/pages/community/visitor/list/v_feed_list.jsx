@@ -107,7 +107,7 @@ export default function V_Feed_list(){
                                 </div>
                             </div>
                           </Link>
-                    ))): (<></>)}
+                    ))): (<h1>게시글이 없습니다</h1>)}
                 </ContentBox2>
             </SubTitle>
         </Wrapper>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const CarouselContainer = styled.div`
   width: auto;
@@ -33,6 +34,7 @@ const Carousel = ({ items }) => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
+    console.log(currentIndex);
   };
 
   useEffect(() => {
@@ -40,13 +42,34 @@ const Carousel = ({ items }) => {
     return () => clearInterval(interval);
   }, []);
 
+
+  const [getData, setGetData] = useState([]);
+
+
+    const region1 = sessionStorage.getItem('user').region1;
+    const region2 = sessionStorage.getItem('user').region2;
+
+    async function fetchData() {
+        try {
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
+          setGetData(response.data.data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+    }
+
+    useEffect(() => {fetchData();}, []);
+
+
   return (
     <CarouselContainer>
       <CarouselInner translateY={currentIndex * 30}>
         {items.map((item, index) => (
+          <Link to = {`/total-info/${item.address}`}>
           <CarouselItem key={index}>
-            {item}
+            {`${index+1}. ${item}`}
           </CarouselItem>
+          </Link>
         ))}
       </CarouselInner>
     </CarouselContainer>
