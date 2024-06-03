@@ -3,17 +3,17 @@ import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
+   
+
     @font-face {
-        font-family: 'basicFont';
-        src: url('/src/others/font/laundryRegular.woff2') format('woff2'),
-             url('/src/others/font/laundryRegular.woff') format('woff'),
-             url('/src/others/font/laundryRegular.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-    }
+      font-family: 'TTLaundryGothicB';
+      src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403-2@1.0/TTLaundryGothicR.woff2') format('woff2');
+      font-weight: 700;
+      font-style: normal;
+  }
 
     body {
-        font-family: 'basicFont', Arial, sans-serif;
+        font-family: 'TTLaundryGothicB', 'basicFont', Arial, sans-serif;
     }
 `;
 
