@@ -1,23 +1,19 @@
 import { createGlobalStyle } from 'styled-components';
-import reset from "styled-reset";
-
-
+import reset from 'styled-reset';
 
 const GlobalStyle = createGlobalStyle`
     ${reset}
     @font-face {
-    font-family: "basicWOfF";
-      src: url("/src/others/font/laundryRegular.woff") format("woff");
+        font-family: 'basicFont';
+        src: url('/src/others/font/laundryRegular.woff2') format('woff2'),
+             url('/src/others/font/laundryRegular.woff') format('woff'),
+             url('/src/others/font/laundryRegular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
     }
 
-    @font-face {
-      font-family: "basicTTF";
-      font-style: normal;
-      src: url("/src/others/font/laundryRegular.ttf") format("truetype");
-  }
-
     body {
-        font-family: "basicWOFF";
+        font-family: 'basicFont', Arial, sans-serif;
     }
 `;
 
