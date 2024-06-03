@@ -359,7 +359,7 @@ export default function Place_info() {
                 
                 </PostTitle>
                 <PostHeader>
-                  <Nickname>{data.id}</Nickname>
+                  <Nickname></Nickname>
                   <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
                 </PostHeader>
                 <LocationContainer>
