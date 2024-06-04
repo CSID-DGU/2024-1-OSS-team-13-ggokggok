@@ -5,6 +5,8 @@ import axios from "axios";
 import { TitleDiv, LogoImage, Blank, ExtraButton, Wrapper } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png";
 import profileImage from "../../others/img/profile.png";
+import { formatDistanceToNow } from "date-fns"; // Importing date-fns function
+import { ko } from 'date-fns/locale'; // Importing Korean locale
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
@@ -111,7 +113,6 @@ const ContentBox2 = styled.div`
   height: 300px;
   width: 95%;
   border: 1px solid #ffffff;
-  border-radius: 10px;
   margin: 15px 0 0;
   overflow: auto;
 
@@ -127,16 +128,18 @@ const ContentBox2 = styled.div`
   }
 
   p {
+    width: 300px;
+    text-align: left;
     font-size: 14px;
     padding: 5px 0 15px;
   }
 `;
 
 const ContentImg = styled.img`
-  width: 95%;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 10px;
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 10px;
 `;
 
 const EditRegionButton = styled.button`
@@ -152,6 +155,30 @@ const EditRegionButton = styled.button`
 
   &:hover {
     background-color: #89b492;
+  }
+`;
+
+const NoImagePlaceholder = styled.div`
+  height: 60px;
+  width: 60px;
+  border-radius: 10px;
+  margin: 0 10px 0 10px;
+  background-color: #E0E0E0; /* Gray background */
+`;
+
+
+const TopContent = styled.div`
+  display: flex;
+
+  div {
+    width: 230px;
+    text-align: left;
+  }
+
+  span {
+    font-size: 13px;
+    margin-left: auto;
+    color: #BDBDBD;
   }
 `;
 
@@ -257,11 +284,15 @@ const MyPage = () => {
           contents.map((content) => (
             <Link key={content.id} to={selectedButton === "my-posts" ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
               <div style={{ display: "flex" }}>
-                <ContentImg src="/" alt="content" />
+
+                {content.image ? <ContentImg src={content.image} alt={content.subject} /> : <NoImagePlaceholder/>}
                 <div>
-                  <h3>{content.subject || content.name}</h3>
-                  <p>{content.content}</p>
-                </div>
+                    <TopContent>
+                      <div>{content.subject}</div>
+                      <span>{formatDistanceToNow(new Date(content.create_date), { addSuffix: true, locale: ko })}</span>
+                    </TopContent>
+                    <p>{content.content}</p>
+                  </div>
               </div>
             </Link>
           ))
