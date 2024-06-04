@@ -302,6 +302,8 @@ export default function SearchPlace() {
       }
 
       setModalOpen(false);
+      alert("지역 정보 업데이트가 완료되었습니다!");
+      nav('/'); // Navigate to the main screen upon successful registration
     } catch (error) {
       if (error.message === '등록이 완료된 지역입니다.') {
         setError('등록이 완료된 지역입니다.');

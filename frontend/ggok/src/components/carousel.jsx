@@ -3,19 +3,25 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+const Container = styled.div`
+  width: 200px;
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 60px;
+`;
+
 const CarouselContainer = styled.div`
-  width: auto;
-  height: 20px; 
-  margin: 0 auto;
+  width: 150px;
+  height: 30px; /* CarouselItem의 높이와 일치시킴 */
   overflow: hidden;
-  position: relative;
+  margin-left: auto;
 `;
 
 const CarouselInner = styled.div`
   display: flex;
   flex-direction: column;
   transition: transform 0.5s ease-in-out;
-  transform: ${({ translateY }) => `translateY(-${translateY}%)`};
+  transform: ${({ translateY }) => `translateY(-${translateY}px)`}; /* translateY 값을 px 단위로 변경 */
 `;
 
 const CarouselItem = styled.div`
@@ -24,9 +30,8 @@ const CarouselItem = styled.div`
   align-items: center;
   background-color: transparent;
   font-size: 20px;
-  font-family: 'Arial, sans-serif';
-  padding: 0;
-  height: 20px; 
+  padding: 10px;
+  height: 20px; /* CarouselContainer의 높이와 일치시킴 */
   white-space: nowrap;
 `;
 
@@ -35,7 +40,6 @@ const Carousel = ({ items }) => {
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % items.length);
-    console.log(currentIndex);
   };
 
   useEffect(() => {
@@ -43,42 +47,40 @@ const Carousel = ({ items }) => {
     return () => clearInterval(interval);
   }, []);
 
-
   const [getData, setGetData] = useState([]);
 
+  const region1 = sessionStorage.getItem('user')?.region1;
+  const region2 = sessionStorage.getItem('user')?.region2;
 
-    const region1 = sessionStorage.getItem('user').region1;
-    const region2 = sessionStorage.getItem('user').region2;
-
-    async function fetchData() {
-        try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/word/`);
-          setGetData(response.data.data);
-          console.log(getData);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
+  async function fetchData() {
+    try {
+      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/word/`);
+      setGetData(response.data.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
+  }
 
-    useEffect(() => {fetchData();}, []);
-
+  useEffect(() => { fetchData(); }, []);
 
   return (
-    <CarouselContainer>
-      <CarouselInner translateY={currentIndex * 30}>
-      {items.length > 0 ? 
-        items.map((item, index) => (
-          <Link to = {`/total-info/${item.address}`}>
-          <CarouselItem key={index}>
-            {`${index+1}. ${item}`}
-          </CarouselItem>
-          </Link>
-        ))
-      :
-      <></>
-      }
-      </CarouselInner>
-    </CarouselContainer>
+    <Container>
+      <CarouselContainer>
+        <CarouselInner translateY={currentIndex * 30}> {/* translateY 값을 px 단위로 변경 */}
+          {items.length > 0 ?
+            items.map((item, index) => (
+              <Link to={`/total-info/${item.address}`} key={index}>
+                <CarouselItem>
+                  {`${index + 1}. ${item}`}
+                </CarouselItem>
+              </Link>
+            ))
+            :
+            <></>
+          }
+        </CarouselInner>
+      </CarouselContainer>
+    </Container>
   );
 };
 

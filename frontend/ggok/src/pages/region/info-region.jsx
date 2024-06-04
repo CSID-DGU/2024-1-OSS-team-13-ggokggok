@@ -294,14 +294,14 @@ export default function SetRegion() {
               theme={theme}
               onClick={() => handleOptionChange("region1")}
             >
-              {regionInfo.region1}
+              {regionInfo.region1.split(' ')[2]}
             </RegionButtonText>
             <RegionButtonText
               selected={selectedOption === "region2"}
               theme={theme}
               onClick={() => handleOptionChange("region2")}
             >
-              {regionInfo.region2}
+              {regionInfo.region2.split(' ')[2]}
             </RegionButtonText>
           </RegionButton>
 
@@ -327,7 +327,7 @@ export default function SetRegion() {
         <>
           <PopupOverlay onClick={handleCancel} />
           <Popup>
-            <h3>{confirmDelete ? `${getLocation()} 삭제하시겠습니까?` : `${getLocation()} 수정하시겠습니까?`}</h3>
+            <h3>{confirmDelete ? `해당 지역을 삭제하시겠습니까?` : ` 해당 지역을 수정하시겠습니까?`}</h3>
             <div>
               <PopupButton confirm onClick={confirmDelete ? handleDelete : handleConfirm}>예</PopupButton>
               <PopupButton onClick={handleCancel}>아니오</PopupButton>

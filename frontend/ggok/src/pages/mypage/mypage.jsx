@@ -235,7 +235,7 @@ const MyPage = () => {
       <ProfileWrapper>
         <ProfileImage src={profile.profileImage || "https://i.namu.wiki/i/zw-3hri_NINFShw4KfHezUemGvkhgHMYjfuXpYx7PhcOcpPdZCSaWK_H9HNAKm99TrALzQ_3XCmJGwpYQUX_vJ5tnZ-Am9gvK2CGNBNOQn-UNfV-NLwOn_RaaOtIQKLQ0X1Ql8hpM0SuhkyErHBhfw.webp"} alt="Profile" />
         <UserInfoWrapper>
-          <ResidentInfo>{profile.region1} 주민</ResidentInfo>
+          <ResidentInfo>{profile.region1.split(' ')[2]} 주민</ResidentInfo>
           <UserName>{profile.username.split('@')[0]}</UserName>
         </UserInfoWrapper>
         <EditRegionButton onClick={handleEditRegion}>지역 수정</EditRegionButton>
