@@ -129,9 +129,13 @@ const ContentBox2 = styled.div`
 
   p {
     width: 300px;
+    height: 30px;
     text-align: left;
     font-size: 14px;
     padding: 5px 0 15px;
+    white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
   }
 `;
 
@@ -165,7 +169,6 @@ const NoImagePlaceholder = styled.div`
   margin: 0 10px 0 10px;
   background-color: #E0E0E0; /* Gray background */
 `;
-
 
 const TopContent = styled.div`
   display: flex;

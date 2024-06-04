@@ -69,6 +69,10 @@ const ContentBox2 = styled.div`
     font-size: 14px;
     padding: 5px 0 15px;
     width: 280px;
+    height: 30px;
+    white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
   }
 `;
 
@@ -208,7 +212,10 @@ export default function MainFeed() {
       <SubTitle>
         <ContentBox2>
           {getData.length > 0 ? (
-            getData.map((data) => (
+            getData
+            .slice() // 원본 배열을 변경하지 않기 위해 복사본을 만듭니다.
+            .sort((a, b) => b.id - a.id) // id를 기준으로 내림차순 정렬합니다.
+            .map((data) => (
               <Link to={data ? `/feed-info/${data.id}` : "/"} key={data.id}>
                 <div style={{ display: 'flex' }}>
                   {data.image ? <ContentImg src={data.image} alt={data.subject} /> : <NoImagePlaceholder />}

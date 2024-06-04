@@ -12,6 +12,11 @@ const GlobalStyle = createGlobalStyle`
       font-style: normal;
   }
 
+
+    * {
+        font-family: 'TTLaundryGothicB', 'basicFont', Arial, sans-serif;
+    }
+    
     body {
         font-family: 'TTLaundryGothicB', 'basicFont', Arial, sans-serif;
     }

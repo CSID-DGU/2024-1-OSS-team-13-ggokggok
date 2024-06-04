@@ -52,6 +52,7 @@ export const ExtraButton = styled.button`
   font-weight: bold;
   padding-right: 0px;
   margin-right: 0px;
+
 `;
 
 

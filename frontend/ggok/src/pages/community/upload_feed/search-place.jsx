@@ -57,10 +57,10 @@ const SVGImage = (
 
 const ResultsContainer = styled.div`
   width: 100%;
-  padding: 10px 20px;
+  padding: 0 20px;
   gap: 30px;
   items-align: center;
-  height: 500px;
+  height: 450px;
 `;
 
 const ResultItem = styled.div`
@@ -138,11 +138,7 @@ export default function SearchPlace() {
           'X-Naver-Client-Id': 'WDVId7gO_fHzG7oRtf5w',
           'X-Naver-Client-Secret': 'q4MDc81Fjb',
         },
-        params: {
-          display : 5,
-          start : 1
-        }
-       
+      
       });
 
       if (!response.ok) {
@@ -186,6 +182,14 @@ export default function SearchPlace() {
     nav('/upload-place');
   }
   
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      setError(''); // 검색을 시작할 때 에러 메시지를 초기화
+      handleSearch();
+    }
+  };
+  
+
   return (
     <Wrapper>
       <Title>명소 검색</Title>
@@ -195,6 +199,7 @@ export default function SearchPlace() {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="🔍 '지역 + 장소' 를 입력해주세요"
+          onKeyPress={handleKeyPress}
         />
         <SearchButton onClick={handleSearch}>검색</SearchButton>
       </SearchContainer>

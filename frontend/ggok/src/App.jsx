@@ -78,16 +78,7 @@ const router = createBrowserRouter([
         element: <Place_list/>,
 
       },
-      {
-        path:"feed-info/:id",
-        element: <><Feed_info/></>,
-
-      },
-      {
-        path:"place-info/:id",
-        element: <><Place_info/></>,
-
-      },
+      
     
       {
         path:"/info-region",
@@ -105,11 +96,7 @@ const router = createBrowserRouter([
         path:"search-place",
         element: <SearchPlace/>,
       },
-      {
-        path:"searchplace",
-        element: <SearchPlace/>,
-      }
-      , 
+
       {
         path: "total-info/:id",
         element: <Total_info/>,
@@ -158,6 +145,16 @@ const router = createBrowserRouter([
   {
     path:"/search-region",
     element: <Protected_login><SearchRegion/></Protected_login>
+  },
+  {
+    path:"feed-info/:id",
+    element: <Protected_login><Feed_info/></Protected_login>,
+
+  },
+  {
+    path:"place-info/:id",
+    element: <Protected_login><Place_info/></Protected_login>,
+
   },
 
 
