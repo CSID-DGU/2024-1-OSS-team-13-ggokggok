@@ -50,6 +50,8 @@ export const ExtraButton = styled.button`
   color: #A3CCAA;
   font-size: 16px;
   font-weight: bold;
+  padding-right: 0px;
+  margin-right: 0px;
 `;
 
 
