@@ -164,18 +164,18 @@ export default function Total_info() {
       <SubTitle>
         <ContentBox2>
 
-          
+          <h1>리뷰 평균</h1>
+          <br></br>
+
           {data.length > 0 ? (
             data.map((item, index) => (
               <div key={index}>
                   <h1>{item.name}</h1>
-                  <h1>{item.title}</h1>
                   <br/>
                   <h1>{item.address}</h1>
                   <br />
                   <h1>명소 평점</h1>
                   <StarRating totalStars={5} selectedStars={item.average_review} />
-                  <h2>{item.content}</h2>
                   <br></br>
               </div>
             ))
@@ -186,7 +186,8 @@ export default function Total_info() {
             <br></br>
             </>
           )}
-
+          <h1>게시글 목록</h1>
+          <br></br>
           {feed.length > 0 ? (
             feed.map((item, index) => (
               <div key={index}>
