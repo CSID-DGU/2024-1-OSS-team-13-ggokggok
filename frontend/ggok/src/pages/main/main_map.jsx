@@ -18,7 +18,7 @@ const Icon = styled.div`
 const LocationInfo = styled.div`
   font-size: 26px;
   margin-left: 10px;
-  
+  width: 100px;
 `;
 
 const TopContainer = styled.div`
