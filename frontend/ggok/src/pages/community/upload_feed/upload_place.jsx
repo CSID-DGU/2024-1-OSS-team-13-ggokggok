@@ -294,6 +294,9 @@ export default function UploadPlace({ post, onSave, onCancel }) {
             'Content-Type': 'application/json',
           },
         });
+
+        alert('등록이 완료되었습니다!');
+        navigate(`/`);
       }
       console.log('Server Response:', response.data);
     } catch (error) {
@@ -317,8 +320,8 @@ export default function UploadPlace({ post, onSave, onCancel }) {
     if (id) {
       alert('수정이 완료되었습니다!');
       navigate(`/`);
+
     }
-     
   };
   
   

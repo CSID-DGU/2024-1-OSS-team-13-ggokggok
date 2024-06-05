@@ -257,7 +257,9 @@ export default function Feed_info() {
         data: deleteData // 데이터를 data 속성으로 전달
       });
   
-      navigate('/community');
+      alert("게시물이 성공적으로 삭제되었습니다.");
+
+      navigate('/');
     } catch (error) {
       console.error('Error deleting post:', error);
     }

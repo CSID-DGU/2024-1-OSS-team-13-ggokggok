@@ -66,7 +66,6 @@ const router = createBrowserRouter([
       {
         path:"upload-place/:id?",
         element: <Upload_place/>,
-
       },
       {
         path:"feed-list",

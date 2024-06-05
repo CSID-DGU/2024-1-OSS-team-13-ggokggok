@@ -96,6 +96,8 @@ const Button = styled.input`
   transition: background-color 0.3s ease;
 `;
 
+
+
 export default function SearchPlace() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResult, setSearchResult] = useState(null);
@@ -146,10 +148,6 @@ export default function SearchPlace() {
     console.log(item);
   };
 
-  const removeHTMLTags = (str) => {
-    return str.replace(/<[^>]*>/g, '');
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     sessionStorage.setItem('name', name);
@@ -165,6 +163,13 @@ export default function SearchPlace() {
       handleSearch();
     }
   };
+
+  const removeHTMLTags = (str) => {
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = str;
+    return tempElement.textContent || tempElement.innerText || "";
+  };
+  
 
   return (
     <Wrapper>
@@ -194,8 +199,8 @@ export default function SearchPlace() {
               <ResultContent>
                 <SVGContainer>{SVGImage}</SVGContainer>
                 <TextContainer>
-                  <ResultTitle dangerouslySetInnerHTML={{ __html: item.title }} />
-                  <ResultAddress dangerouslySetInnerHTML={{ __html: item.address }} />
+                  <ResultTitle>{removeHTMLTags(item.title)}</ResultTitle>
+                  <ResultAddress>{removeHTMLTags(item.address)}</ResultAddress>
                 </TextContainer>
               </ResultContent>
             </ResultItem>
