@@ -239,7 +239,7 @@ export default function SearchPlace() {
     const { longitude, latitude } = convertCoordinates(item.mapx, item.mapy);
     setLat(latitude);
     setLng(longitude);
-    setName(removeHtmlTags(item.title));
+    setName(removeHTMLTags(item.title));
     setAddress(item.address);
 
     console.log(item);
@@ -325,6 +325,12 @@ export default function SearchPlace() {
     });
   };
 
+  const removeHTMLTags = (str) => {
+    const tempElement = document.createElement("div");
+    tempElement.innerHTML = str;
+    return tempElement.textContent || tempElement.innerText || "";
+  };
+  
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       setError(''); // 검색을 시작할 때 에러 메시지를 초기화

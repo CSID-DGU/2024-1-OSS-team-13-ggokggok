@@ -100,10 +100,11 @@ const TopContent = styled.div`
 
   div {
     width: 250px;
+    font-size: 19px;
   }
 
   span {
-    font-size: 13px;
+    font-size: 14px;
     margin-left: auto;
     color: #BDBDBD;
   }
@@ -222,7 +223,7 @@ export default function MainFeed() {
                   <div>
                     <TopContent>
                       <div>{data.subject}</div>
-                       <span>{formatDistanceToNow(new Date(data.create_date), { addSuffix: true, locale: ko })}</span>
+                      <span>{formatDistanceToNow(new Date(data.create_date), { addSuffix: true, locale: ko })}</span>
                     </TopContent>
                     <p>{data.content}</p>
                   </div>

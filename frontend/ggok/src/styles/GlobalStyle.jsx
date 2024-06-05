@@ -20,18 +20,18 @@ const GlobalStyle = createGlobalStyle`
 }
 
 @font-face {
-    font-family: 'WavvePADO-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2404@1.0/WavvePADO-Regular.woff2') format('woff2');
+    font-family: 'HSSanTokki20-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2405@1.0/HSSanTokki20-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
 
     * {
-        font-family:  'WavvePADO-Regular', 'MangoDdobak-B' 'basicFont', Arial, sans-serif;
+        font-family: 'TTLaundryGothicB', 'HSSanTokki20-Regular', 'MangoDdobak-B' 'basicFont', Arial, sans-serif;
     }
 
     body {
-        font-family: 'WavvePADO-Regular', 'MangoDdobak-B', 'basicFont', Arial, sans-serif;
+        font-family: 'TTLaundryGothicB', 'HSSanTokki20-Regular', 'MangoDdobak-B', 'basicFont', Arial, sans-serif;
     }
 `;
 
