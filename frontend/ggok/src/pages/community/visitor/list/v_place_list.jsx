@@ -104,52 +104,67 @@ export default function V_Place_list(){
 
 
     return (
+
         <Wrapper>
-          <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>{id} 지역 명소</span></TitleDiv>
-          </Title>            
+        <Title>
+          <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
+          <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
+        </Title>            
+          <SubTitle>
+          <h2></h2>
           <button onClick={toggle} type="button">{secret ? "숨겨진 명소" : "전체" }</button>
-          {!secret ?
-            <SubTitle>
-                <div style= {{ overflow: 'auto', height: '600px' }}>
-                {getData.length > 0 ? (
-                        getData.map((data) => (
-                            <Link to={data ? `/visitor-place-info/${data.id}` : "/"}
-                            style={{textDecoration: "none"}}>
-                            <ContentBox>
-                            <div style={{display: 'flex'}}>
+              { !secret ?
+              <div style= {{ overflow: 'auto', height: '600px' }}>
+              {getData.length > 0 ? (
+                      getData.map((data) => (
+                          <Link to={data ? `/visitor-place-info/${data.id}` : "/"}
+                          style={{textDecoration: "none"}}>
+                          <ContentBox>
+                          <div style={{display: 'flex'}}>
+                              {data.image ? 
                                 <ContentImg src= {`${data.image}`}></ContentImg>
-                                <div>
-                                    <h3>{data.title}</h3>
-                                    <p>{data.content}</p>
-                                </div>
-                            </div>
-                            </ContentBox>
-                            </Link>
-                ))): (<h1>게시글이 없습니다</h1>)}
-                </div>
-            </SubTitle>
+                              :
+                              <></>
+                              }
+                              <div>
+                                  <h3>{data.title}</h3>
+                                  <p>{data.content}</p>
+                              </div>
+                          </div>
+                          </ContentBox>
+                          </Link>
+              ))): (<h1>게시글이 없습니다</h1>)}
+              </div>
             :
-            <SubTitle>
             <div style= {{ overflow: 'auto', height: '600px' }}>
             {secretData.length > 0 ? (
                     secretData.map((data) => (
-                        <Link to={data ? `/visitor-place-info/${data.id}` : "/"}
-                        style={{textDecoration: "none"}}>
-                        <ContentBox>
+                      <Link to={data ? `/total-info/${data.address}` : "/"}
+                      style={{textDecoration: "none"}}>
+                      <ContentBox>
+
                         <div style={{display: 'flex'}}>
+                          {data.image ? 
                             <ContentImg src= {`${data.image}`}></ContentImg>
+                          :
+                          <></>
+                          }
                             <div>
-                                <h3>{data.title}</h3>
-                                <p>{data.content}</p>
-                            </div>
+                                <h1>{data.name}</h1>
+                                <br/>
+                                <h1>{data.address}</h1>
+                                <br />
+                                <h1>명소 평점</h1>
+                                <StarRating totalStars={5} selectedStars={data.average_review} />                              </div>
                         </div>
                         </ContentBox>
-                        </Link>
-                ))): (<h1>게시글이 없습니다</h1>)}
-                </div>
-            </SubTitle>
+                      </Link>
+                ))): <h1>숨겨진 명소 데이터가 없습니다</h1>}
+              </div>
+
             }
+
+          </SubTitle>
         </Wrapper>
     );
 }
