@@ -13,7 +13,7 @@ const Container = styled.div`
 
 const CarouselContainer = styled.div`
   width: 150px;
-  height: 20px; /* CarouselItem의 높이와 일치시킴 */
+  height: 40px; 
   overflow: hidden;
   margin-left: auto;
 `;
@@ -22,7 +22,7 @@ const CarouselInner = styled.div`
   display: flex;
   flex-direction: column;
   transition: transform 0.5s ease-in-out;
-  transform: ${({ translateY }) => `translateY(-${translateY}px)`}; /* translateY 값을 px 단위로 변경 */
+  transform: ${({ translateY }) => `translateY(-${translateY}px)`}; 
 `;
 
 const CarouselItem = styled.div`
@@ -30,10 +30,10 @@ const CarouselItem = styled.div`
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  font-size: ${({ fontSize }) => fontSize}px;
-  padding: 10x;
-  height: 20px; /* CarouselContainer의 높이와 일치시킴 */
+ /* font-size: ${({ fontSize }) => fontSize}px;*/
+  height: 40px; 
   white-space: nowrap;
+  overflow: hidden; 
 `;
 
 const Carousel = ({ items }) => {
@@ -50,8 +50,8 @@ const Carousel = ({ items }) => {
   }, [items]);
 
   const handleText = (text) => {
-    if (text.length > 5) {
-      return text.substring(0, 5) + '...'; // 글자 수가 5글자를 넘으면 앞에서부터 5글자만 보여주고 나머지는 "..."으로 대체합니다.
+    if (text.length > 10) {
+      return text.substring(0, 10) + '...'; 
     }
     return text;
   };
@@ -60,7 +60,7 @@ const Carousel = ({ items }) => {
   return (
     <Container>
       <CarouselContainer>
-        <CarouselInner translateY={currentIndex * 30}> {/* translateY 값을 px 단위로 변경 */}
+        <CarouselInner translateY={ currentIndex * 45}> 
           {items.length > 0 ?
             items.map((item, index) => (
               <Link to={`/total-info/${item.address}`} key={index}>
