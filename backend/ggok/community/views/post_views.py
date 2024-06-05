@@ -59,13 +59,11 @@ class PostListAndCreate(APIView):
 
         if user_region1 is not None:
             requested_region = extract_region(requested_region)
-            print(requested_region)
             if user_region1 == requested_region:
                 temp1 = True
 
         if user_region2 is not None:
             requested_region = extract_region(requested_region)
-            print(requested_region)
             if user_region2 == requested_region:
                 temp2 = True
 
@@ -132,7 +130,7 @@ class PostDetailUpdateDelete(APIView):
         requested_author = request.data.get('author')
 
         if serializer.is_valid():
-            if requested_author == post.author_id:
+            if requested_author == post.author:
                 serializer.save()
                 response_data = {
                     'success': True,
@@ -162,7 +160,7 @@ class PostDetailUpdateDelete(APIView):
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
         requested_author = request.data.get('author')
-        if requested_author == post.author_id:
+        if requested_author == post.author:
             post.delete()
             response_data = {
                 'success': True,
@@ -170,7 +168,7 @@ class PostDetailUpdateDelete(APIView):
                 'message': '게시글을 삭제했습니다.',
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        elif requested_author != post.author_id:
+        elif requested_author != post.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
@@ -201,7 +199,7 @@ class PostVote(APIView):
                 'message': '요청 실패.',
             }
             return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
-        if requested_author == post.author_id:
+        if requested_author == post.author:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
