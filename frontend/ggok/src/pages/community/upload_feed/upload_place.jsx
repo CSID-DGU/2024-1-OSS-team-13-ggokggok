@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import logo from '../../../others/img/logo-icon.png';
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank } from '../../../styles/Styles';
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, MainContainer, Blank } from '../../../styles/Styles';
 import StarRating from '../../../components/starrating';
 
 const Form = styled.form`

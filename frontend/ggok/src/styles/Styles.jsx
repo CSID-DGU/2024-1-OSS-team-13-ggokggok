@@ -38,10 +38,7 @@ export const TitleDiv = styled.div`
   img { margin-bottom: -7px; }
 `;
 
-export const BackButton = styled.button`
-  border: none;
-  background-color: white;
-`;
+
 
 
 export const ExtraButton = styled.button`

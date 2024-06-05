@@ -1,12 +1,13 @@
 import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png";
 import leftlogo from "../../../others/img/left-button.png";
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../styles/Styles";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import StarRating from "../../../components/starrating";
+import BackButton from "../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -152,9 +153,7 @@ export default function Total_info() {
     <Wrapper>
       <Title>
         <div>
-          <BackButton>
-            <img src={leftlogo} />
-          </BackButton>
+          <BackButton></BackButton>
         </div>
         <TitleDiv>
           <LogoImage src={logo} alt="Logo" />

@@ -1,16 +1,25 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import leftlogo from "../others/img/left-button.png";
+
+const Button = styled.button`
+    border: none;
+    background-color: white;
+`;
 
 const BackButton = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const goBack = () => {
-    history.goBack(); 
+  const handleBack = () => {
+    navigate(-1); 
   };
 
   return (
-    <button onClick={goBack}>뒤로 가기</button>
-  );
+  <Button onClick={handleBack}>
+    <img src={leftlogo} />
+  </Button>
+  )
 };
 
 export default BackButton;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, TitleDiv, ExtraButton, BackButton, MainContainer, Blank} from "../../../styles/Styles";
+import { Wrapper, Title, TitleDiv, ExtraButton, MainContainer, Blank} from "../../../styles/Styles";
 
 const SearchContainer = styled.div`
   display: flex;

@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import logo from "../../../../others/img/logo-icon.png"
 import leftlogo from "../../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
