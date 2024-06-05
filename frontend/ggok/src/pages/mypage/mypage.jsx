@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { TitleDiv, LogoImage, Blank, ExtraButton } from "../../styles/Styles";
+import { TitleDiv, LogoImage, Blank, ExtraButton, Wrapper } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png";
+import profileImage from "../../others/img/profile.png";
+import { formatDistanceToNow } from "date-fns"; // Importing date-fns function
+import { ko } from 'date-fns/locale'; // Importing Korean locale
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
@@ -36,9 +39,7 @@ const LogoutBtn = styled.div`
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  width: 80px;
-  padding: 0;
-  margin: 0;
+  margin-left: 40px;
 `;
 
 const ProfileWrapper = styled.div`
@@ -112,7 +113,6 @@ const ContentBox2 = styled.div`
   height: 300px;
   width: 95%;
   border: 1px solid #ffffff;
-  border-radius: 10px;
   margin: 15px 0 0;
   overflow: auto;
 
@@ -128,16 +128,22 @@ const ContentBox2 = styled.div`
   }
 
   p {
+    width: 300px;
+    height: 30px;
+    text-align: left;
     font-size: 14px;
     padding: 5px 0 15px;
+    white-space : nowrap;
+    overflow: hidden;
+    text-overflow : ellipsis;
   }
 `;
 
 const ContentImg = styled.img`
-  width: 95%;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   border-radius: 10px;
-  margin: 0 10px 0 0;
+  margin: 0 10px 0 10px;
 `;
 
 const EditRegionButton = styled.button`
@@ -153,6 +159,29 @@ const EditRegionButton = styled.button`
 
   &:hover {
     background-color: #89b492;
+  }
+`;
+
+const NoImagePlaceholder = styled.div`
+  height: 60px;
+  width: 60px;
+  border-radius: 10px;
+  margin: 0 10px 0 10px;
+  background-color: #E0E0E0; /* Gray background */
+`;
+
+const TopContent = styled.div`
+  display: flex;
+
+  div {
+    width: 230px;
+    text-align: left;
+  }
+
+  span {
+    font-size: 13px;
+    margin-left: auto;
+    color: #BDBDBD;
   }
 `;
 
@@ -222,23 +251,23 @@ const MyPage = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <Title> 
-        <Blank/>
-        <TitleDiv>&nbsp; &nbsp; &nbsp; <LogoImage src={logo} alt="Logo" /><span>마이페이지</span>
-        </TitleDiv>
+        <Blank/><Blank/>
+        <TitleDiv> &nbsp; &nbsp; <LogoImage src={logo} alt="Logo" /><span>마이페이지</span>
+        </TitleDiv>    
         <ExtraButton>
           <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
         </ExtraButton>
       </Title>
 
       <ProfileWrapper>
-        <ProfileImage src={profile.profileImage || "https://i.namu.wiki/i/zw-3hri_NINFShw4KfHezUemGvkhgHMYjfuXpYx7PhcOcpPdZCSaWK_H9HNAKm99TrALzQ_3XCmJGwpYQUX_vJ5tnZ-Am9gvK2CGNBNOQn-UNfV-NLwOn_RaaOtIQKLQ0X1Ql8hpM0SuhkyErHBhfw.webp"} alt="Profile" />
+        <ProfileImage src={profileImage || "https://i.namu.wiki/i/zw-3hri_NINFShw4KfHezUemGvkhgHMYjfuXpYx7PhcOcpPdZCSaWK_H9HNAKm99TrALzQ_3XCmJGwpYQUX_vJ5tnZ-Am9gvK2CGNBNOQn-UNfV-NLwOn_RaaOtIQKLQ0X1Ql8hpM0SuhkyErHBhfw.webp"} alt="Profile" />
         <UserInfoWrapper>
-          <ResidentInfo>{profile.region1} 주민</ResidentInfo>
+          <ResidentInfo>{profile.region1.split(' ')[2]} 주민</ResidentInfo>
           <UserName>{profile.username.split('@')[0]}</UserName>
         </UserInfoWrapper>
-        <EditRegionButton onClick={handleEditRegion}>지역 수정</EditRegionButton>
+        <EditRegionButton onClick={handleEditRegion}>지역 정보 관리</EditRegionButton>
       </ProfileWrapper>
 
       <ButtonContainer>
@@ -258,11 +287,15 @@ const MyPage = () => {
           contents.map((content) => (
             <Link key={content.id} to={selectedButton === "my-posts" ? `/feed-info/${content.id}` : `/place-info/${content.id}`}>
               <div style={{ display: "flex" }}>
-                <ContentImg src="/" alt="content" />
+
+                {content.image ? <ContentImg src={content.image} alt={content.subject} /> : <NoImagePlaceholder/>}
                 <div>
-                  <h3>{content.subject || content.name}</h3>
-                  <p>{content.content}</p>
-                </div>
+                    <TopContent>
+                      <div>{content.subject}</div>
+                      <span>{formatDistanceToNow(new Date(content.create_date), { addSuffix: true, locale: ko })}</span>
+                    </TopContent>
+                    <p>{content.content}</p>
+                  </div>
               </div>
             </Link>
           ))
@@ -270,7 +303,7 @@ const MyPage = () => {
           <p>게시물이 없습니다.</p>
         )}
       </ContentBox2>
-    </>
+    </Wrapper>
   );
 };
 

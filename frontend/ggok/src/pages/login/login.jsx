@@ -19,18 +19,18 @@ const Input = styled.input`
   padding: 0px 20px;
   border: 1px solid #E8E8E8;
   border-radius: 8px;
-  height: 50px;
-  width: 303px;
-  font-size: 16px;
+  height: 60px;
+  width: 90%;
+  font-size: 18px;
   background-color: #F6F6F6;
 
   &[type="submit"] {
-    width: 343px;
-    height: 51px;
+    width: 95%;
+    height: 55px;
     cursor: pointer;
     border-radius: 50px;
     color: white;
-    margin-top: 330px;
+    margin-top: 380px;
     &:hover {
       opacity: 0.8;
     }
@@ -70,7 +70,7 @@ export default function Login() {
       if (response.data.success) {
         sessionStorage.setItem("user", JSON.stringify(response.data));
         const userData = JSON.parse(sessionStorage.getItem('user'));
-        if (userData.data.region1 === null && userData.data.region2 === null) {
+        if ((userData.data.region1 === null && userData.data.region2 === null) || (userData.data.region1 === "" && userData.data.region2 === "")) {
           nav("/set-region"); 
         } else {
           nav("/");
@@ -99,7 +99,7 @@ export default function Login() {
   return (
     <Wrapper>
       <Title>
-      <Blank/>
+      <Blank/><Blank/><Blank/><Blank/><Blank/>
         <TitleDiv>
           <LogoImage src={logo} alt="Logo" />
           <span>로그인</span>

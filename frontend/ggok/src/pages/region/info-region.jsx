@@ -2,24 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { ThemeProvider } from "styled-components";
 import axios from "axios";
-
-const Wrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  width: 393px;
-  padding: 55px 0px;
-`;
-
-const Title = styled.h1`
-  font-size: 30px;
-  color: #534340;
-`;
+import logo from "../../others/img/logo-icon.png";
+import { TitleDiv, LogoImage, Blank, ExtraButton, Wrapper } from "../../styles/Styles";
+import { Title } from "../mypage/mypage";
 
 const RegionButton = styled.div`
-  height: 46px;
+  height: 50px;
   width: 80%;
   margin: auto;
   border-radius: 50px;
@@ -43,9 +31,10 @@ const Slider = styled.div`
 const RegionButtonText = styled.button`
   flex-grow: 1;
   border: none;
+  font-weight: bold;
   background: none;
   color: ${({ selected, theme }) => (selected ? theme.defaultColor : theme.selectedColor)};
-  font-size: 17px;
+  font-size: 18px;
   z-index: 1;
   cursor: pointer;
   background-color: ${({ selected, theme }) => (selected ? theme.defaultBg : theme.selectedBg)};
@@ -58,21 +47,22 @@ const RegionButtonText = styled.button`
 const InfoContainer = styled.div`
   margin-top: 10px;
   height: 487px;
-  width: 392px;
   background-color: #ECF5EE;
-  border-radius: 50px 50px 0px 0px;
+  border-radius: 20px;
 `;
 
 const RegionName = styled.h3`
   font-size: 30px;
   margin: 30px 0px 20px 0px;
+  padding-top: 20px;
   color: #534340;
 `;
 
 const Line = styled.hr`
   width: 180px;
-  border: 3px solid #534340;
+  border: 2px solid #534340;
   border-radius: 50px;
+  margin-bottom: 30px;
 `;
 
 const ButtonContainer = styled.div`
@@ -91,11 +81,12 @@ const Location = styled.div`
   padding: 14px 0px;
   border-radius: 50px;
   font-size: 16px;
-  width: 313px;
+  width: 105%;
+  hegith: 60px;
 `;
 
 const OptionContainer = styled.div`
-  width: 313px;
+  width: 105%;
   display: flex;
   justify-content: space-between;
 `;
@@ -108,22 +99,55 @@ const Option = styled.button`
   padding: 14px;
   border-radius: 50px;
   font-size: 16px;
+  color: grey;
 
- &:active,
-  &:focus,
-  &.active {
+ &:active, &:focus, &.active {
     outline: 3px solid #4C7E6F;
+    color: black;
+    font-weight: bold;
   }
+
+  .school {
+    outline: 3px solid #4C7E6F;
+    color: black;
+    font-weight: bold;
+  }
+
 `;
 
 const Button = styled.button`
   border: none;
   background-color: white;
   padding: 14px 0px;
-  width: 313px;
+  width: 105%;
   border-radius: 50px;
   font-size: 16px;
+  font-weight: bold;
+  hegith: 50px;
 `;
+
+const ADDButton = styled.button`
+  border: none;
+  background-color: white;
+  padding: 14px 0px;
+  width: 80%;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+const DELButton = styled.button`
+  border: none;
+  background-color: white;
+  padding: 14px 0px;
+  width: 105%;
+  border-radius: 50px;
+  font-size: 16px;
+  color: red;
+  font-weight: bold;
+  hegith: 50px;
+`;
+
 
 const theme = {
   selectedColor: "#A3CCAA",
@@ -281,7 +305,10 @@ export default function SetRegion() {
   return (
     <ThemeProvider theme={theme}>
       <Wrapper>
-        <Title>내 지역 설정</Title>
+        <Title>
+          <Blank/> <Blank/> 
+           <TitleDiv> &nbsp; &nbsp; <LogoImage src={logo} alt="Logo" /><span>지역 정보 관리</span></TitleDiv>
+        </Title>
 
         <InfoContainer>
           <RegionName> 내 지역 정보 </RegionName>
@@ -294,14 +321,14 @@ export default function SetRegion() {
               theme={theme}
               onClick={() => handleOptionChange("region1")}
             >
-              {regionInfo.region1}
+              {regionInfo.region1.split(' ')[2]}
             </RegionButtonText>
             <RegionButtonText
               selected={selectedOption === "region2"}
               theme={theme}
               onClick={() => handleOptionChange("region2")}
             >
-              {regionInfo.region2}
+              {regionInfo.region2.split(' ')[2]}
             </RegionButtonText>
           </RegionButton>
 
@@ -310,14 +337,14 @@ export default function SetRegion() {
             <Location>{getLocation()}</Location>
             <OptionContainer>
               <Option>거주지</Option>
-              <Option>직장 및 학교</Option>
+              <Option className="school">직장 및 학교</Option>
               <Option>기타</Option>
             </OptionContainer>
             <Button onClick={handleSave}> 수정하기 </Button>
-            <Button onClick={handleDeleteClick}> 삭제하기 </Button>
+            <DELButton onClick={handleDeleteClick}> 삭제하기 </DELButton>
           </ButtonContainer>
           ) : (
-            <Button onClick={handleSave}> 지역 추가하기 </Button>
+            <ADDButton onClick={handleSave}> 지역 추가하기 </ADDButton>
           )}
             
         </InfoContainer>
@@ -327,7 +354,7 @@ export default function SetRegion() {
         <>
           <PopupOverlay onClick={handleCancel} />
           <Popup>
-            <h3>{confirmDelete ? `${getLocation()} 삭제하시겠습니까?` : `${getLocation()} 수정하시겠습니까?`}</h3>
+            <h3>{confirmDelete ? `해당 지역을 삭제하시겠습니까?` : ` 해당 지역을 수정하시겠습니까?`}</h3>
             <div>
               <PopupButton confirm onClick={confirmDelete ? handleDelete : handleConfirm}>예</PopupButton>
               <PopupButton onClick={handleCancel}>아니오</PopupButton>

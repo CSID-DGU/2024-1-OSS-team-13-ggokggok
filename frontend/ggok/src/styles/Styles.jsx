@@ -11,7 +11,7 @@ export const Blank = styled.div`
 `;
 
 export const Title = styled.h1`
-  width: 90%;
+  width: 100%;
   display: flex;
   font-size: 35px;
   align-items: center;
@@ -29,7 +29,7 @@ export const LogoImage = styled.img`
 `;
 
 export const TitleDiv = styled.div`
-  width: 80%;
+  // width: 80%;
   align-items: center;
   text-align: center;
   display: flex;
@@ -37,8 +37,6 @@ export const TitleDiv = styled.div`
   div { padding-left: 34px}
   img { margin-bottom: -7px; }
 `;
-
-
 
 export const BackButton = styled.button`
   border: none;
@@ -52,6 +50,9 @@ export const ExtraButton = styled.button`
   color: #A3CCAA;
   font-size: 16px;
   font-weight: bold;
+  padding-right: 0px;
+  margin-right: 0px;
+
 `;
 
 

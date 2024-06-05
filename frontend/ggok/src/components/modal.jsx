@@ -1,7 +1,9 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+import { Wrapper } from '../styles/Styles';
 
 const slideUp = keyframes`
+  
   from {
     transform: translateY(100%);
     opacity: 0;
@@ -15,8 +17,8 @@ const slideUp = keyframes`
 const ModalBackground = styled.div`
   position: fixed;
   top: 0;
-  left: 0;
-  width: 100%;
+  left: auto;
+  width: 400px;
   height: 50%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
@@ -48,12 +50,15 @@ const CloseButton = styled.button`
 
 const Modal = ({ onClose, children }) => {
   return (
-    <ModalBackground onClick={onClose}>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
-        <CloseButton onClick={onClose}>X</CloseButton>
-        {children}
-      </ModalContent>
-    </ModalBackground>
+    <Wrapper>
+      <ModalBackground onClick={onClose}>
+        <ModalContent onClick={(e) => e.stopPropagation()}>
+          <CloseButton onClick={onClose}>X</CloseButton>
+          {children}
+        </ModalContent>
+      </ModalBackground>
+    </Wrapper>
+   
   );
 };
 

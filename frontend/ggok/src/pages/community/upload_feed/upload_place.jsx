@@ -26,7 +26,7 @@ const SubArea = styled.input`
 
   &::placeholder {
     font-size: 32px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     color: #959595;
   }
 `;
@@ -36,14 +36,14 @@ const Icon = styled.div`
 `;
 
 const LocArea = styled.button`
-    width: 250px;
-    height: 30px;
+    width: 300px;
+    height: 40px;
     border: none;
     background-color: white;
     margin-bottom: 5px;
     font-size: 20px;
-    color: #717171;
-    font-family: "laundryR";
+    color: black;
+    font-family: "TTLaundryGothicB";
       
 `;
 
@@ -51,16 +51,17 @@ const TextArea = styled.textarea`
   border: none;
   resize: none;
   font-size: 20px;
+  height: 285px;
 
   &::placeholder {
     font-size: 20px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     color: #959595;
   }
 
   &:focus {
     font-size: 20px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     outline: none;
     border-color: #A3CCAA;
   }
@@ -262,13 +263,15 @@ export default function upload_place() {
   return (
     <>
       <Title>
+        <Blank/><Blank/><Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>명소 등록</span></TitleDiv>
-        
+        <Blank/><Blank/>
+        <ExtraButton onClick={toggle} type="button">{ispublic ? "공개" : "비공개" }</ExtraButton>
       </Title>
        
         <Form onSubmit={onSubmit}>
            <SubArea
-           //required
+           required
            maxLength={10}
            onChange={onSub}
            value={sub}
@@ -280,32 +283,29 @@ export default function upload_place() {
                 <path d="M16.4443 15.3505C17.8885 13.9056 18.6998 11.9462 18.6998 9.90331C18.6998 7.86038 17.8885 5.90106 16.4443 4.45611C15.7294 3.74076 14.8806 3.17328 13.9463 2.7861C13.012 2.39893 12.0106 2.19965 10.9993 2.19965C9.98798 2.19965 8.98657 2.39893 8.05229 2.7861C7.11801 3.17328 6.26918 3.74076 5.55431 4.45611C4.11011 5.90106 3.29883 7.86038 3.29883 9.90331C3.29883 11.9462 4.11011 13.9056 5.55431 15.3505L7.22741 16.9994L9.47471 19.1829L9.62101 19.3127C10.4735 20.0035 11.722 19.9595 12.525 19.1829L15.2035 16.5759L16.4443 15.3505ZM10.9993 13.2C10.1241 13.2 9.28472 12.8523 8.66585 12.2335C8.04698 11.6146 7.69931 10.7752 7.69931 9.90001C7.69931 9.0248 8.04698 8.18543 8.66585 7.56656C9.28472 6.94769 10.1241 6.60001 10.9993 6.60001C11.8745 6.60001 12.7139 6.94769 13.3328 7.56656C13.9516 8.18543 14.2993 9.0248 14.2993 9.90001C14.2993 10.7752 13.9516 11.6146 13.3328 12.2335C12.7139 12.8523 11.8745 13.2 10.9993 13.2Z" fill="#A3CCAA"/>
               </svg>
               <LocArea onClick={handleButtonClick} type="button">
-                우리 지역 명소 검색하기  ➡️ {sessionStorage.getItem('name')}
+                명소 검색하기 ▶ 📍 {sessionStorage.getItem('name')}
               </LocArea>
             </Icon>
-
-           <div style={{display: 'flex'}}>
-            <button onClick={toggle} type="button">{ispublic ? "공개" : "비공개" }</button>
-            <StarRating 
-            totalStars={5} 
-            selectedStars={stars}
-            onStarClick={setstars}
-            />
-          </div>
-           
-           
-      
-           
+            
           <TextArea
-            //required
+            required
             rows={5}
             maxLength={180}
             onChange={onChange}
             value={text}
             placeholder="장소에 대한 솔직한 글을 작성해주세요!"
           />
+
+          <div style={{marginLeft: 'auto'}}>
+            <StarRating 
+            totalStars={5} 
+            selectedStars={stars}
+            onStarClick={setstars}
+            />
+          </div>
+
           <AttachFileButton htmlFor="file">
-            {file ? "Photo added ✅" : "Add photo"}
+           {file ? "사진 추가 완료! ✅" : "사진 첨부"}
           </AttachFileButton>
           <AttachFileInput
             onChange={onFileChange}
@@ -315,7 +315,7 @@ export default function upload_place() {
           />
           <SubmitBtn
             type="submit"
-            value={isLoading ? "Posting..." : "Post text"}
+            value={isLoading ? "등록중..." : "게시글 등록"}
           />
         </Form>
     </>

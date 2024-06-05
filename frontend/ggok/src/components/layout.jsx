@@ -5,7 +5,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 393px;
+  width: 400px;
   height: 95%;
   align-items: center;
 `;
@@ -17,19 +17,17 @@ const Top = styled.div`
 `;
 
 const Out = styled.div`
-    width: 95%;
+    width: 97%;
     align-items: center;
     justify-content: center;
 `;
 
-
 const Menu = styled.div`
-  height: 100px;
+  height: 80px;
   display: flex;
   flex-direction: rows;
   align-items: center;
-  gap: 25px;
-  margin-bottom: 13px;
+  gap: 30px;
 `;
 
 const MenuItem = styled.div`

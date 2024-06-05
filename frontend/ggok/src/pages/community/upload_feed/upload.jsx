@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { styled } from "styled-components";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
@@ -22,10 +23,11 @@ const SubArea = styled.input`
   outline: none; 
   margin-bottom: 10px;
   margin-top: 30px;
+  font-size: 30px;
 
   &::placeholder {
     font-size: 32px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     color: #959595;
   }
 `;
@@ -33,18 +35,19 @@ const SubArea = styled.input`
 const TextArea = styled.textarea`
   border: none;
   width: 90%;
+  height: 380px;
   resize: none;
   font-size: 20px;
 
   &::placeholder {
     font-size: 20px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     color: #959595;
   }
 
   &:focus {
     font-size: 20px;
-    font-family: "laundryR";
+    font-family: "TTLaundryGothicB";
     outline: none;
     border-color: #A3CCAA;
   }
@@ -83,12 +86,11 @@ const SubmitBtn = styled.input`
 axios.defaults.withCredentials = true;
 
 export default function Upload() {
-
-
   const [isLoading, setLoading] = useState(false);
   const [sub, setSub] = useState("");
   const [text, setText] = useState("");
   const [file, setFile] = useState(null);
+  const navigate = useNavigate();
 
   const onChange = (e) => {
     setText(e.target.value);
@@ -159,6 +161,8 @@ export default function Upload() {
       });
       console.log(formData);
       console.log('Server Response:', response.data);
+      alert('게시물 등록이 완료되었습니다!');
+      navigate('/feed');
     } catch (error) {
       console.error('Error uploading file:', error);
     }
@@ -195,6 +199,7 @@ export default function Upload() {
   return (
     <Wrapper>
       <Title>
+        <Blank/><Blank/><Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
       </Title>
       
@@ -225,7 +230,7 @@ export default function Upload() {
         />
         <SubmitBtn
           type="submit"
-          value={isLoading ? "등록중..." : "게시글 등록!"}
+          value={isLoading ? "등록중..." : "게시글 등록"}
         />
       </Form>
     </Wrapper>

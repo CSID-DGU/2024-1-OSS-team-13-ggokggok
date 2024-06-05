@@ -2,6 +2,7 @@ import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, Blank } from "../../../styles/Styles"
+import profileImage from "../../../others/img/profile.png";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -9,6 +10,19 @@ import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 
 
+const ProfileImage = styled.img`
+width: 30px;
+height: 30px;
+border-radius: 50%;
+background-color: white;
+margin-right: 10px;
+`;
+
+const Line = styled.hr`
+width: 100%;
+border: 1px solid #E8E8E8;
+margin: 5px 0;
+`;
 
 const Container = styled.div`
   padding: 20px;
@@ -17,9 +31,10 @@ const Container = styled.div`
 `;
 
 const PostTitle = styled.h1`
-  font-size: 32px;
+  font-size: 30px;
   margin-bottom: 10px;
   text-align: left;
+  display: flex;
 `;
 
 const PostHeader = styled.div`
@@ -37,59 +52,48 @@ const Nickname = styled.div`
 const TimeAgo = styled.div`
   font-size: 18px;
   color: grey;
+  margin-left: auto;
 `;
 
 const PostContent = styled.div`
+  align-items: center;
   margin-bottom: 20px;
-  font-size: 23px;
+
+  font-size: 20px;
   text-align: left;
 `;
 
 const PostImage = styled.img`
-  width: 100%;
+  width: 200px;
+  height: 200px;
+  margin: 20px auto;
+  display: block;
   border-radius: 10px;
   margin-bottom: 20px;
 `;
 
-const LocationContainer = styled.div`
-  display: flex;
-  align-items: center;
-  background-color: #f0f8f5;
-  padding: 10px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  text-align: left;
-`;
-
-const LocationIcon = styled.div`
-  margin-right: 30px;
-`;
-
-const LocationText = styled.div`
-  font-size: 30px;
-
-  span {
-    font-size: 15px;
-  }
-`;
 
 const FormContainer = styled.div`
   position: sticky;
-  bottom: 0;
+  bottom: 10px;
   background-color: white;
   padding-top: 10px;
+  display: flex;
 `;
 
 const CommentSection = styled.div`
   max-height: 200px;
   overflow-y: auto;
   margin-bottom: 20px;
+  text-align: left;
+  align-items: left;
 `;
 
 const CommentTitle = styled.h2`
   font-size: 20px;
   margin-bottom: 10px;
   text-align: left;
+  align-items: left;
 `;
 
 const Comment = styled.div`
@@ -101,6 +105,10 @@ const Comment = styled.div`
 
 const CommentContent = styled.div`
   font-size: 16px;
+  padding-top: 0;
+  margin-bottom: 10px;
+  width: 270px;
+
 `;
 
 const CommentTime = styled.div`
@@ -109,32 +117,32 @@ const CommentTime = styled.div`
 `;
 
 const InputField = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+  width: 280px;
+  height: 50px;
+  border: none;
+  padding: 0 15px;
+  font-size: 15px;
 `;
 
 const TextAreaField = styled.textarea`
-  width: 100%;
+  width: 95%;
   padding: 10px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-sizing: border-box;
   resize: none;
+  
 `;
 
 const Button = styled.button`
   display: block;
-  width: 100%;
-  padding: 10px;
+  width: 50px;
+  height: 50px;
   background-color: #a3ccaa;
+  margin: 0px;
   color: #fff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 `;
@@ -146,14 +154,12 @@ const ButtonContainer = styled.div`
   margin-top: 20px;
 `;
 
-const DeleteButton = styled.button`
-  margin-left: 10px;
+const CommentContainer = styled.div`
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
 `;
-
-const EditButton = styled.button`
-  margin-left: 10px;
-`;
-
 
 
 export default function Feed_info(){
@@ -295,14 +301,29 @@ export default function Feed_info(){
     return user.data;
   }
 
-    
-
     return (
       
         <Wrapper>
+          
         <Title>
+        <Blank/><Blank/><Blank/>
           <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+          <Blank/>
+          {data && (
+            <>
+             {data.author == userInfo().id ?
+                      <ExtraButton onClick={handleEditPost}>수정</ExtraButton>
+                      : <> </>}
+                       <Blank/>
+               {data.author == userInfo().id ?
+              <ExtraButton onClick={handleDeletePost}>삭제</ExtraButton>
+            : <> </>}
+            </>
+          )}
+          
         </Title>
+         
+
         <Container>
           {data && (
             <>
@@ -331,29 +352,16 @@ export default function Feed_info(){
                 </>
               ) : (
                 <>
-                  <PostTitle>{data.subject}
-                  {data.author == userInfo().id ?
-
-                    <EditButton onClick={handleEditPost}>수정</EditButton>
-                  : <> </>}
-
-                  {data.author == userInfo().id ?
-                    <DeleteButton onClick={handleDeletePost}>삭제</DeleteButton>
-                  : <> </>}
-
+                  <PostTitle>
+                    <div>{data.subject}</div>
+                    <Blank/><Blank/>
+                    <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
                   </PostTitle>
+                  <Line/>
                   <PostHeader>
                     <Nickname></Nickname>
-                    <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
+                   
                   </PostHeader>
-                  <LocationContainer>
-                    <LocationIcon>
-                      <LocationText>
-                        📍  {data.name}  <br /> 
-                        <span>{data.address}</span>
-                      </LocationText>
-                    </LocationIcon>
-                  </LocationContainer>
                   <PostContent>
                     <p>{data.content}</p>
                     {data.image && <PostImage src={data.image} alt="Post" />}
@@ -366,13 +374,14 @@ export default function Feed_info(){
             {comments.length > 0 && <CommentTitle>댓글</CommentTitle>}
             {comments.map((comment) => (
               <Comment key={comment.id}>
-                <CommentContent>{comment.content}</CommentContent>
+                <CommentContent><ProfileImage src={profileImage} alt="Profile" /> {comment.content}</CommentContent>
                 <CommentTime>{formatTimeAgo(comment.create_date)}</CommentTime>
               </Comment>
             ))}
           </CommentSection>
           <FormContainer>
             <form onSubmit={handleSubmitComment}>
+              <CommentContainer>
               <InputField
                 required
                 maxLength={100}
@@ -381,6 +390,7 @@ export default function Feed_info(){
                 placeholder="댓글을 입력해주세요"
               />
               <Button type="submit">등록</Button>
+              </CommentContainer>
             </form>
           </FormContainer>
         </Container>
