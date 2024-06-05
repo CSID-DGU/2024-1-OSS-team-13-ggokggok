@@ -75,6 +75,8 @@ export default function Visitor_main(){
 
     const {id} = useParams();
 
+    const localName = id.split(' ').slice(0, 2).join(' ')
+
     async function fetchData() {
         try {
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${id}`);
@@ -102,18 +104,18 @@ export default function Visitor_main(){
     return (
         <Wrapper>
           <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>{id} 지역</span></TitleDiv>
+            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>{localName}</span></TitleDiv>
           </Title>
           
           <SubTitle>
-            <Link to = {`/visitor-place-list/${id}`} style={{ textDecoration: "none"}}><h2>{id} 지역 HOT 명소</h2></Link>
+            <Link to = {`/visitor-place-list/${localName}`} style={{ textDecoration: "none"}}><h2>{localName} 지역 HOT 명소</h2></Link>
           </SubTitle>
 
             <SubTitle>
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
-                          <Link to={data ? `/visitor-place-info/${data.id}` : "/"}>
+                          <Link to={data ? `/visitor-place-info/${data.localName}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
                               {data.image != null ?
@@ -132,7 +134,7 @@ export default function Visitor_main(){
             </SubTitle>
             
             <SubTitle>
-              <Link to = {`/visitor-feed-list/${id}`} style={{ textDecoration: "none"}}><h2>{id} 지역 소식</h2></Link>
+              <Link to = {`/visitor-feed-list/${localName}`} style={{ textDecoration: "none"}}><h2>{localName} 지역 소식</h2></Link>
             </SubTitle>
                 {/*
                 <ContentBox2>
@@ -146,7 +148,7 @@ export default function Visitor_main(){
                 <ContentBox2>
                 {getData.length > 0 ? (
                     getData.map((data) => (
-                      <Link to={data ? `/visitor-feed-info/${data.id}` : "/"}>
+                      <Link to={data ? `/visitor-feed-info/${data.localName}` : "/"}>
                         <div style={{display: 'flex'}}>
                               {data.image != null ?
                                 <ContentImg src= {`${data.image}`}></ContentImg>

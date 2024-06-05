@@ -12,18 +12,23 @@ import { Link } from "react-router-dom";
 import Carousel from "../../components/carousel";
 
 const Icon = styled.div`
-
+  margin-right: 10px;
 `;
 
 const LocationInfo = styled.div`
-  font-size: 26px;
-  margin-left: 10px;
-  width: 100px;
+  font-size: 28px;
+  padding-left: 0px;
+ 
 `;
 
 const TopContainer = styled.div`
   display: flex;
   width: 400px;
+
+  div {
+     display: flex;
+     white-space: nowrap;
+  }
 `;
 
 const UnVisitButton = styled.button`

@@ -150,6 +150,13 @@ export default function UploadPlace({ post, onSave, onCancel }) {
     setText(e.target.value);
   };
 
+  const handleCancel = () => {
+    // onCancel 함수가 있는 경우 해당 함수를 호출합니다.
+    if (onCancel) onCancel();
+    // 뒤로 돌아가는 기능을 추가합니다.
+    navigate(-1);
+  };
+
   const onSub = (e) => {
     setSub(e.target.value);
   };
@@ -422,7 +429,7 @@ export default function UploadPlace({ post, onSave, onCancel }) {
             type="submit"
             value="게시글 등록"
           />
-          <CancleButton onClick={onCancel}>Cancel</CancleButton>
+          <CancleButton onClick={handleCancel}>Cancel</CancleButton>
         </ButtonContainer>
         
       </Form>
