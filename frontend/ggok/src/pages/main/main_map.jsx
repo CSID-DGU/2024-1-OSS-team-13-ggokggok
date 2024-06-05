@@ -242,9 +242,9 @@ const MainMap = () => {
   }
 
   const items = [
-    'first',
-    'second',
-    'third'
+    '경복궁',
+    '충무로역',
+    '남산골한옥마을'
   ];
 
   return (
