@@ -159,7 +159,7 @@ class PostDetailUpdateDelete(APIView):
     @swagger_auto_schema(tags=['커뮤니티 게시글 CRUD'])
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        requested_author = request.data.get('author')
+        requested_author = str(request.data.get('author'))
         if requested_author == post.author:
             post.delete()
             response_data = {
