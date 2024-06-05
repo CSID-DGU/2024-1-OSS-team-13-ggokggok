@@ -161,9 +161,7 @@ const CommentContainer = styled.div`
   box-sizing: border-box;
 `;
 
-
-export default function Feed_info(){
-
+export default function Feed_info() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -246,16 +244,25 @@ export default function Feed_info(){
   };
 
   const handleDeletePost = async () => {
-    console.log(parseInt(id));
     try {
+      const deleteData = {
+        post_id: parseInt(id),
+        author: getUserId()
+      };
+      
       await axios.delete(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/${parseInt(id)}/`, {
-        data: { post_id: parseInt(id) }
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        data: deleteData // 데이터를 data 속성으로 전달
       });
+  
       navigate('/community');
     } catch (error) {
       console.error('Error deleting post:', error);
     }
   };
+  
 
   const handleEditPost = () => {
     setIsEditing(true);
@@ -266,25 +273,28 @@ export default function Feed_info(){
   const handleSaveEdit = async () => {
     try {
       const postData = {
+        author: data.author,
         subject: editTitle,
         content: editContent,
-        lat: data.lat,
-        long: data.long,
-        address: data.address,
-        name: data.name,
-        public: data.public,
-        review: data.review,
-        category: data.category,
-        author: data.author,
+        post_region: data.post_region,
+        modify_date: new Date().toISOString()
       };
       console.log("Sending POST data:", postData);
-      const response = await axios.put(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/${parseInt(id)}/`, postData);
+      
+      const response = await axios.put(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/post/${parseInt(id)}/`, postData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+  
       console.log("Server response:", response.data);
       setIsEditing(false);
       window.location.reload();
     } catch (error) {
       if (error.response) {
         console.error('Server responded with error:', error.response.data);
+        console.error('HTML response:', error.response.data);
       } else {
         console.error('Error saving edited post:', error);
       }
@@ -301,87 +311,77 @@ export default function Feed_info(){
     return user.data;
   }
 
-    return (
-      
-        <Wrapper>
-          
-        <Title>
+  return (
+    <Wrapper>
+      <Title>
         <Blank/><Blank/><Blank/>
-          <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
-          <Blank/>
-          {data && (
-            <>
-             {data.author == userInfo().id ?
-                      <ExtraButton onClick={handleEditPost}>수정</ExtraButton>
-                      : <> </>}
-                       <Blank/>
-               {data.author == userInfo().id ?
-              <ExtraButton onClick={handleDeletePost}>삭제</ExtraButton>
-            : <> </>}
-            </>
-          )}
-          
-        </Title>
-         
-
-        <Container>
-          {data && (
-            <>
-              {isEditing ? (
-                <>
-                  <InputField
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    placeholder="제목"
-                  />
-                  <TextAreaField
-                    value={editContent}
-                    onChange={(e) => setEditContent(e.target.value)}
-                    placeholder="내용"
-                    rows="10"
-                  />
-                 
-                  {data.author == userInfo().id ?
-                  
-                  <ButtonContainer>
-                    <Button onClick={handleSaveEdit}>저장</Button>
-                    <Button onClick={handleCancelEdit}>취소</Button>
-                  </ButtonContainer>
-                  
-                : <> </>}
-                </>
-              ) : (
-                <>
-                  <PostTitle>
-                    <div>{data.subject}</div>
-                    <Blank/><Blank/>
-                    <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
-                  </PostTitle>
-                  <Line/>
-                  <PostHeader>
-                    <Nickname></Nickname>
-                   
-                  </PostHeader>
-                  <PostContent>
-                    <p>{data.content}</p>
-                    {data.image && <PostImage src={data.image} alt="Post" />}
-                  </PostContent>
-                </>
-              )}
-            </>
-          )}
-          <CommentSection>
-            {comments.length > 0 && <CommentTitle>댓글</CommentTitle>}
-            {comments.map((comment) => (
-              <Comment key={comment.id}>
-                <CommentContent><ProfileImage src={profileImage} alt="Profile" /> {comment.content}</CommentContent>
-                <CommentTime>{formatTimeAgo(comment.create_date)}</CommentTime>
-              </Comment>
-            ))}
-          </CommentSection>
-          <FormContainer>
-            <form onSubmit={handleSubmitComment}>
-              <CommentContainer>
+        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+        <Blank/>
+        {data && (
+          <>
+            {data.author == userInfo().id && (
+              <>
+                <ExtraButton onClick={handleEditPost}>수정</ExtraButton>
+                <Blank/>
+                <ExtraButton onClick={handleDeletePost}>삭제</ExtraButton>
+              </>
+            )}
+          </>
+        )}
+      </Title>
+      
+      <Container>
+        {data && (
+          <>
+            {isEditing ? (
+              <>
+                <InputField
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  placeholder="제목"
+                />
+                <TextAreaField
+                  value={editContent}
+                  onChange={(e) => setEditContent(e.target.value)}
+                  placeholder="내용"
+                  rows="10"
+                />
+                <ButtonContainer>
+                  <Button onClick={handleSaveEdit}>저장</Button>
+                  <Button onClick={handleCancelEdit}>취소</Button>
+                </ButtonContainer>
+              </>
+            ) : (
+              <>
+                <PostTitle>
+                  <div>{data.subject}</div>
+                  <Blank/><Blank/>
+                  <TimeAgo>{formatTimeAgo(data.create_date)}</TimeAgo>
+                </PostTitle>
+                <Line/>
+                <PostHeader>
+                  <Nickname></Nickname>
+                </PostHeader>
+                <PostContent>
+                  <p>{data.content}</p>
+                  {data.image && <PostImage src={data.image} alt="Post" />}
+                </PostContent>
+              </>
+            )}
+          </>
+        )}
+        <CommentSection>
+          {comments.length > 0 && <CommentTitle>댓글</CommentTitle>}
+          {comments.map((comment) => (
+            <Comment key={comment.id}>
+              <CommentContent><ProfileImage src={profileImage} alt="Profile" /> {comment.content}</CommentContent>
+              <CommentTime>{formatTimeAgo(comment.create_date)}</CommentTime>
+            </Comment>
+          ))}
+        </CommentSection>
+        <FormContainer>
+          <form onSubmit={handleSubmitComment}>
+            <CommentContainer>
               <InputField
                 required
                 maxLength={100}
@@ -390,10 +390,10 @@ export default function Feed_info(){
                 placeholder="댓글을 입력해주세요"
               />
               <Button type="submit">등록</Button>
-              </CommentContainer>
-            </form>
-          </FormContainer>
-        </Container>
-      </Wrapper>
-    );
+            </CommentContainer>
+          </form>
+        </FormContainer>
+      </Container>
+    </Wrapper>
+  );
 }

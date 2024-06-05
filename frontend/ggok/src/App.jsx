@@ -64,7 +64,7 @@ const router = createBrowserRouter([
 
       },
       {
-        path:"upload-place",
+        path:"upload-place/:id?",
         element: <Upload_place/>,
 
       },
@@ -78,7 +78,6 @@ const router = createBrowserRouter([
         element: <Place_list/>,
 
       },
-      
     
       {
         path:"/info-region",
@@ -92,10 +91,6 @@ const router = createBrowserRouter([
         path:"mypage",
         element: <MyPage/>,
       },     
-      {
-        path:"search-place",
-        element: <SearchPlace/>,
-      },
 
       {
         path: "total-info/:id",
@@ -154,9 +149,11 @@ const router = createBrowserRouter([
   {
     path:"place-info/:id",
     element: <Protected_login><Place_info/></Protected_login>,
-
   },
-
+  {
+    path:"search-place",
+    element: <Protected_login><SearchPlace/></Protected_login>,
+  },
 
 ]);
 
