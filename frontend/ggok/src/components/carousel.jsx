@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { it } from 'date-fns/locale';
 
 const Container = styled.div`
   width: 200px;
@@ -12,7 +13,7 @@ const Container = styled.div`
 
 const CarouselContainer = styled.div`
   width: 150px;
-  height: 30px; /* CarouselItem의 높이와 일치시킴 */
+  height: 20px; /* CarouselItem의 높이와 일치시킴 */
   overflow: hidden;
   margin-left: auto;
 `;
@@ -29,8 +30,8 @@ const CarouselItem = styled.div`
   justify-content: center;
   align-items: center;
   background-color: transparent;
-  font-size: 20px;
-  padding: 10px;
+  font-size: ${({ fontSize }) => fontSize}px;
+  padding: 10x;
   height: 20px; /* CarouselContainer의 높이와 일치시킴 */
   white-space: nowrap;
 `;
@@ -43,25 +44,18 @@ const Carousel = ({ items }) => {
   };
 
   useEffect(() => {
+    console.log(items);
     const interval = setInterval(nextSlide, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [items]);
 
-  const [getData, setGetData] = useState([]);
-
-  const region1 = sessionStorage.getItem('user')?.region1;
-  const region2 = sessionStorage.getItem('user')?.region2;
-
-  async function fetchData() {
-    try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/word/`);
-      setGetData(response.data.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
+  const handleText = (text) => {
+    if (text.length > 5) {
+      return text.substring(0, 5) + '...'; // 글자 수가 5글자를 넘으면 앞에서부터 5글자만 보여주고 나머지는 "..."으로 대체합니다.
     }
-  }
+    return text;
+  };
 
-  useEffect(() => { fetchData(); }, []);
 
   return (
     <Container>
@@ -70,8 +64,8 @@ const Carousel = ({ items }) => {
           {items.length > 0 ?
             items.map((item, index) => (
               <Link to={`/total-info/${item.address}`} key={index}>
-                <CarouselItem>
-                  {`${index + 1}. ${item}`}
+                <CarouselItem fontSize={item.name.length > 5 ? 8 : 10}>
+                  {handleText(`${index + 1}. ${item.name}`)}
                 </CarouselItem>
               </Link>
             ))

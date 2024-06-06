@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import StarRating from "../../../components/starrating";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -80,31 +81,26 @@ export default function Place_list(){
     const region1 = user.data.region1;
     const region2 = user.data.region2;
 
-    async function fetchData() {
+
+    useEffect(() => {
+      const fetchData = async () => {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
-          setGetData(response.data.data);
-        } catch (error) {
+          const response1 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
+          const response2 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?secret=${region1}`);
+  
+          setGetData(response1.data.data);
+          setsecretData(response2.data.data);
+        } catch (err) {
           console.error('Error fetching data:', error);
-        }
-    }
+        } 
+      };
+  
+      fetchData();
+    }, []);
 
-    async function fetchSecret() {
-      try {
-        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${region1}`);
-        setGetData(response.data.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-  }
-
-    useEffect(() => {fetchData(); fetchSecret();}, []);
-
-    console.log(getData);
-
+    console.log(secretData);
     const toggle = () => {
       setSecret(prevState => !prevState);
-
     };
 
 
@@ -132,7 +128,7 @@ export default function Place_list(){
                                 }
                                 <div>
                                     <h3>{data.title}</h3>
-                                    <p>{data.content}</p>ㅈ
+                                    <p>{data.content}</p>
                                 </div>
                             </div>
                             </ContentBox>
@@ -143,8 +139,9 @@ export default function Place_list(){
               <div style= {{ overflow: 'auto', height: '600px' }}>
               {secretData.length > 0 ? (
                       secretData.map((data) => (
-                        <Link to={data ? `/feed-info/${data.id}` : "/"}
+                        <Link to={data ? `/total-info/${data.address}` : "/"}
                         style={{textDecoration: "none"}}>
+                        <ContentBox>
 
                           <div style={{display: 'flex'}}>
                             {data.image ? 
@@ -153,10 +150,14 @@ export default function Place_list(){
                             <></>
                             }
                               <div>
-                                  <h3>{data.subject}</h3>
-                                  <p>{data.content}</p>
-                              </div>
+                                  <h1>{data.name}</h1>
+                                  <br/>
+                                  <h1>{data.address}</h1>
+                                  <br />
+                                  <h1>명소 평점</h1>
+                                  <StarRating totalStars={5} selectedStars={data.average_review} />                              </div>
                           </div>
+                          </ContentBox>
                         </Link>
                   ))): <h1>게시글이 없습니다</h1>}
                 </div>
