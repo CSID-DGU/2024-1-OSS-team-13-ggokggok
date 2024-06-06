@@ -75,11 +75,11 @@ export default function Visitor_main(){
 
     const {id} = useParams();
 
-    const localName = id.split(' ').slice(0, 2).join(' ')
+    const localName = id.split(' ').slice(0, 2).join(' ');
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${id}`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${localName}`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -90,7 +90,7 @@ export default function Visitor_main(){
 
     async function fetchPlace() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${id}`);
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${localName}`);
           setplace(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
