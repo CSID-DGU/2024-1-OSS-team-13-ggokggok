@@ -83,7 +83,7 @@ export default function Feed_list(){
     async function fetchData() {
         try {
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
-          setsecretData(response.data.data);
+          setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -92,7 +92,7 @@ export default function Feed_list(){
     async function fetchSecret() {
       try {
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${region1}`);
-        setGetData(response.data.data);
+        setsecretData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
