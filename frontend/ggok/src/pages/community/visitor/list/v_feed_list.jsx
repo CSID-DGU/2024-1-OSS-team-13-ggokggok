@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import logo from "../../../../others/img/logo-icon.png"
 import leftlogo from "../../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../../styles/Styles"
 import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import BackButton from "../../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -89,10 +90,10 @@ export default function V_Feed_list(){
     return (
         <Wrapper>
           <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>{id} 지역 커뮤니티</span></TitleDiv>
+            <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>{id} 지역 커뮤니티</span></TitleDiv>
           </Title>            
             <SubTitle>
-            <h2>우리 지역 소식</h2>
+            <h2> 지역 소식</h2>
               <ContentBox2>
                 {getData.length > 0 ? (
                         getData.map((data) => (

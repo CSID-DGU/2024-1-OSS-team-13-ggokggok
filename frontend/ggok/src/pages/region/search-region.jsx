@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Title, Wrapper, Blank, TitleDiv } from "../../styles/Styles";
 import Modal from '../../components/modal';
-
+import axios from 'axios';
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -197,31 +197,18 @@ export default function SearchPlace() {
 
   const handleSearch = async () => {
     setError(''); // 검색을 시작할 때 에러 메시지를 초기화
-  
+    
     try {
-      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}`;
-      const response = await fetch(api_url, {
-        headers: {
-          'X-Naver-Client-Id': 'WDVId7gO_fHzG7oRtf5w',
-          'X-Naver-Client-Secret': 'q4MDc81Fjb',
-        },
-        params: {
-          display: 5,
-          start: 1,
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error('네이버 API 요청에 실패했습니다.');
-      }
-  
-      const data = await response.json();
-  
-      if (data && data.items && data.items.length === 0) {
-        setError('검색 결과가 없습니다.');
-      } else {
-        setSearchResult(data);
-      }
+ 
+       const response = await axios.get(`https://us-central1-oss-ggok.cloudfunctions.net/api/search?query=${searchTerm}`, {
+         withCredentials: true // 자격 증명 포함
+       });
+    
+ 
+       const data = await response.data;
+       setSearchResult(data);
+
+     
     } catch (error) {
       console.error(error);
       setError('검색어를 다시 입력해주세요.');

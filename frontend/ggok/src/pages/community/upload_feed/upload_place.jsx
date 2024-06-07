@@ -3,8 +3,9 @@ import { styled } from 'styled-components';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import logo from '../../../others/img/logo-icon.png';
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank } from '../../../styles/Styles';
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, MainContainer, Blank } from '../../../styles/Styles';
 import StarRating from '../../../components/starrating';
+import BackButton from '../../../components/backbutton';
 
 const Form = styled.form`
   display: flex;
@@ -369,7 +370,7 @@ export default function UploadPlace({ post, onSave, onCancel }) {
   return (
     <Wrapper>
       <Title>
-        <Blank /><Blank /><Blank />
+      <BackButton></BackButton><Blank /><Blank /><Blank />
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>명소 등록</span></TitleDiv>
         <Blank /><Blank />
         <ExtraButton onClick={toggle} type="button">{isPublic ? '공개' : '비공개'}</ExtraButton>

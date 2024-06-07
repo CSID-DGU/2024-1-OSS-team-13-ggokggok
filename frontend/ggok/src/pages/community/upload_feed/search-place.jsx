@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
-import { Wrapper, Title, TitleDiv, ExtraButton, BackButton, MainContainer, Blank} from "../../../styles/Styles";
-
+import { Wrapper, Title, TitleDiv, ExtraButton, MainContainer, Blank} from "../../../styles/Styles";
+import axios from 'axios';
+import BackButton from '../../../components/backbutton';
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -108,25 +109,28 @@ export default function SearchPlace() {
   const [lng, setlng] = useState();
 
   const nav = useNavigate();
+  const [query, setQuery] = useState('');
 
   const handleSearch = async () => {
     try {
-      const api_url = `/v1/search/local?query=${encodeURIComponent(searchTerm)}&display=5`;
-
-      const response = await fetch(api_url, {
+     // axios.get(`https://us-central1-oss-ggok.cloudfunctions.net/api/search?query=${query}`);
+      //const api_url = `https://us-central1-oss-ggok.cloudfunctions.net/api/search?query=${query}`;
+      /*const response = await fetch(api_url, {
         headers: {
           'X-Naver-Client-Id': 'WDVId7gO_fHzG7oRtf5w',
           'X-Naver-Client-Secret': 'q4MDc81Fjb',
         },
+      });*/
+
+      const response = await axios.get(`https://us-central1-oss-ggok.cloudfunctions.net/api/search?query=${query}`, {
+        withCredentials: true // 자격 증명 포함
       });
+   
 
-      if (!response.ok) {
-        throw new Error('네이버 API 요청에 실패했습니다.');
-      }
-
-      const data = await response.json();
+      const data = await response.data;
       console.log(data); // Add this line to log the API response
       setSearchResult(data);
+      
     } catch (error) {
       console.error(error);
       setError('검색 중 오류가 발생했습니다. 다시 시도해주세요.');
@@ -174,7 +178,7 @@ export default function SearchPlace() {
   return (
     <Wrapper>
       <Title>
-        <Blank/> <Blank/> <Blank/> <Blank/> <Blank/>
+      <BackButton></BackButton><Blank/> <Blank/> <Blank/> <Blank/> <Blank/>
         <TitleDiv>
           <span> 명소 검색</span>
         </TitleDiv>
@@ -182,8 +186,8 @@ export default function SearchPlace() {
       <SearchContainer>
         <SearchInput
           type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
           placeholder="🔍 '지역 + 장소' 를 입력해주세요"
           onKeyPress={handleKeyPress}
         />
