@@ -321,14 +321,14 @@ export default function SetRegion() {
               theme={theme}
               onClick={() => handleOptionChange("region1")}
             >
-              {regionInfo.region1.split(' ')[2]}
+              {regionInfo.region1 != null ? regionInfo.region1.split(' ')[2] : <p>없음</p>} 
             </RegionButtonText>
             <RegionButtonText
               selected={selectedOption === "region2"}
               theme={theme}
               onClick={() => handleOptionChange("region2")}
             >
-              {regionInfo.region2.split(' ')[2]}
+              {regionInfo.region2 != null ? regionInfo.region2.split(' ')[2] : <p>없음</p>}
             </RegionButtonText>
           </RegionButton>
 

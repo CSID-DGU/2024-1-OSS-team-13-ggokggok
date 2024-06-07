@@ -87,7 +87,7 @@ export default function V_Place_list(){
     async function fetchSecret() {
       try {
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${id}`);
-        setGetData(response.data.data);
+        setsecretData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }

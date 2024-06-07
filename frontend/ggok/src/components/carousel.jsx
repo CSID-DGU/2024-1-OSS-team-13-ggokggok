@@ -50,8 +50,8 @@ const Carousel = ({ items }) => {
   }, [items]);
 
   const handleText = (text) => {
-    if (text.length > 10) {
-      return text.substring(0, 10) + '...'; 
+    if (text.length > 8) {
+      return text.substring(0, 8) + '...'; 
     }
     return text;
   };
