@@ -6,6 +6,7 @@ import { Link,useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import BackButton from "../../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -107,7 +108,7 @@ export default function V_Place_list(){
 
         <Wrapper>
         <Title>
-          <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
+          <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>{id} 지역 명소</span></TitleDiv>
           <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
         </Title>            
           <SubTitle>

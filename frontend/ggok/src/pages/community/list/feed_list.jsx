@@ -110,8 +110,7 @@ export default function Feed_list(){
     return (
         <Wrapper>
           <Title>
-            <BackButton></BackButton>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+            <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>            
             <SubTitle>

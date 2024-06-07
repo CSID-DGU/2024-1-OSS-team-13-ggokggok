@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import BackButton from "../../../components/backbutton";
 
 
 const ProfileImage = styled.img`
@@ -316,7 +317,7 @@ export default function Feed_info() {
   return (
     <Wrapper>
       <Title>
-        <Blank/><Blank/><Blank/>
+        <BackButton></BackButton><Blank/><Blank/><Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
         <Blank/>
         {data && (

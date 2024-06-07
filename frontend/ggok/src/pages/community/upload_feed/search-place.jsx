@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from "react-router-dom";
 import { Wrapper, Title, TitleDiv, ExtraButton, MainContainer, Blank} from "../../../styles/Styles";
 import axios from 'axios';
+import BackButton from '../../../components/backbutton';
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -177,7 +178,7 @@ export default function SearchPlace() {
   return (
     <Wrapper>
       <Title>
-        <Blank/> <Blank/> <Blank/> <Blank/> <Blank/>
+      <BackButton></BackButton><Blank/> <Blank/> <Blank/> <Blank/> <Blank/>
         <TitleDiv>
           <span> 명소 검색</span>
         </TitleDiv>

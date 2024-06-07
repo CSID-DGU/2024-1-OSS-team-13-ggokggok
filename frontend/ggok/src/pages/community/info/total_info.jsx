@@ -152,10 +152,8 @@ export default function Total_info() {
   return (
     <Wrapper>
       <Title>
-        <div>
-          <BackButton></BackButton>
-        </div>
         <TitleDiv>
+          <BackButton></BackButton>
           <LogoImage src={logo} alt="Logo" />
           <span>우리 지역</span>
         </TitleDiv>

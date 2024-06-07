@@ -8,6 +8,7 @@ import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, Blank } from "../../.
 import StarRating from "../../../components/starrating";
 import UploadPlace from "../upload_feed/upload_place";
 import { Link } from 'react-router-dom';
+import BackButton from "../../../components/backbutton";
 
 const ProfileImage = styled.img`
   width: 33px;
@@ -449,7 +450,7 @@ export default function Place_info() {
     <Wrapper>
       {!isEditing && (
       <Title>
-        <Blank/><Blank/><Blank/>
+        <BackButton></BackButton><Blank/><Blank/><Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
         <Blank/>
         {data && (

@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import StarRating from "../../../components/starrating";
+import BackButton from "../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -107,7 +108,7 @@ export default function Place_list(){
     return (
         <Wrapper>
           <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
+            <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
             <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
           </Title>            
             <SubTitle>

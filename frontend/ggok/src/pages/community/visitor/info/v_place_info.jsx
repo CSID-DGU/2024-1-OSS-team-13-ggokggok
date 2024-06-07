@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import StarRating from "../../../../components/starrating";
-
+import BackButton from "../../../../components/backbutton";
 
 const Container = styled.div`
   padding: 20px;
@@ -203,7 +203,7 @@ export default function V_Place_info(){
     return (
       <Wrapper>
       <Title>
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>지역</span></TitleDiv>
+        <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>지역</span></TitleDiv>
       </Title>
       <Container>
         {data && (
