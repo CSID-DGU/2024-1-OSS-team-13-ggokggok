@@ -260,11 +260,33 @@ const MainMap = () => {
   }
 
   const items = [
-    '경복궁',
-    '충무로역',
-    '남산골한옥마을'
+    {
+      "name": "장소 이름1 가나다라 ",
+      "address": "서울시 을지로",
+      "count": 1
+    },
+    {
+      "name": "장소 이름2 가나다라",
+      "address": "서울시 중구",
+      "count": 1
+    }, 
+    {
+      "name": "장소 이름3 가나다라",
+      "address": "서울시 중구",
+      "count": 1
+    },
+    {
+      "name": "장소 이름4 가나다라",
+      "address": "서울시 중구",
+      "count": 1
+    },
+    {
+      "name": "장소 이름5 가나다라",
+      "address": "서울시 중구",
+      "count": 1
+    }
   ];
-
+  
   return (
     <>
       <Title>

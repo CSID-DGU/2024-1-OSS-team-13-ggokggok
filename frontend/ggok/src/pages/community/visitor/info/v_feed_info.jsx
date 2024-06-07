@@ -1,12 +1,13 @@
 import { styled } from "styled-components";
 import logo from "../../../../others/img/logo-icon.png"
 import leftlogo from "../../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import BackButton from "../../../../components/backbutton";
 
 
 
@@ -205,7 +206,7 @@ export default function V_Feed_info(){
     return (
       <Wrapper>
       <Title>
-        <TitleDiv><LogoImage src={logo} alt="Logo" /><span>지역</span></TitleDiv>
+        <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>지역</span></TitleDiv>
       </Title>
       <Container>
         {data && (

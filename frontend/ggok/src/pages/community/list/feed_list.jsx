@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../styles/Styles"
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import BackButton from "../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -82,7 +83,7 @@ export default function Feed_list(){
     async function fetchData() {
         try {
           const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
-          setsecretData(response.data.data);
+          setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -91,7 +92,7 @@ export default function Feed_list(){
     async function fetchSecret() {
       try {
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${region1}`);
-        setGetData(response.data.data);
+        setsecretData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -109,7 +110,7 @@ export default function Feed_list(){
     return (
         <Wrapper>
           <Title>
-            <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
+            <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>우리 지역</span></TitleDiv>
             <div><Link to ="/upload" style={{textDecoration: "none"}}><WriteBtn>글쓰기</WriteBtn></Link></div>
           </Title>            
             <SubTitle>

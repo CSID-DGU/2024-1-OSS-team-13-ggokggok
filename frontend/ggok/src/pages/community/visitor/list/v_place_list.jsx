@@ -1,11 +1,12 @@
 import { styled } from "styled-components";
 import logo from "../../../../others/img/logo-icon.png"
 import leftlogo from "../../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton } from "../../../../styles/Styles"
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../../styles/Styles"
 import { Link,useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import BackButton from "../../../../components/backbutton";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -87,7 +88,7 @@ export default function V_Place_list(){
     async function fetchSecret() {
       try {
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${id}`);
-        setGetData(response.data.data);
+        setsecretData(response.data.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -107,7 +108,7 @@ export default function V_Place_list(){
 
         <Wrapper>
         <Title>
-          <TitleDiv><LogoImage src={logo} alt="Logo" /><span>우리 지역 명소</span></TitleDiv>
+          <TitleDiv><BackButton></BackButton><LogoImage src={logo} alt="Logo" /><span>{id} 지역 명소</span></TitleDiv>
           <div><Link to ="/upload-place" style={{textDecoration: "none"}}><WriteBtn>명소 +</WriteBtn></Link></div>
         </Title>            
           <SubTitle>

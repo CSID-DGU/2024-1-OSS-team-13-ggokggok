@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
-import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, BackButton, MainContainer, Blank } from "../../../styles/Styles";
+import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton, MainContainer, Blank } from "../../../styles/Styles";
+import BackButton from "../../../components/backbutton";
 
 
 // 스타일 정의
@@ -199,7 +200,7 @@ export default function Upload() {
   return (
     <Wrapper>
       <Title>
-        <Blank/><Blank/><Blank/>
+      <BackButton></BackButton><Blank/><Blank/><Blank/>
         <TitleDiv><LogoImage src={logo} alt="Logo" /><span>게시물 등록</span></TitleDiv>
       </Title>
       
