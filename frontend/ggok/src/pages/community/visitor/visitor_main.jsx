@@ -115,7 +115,7 @@ export default function Visitor_main(){
             <div style= {{ overflow: 'auto', height: '200px' }}>
                 {getplace.length > 0 ? (
                         getplace.map((data) => (
-                          <Link to={data ? `/visitor-place-info/${data.localName}` : "/"}>
+                          <Link to={data ? `/visitor-place-info/${data.id}` : "/"}>
                             <ContentBox>
                             <div style={{display: 'flex'}}>
                               {data.image != null ?
@@ -148,7 +148,7 @@ export default function Visitor_main(){
                 <ContentBox2>
                 {getData.length > 0 ? (
                     getData.map((data) => (
-                      <Link to={data ? `/visitor-feed-info/${data.localName}` : "/"}>
+                      <Link to={data ? `/visitor-feed-info/${data.id}` : "/"}>
                         <div style={{display: 'flex'}}>
                               {data.image != null ?
                                 <ContentImg src= {`${data.image}`}></ContentImg>
