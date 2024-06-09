@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { formatDistanceToNow } from "date-fns"; // Importing date-fns function
-import { ko } from 'date-fns/locale'; // Importing Korean locale
+import { ko, tr } from 'date-fns/locale'; // Importing Korean locale
 
 
 const SubTitle = styled.div`
@@ -126,22 +126,43 @@ const NoImagePlaceholder = styled.div`
   background-color: #E0E0E0; /* Gray background */
 `;
 
+
+const Button = styled.button`
+    color: black;
+    border: 4px solid green;
+    border-radius: 10px;
+    padding: 5px 5px;
+    font-size: 17px;
+    height : 30px:
+    width : 100px;
+`;
+
 export default function MainFeed() {
   const [getData, setGetData] = useState([]);
   const [getplace, setplace] = useState([]);
 
+  const [region, setregion] = useState(false);
+
+
   const session = sessionStorage.getItem('user');
   const user = JSON.parse(session);
   const region1 = user.data.region1;
+  const region2 = user.data.region2;
 
   useEffect(() => {
     fetchData();
     fetchPlace();
-  }, []);
+  }, [region]);
 
   async function fetchData() {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
+      let search ='';
+      if(region == false){
+        search = region1;
+      }else{
+        search = region2;
+      }
+      response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${search}`);
       setGetData(response.data.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -150,13 +171,27 @@ export default function MainFeed() {
 
   async function fetchPlace() {
     try {
-      const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
-      const uniquePlaces = response.data.data.filter((place, index, self) => index === self.findIndex((p) => p.name === place.name));
-      setplace(uniquePlaces.slice(0, 3));
+      let search ='';
+      if(region == false){
+        search = region1;
+      }else{
+        search = region2;
+      }
+      if(search != ''){
+        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${search}`);
+
+        const uniquePlaces = response.data.data.filter((place, index, self) => index === self.findIndex((p) => p.name === place.name));
+        setplace(uniquePlaces.slice(0, 3));
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
+
+
+  const handleToggle = () => {
+    setregion(!region);
+  };
 
   return (
     <Wrapper>
@@ -166,14 +201,18 @@ export default function MainFeed() {
           <LogoImage src={logo} alt="Logo" />
           <span>우리 지역</span>
         </TitleDiv>
-        <Blank /> <Blank /> <Blank />
+          <Blank /> <Blank /> <Blank />
         <div>
           <Link to="/upload" style={{ textDecoration: "none" }}>
             <WriteBtn>글쓰기</WriteBtn>
           </Link>
         </div>
       </Title>
-
+          <Button onClick={handleToggle}>
+          {!region 
+            ? (region1 ? region1 : "등록 지역1 없음") 
+            : (region2 ? region2 : "등록 지역2 없음")}          
+          </Button>
       <SubTitle>
         <Link to="/place-list" style={{ textDecoration: "none" }}>
           우리지역 HOT 명소
