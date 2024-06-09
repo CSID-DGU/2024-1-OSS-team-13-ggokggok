@@ -264,8 +264,8 @@ const MyPage = () => {
       <ProfileWrapper>
         <ProfileImage src={profileImage || "https://i.namu.wiki/i/zw-3hri_NINFShw4KfHezUemGvkhgHMYjfuXpYx7PhcOcpPdZCSaWK_H9HNAKm99TrALzQ_3XCmJGwpYQUX_vJ5tnZ-Am9gvK2CGNBNOQn-UNfV-NLwOn_RaaOtIQKLQ0X1Ql8hpM0SuhkyErHBhfw.webp"} alt="Profile" />
         <UserInfoWrapper>
-          <ResidentInfo>{profile.region1.split(' ')[2]} 주민</ResidentInfo>
-          <UserName>{profile.username.split('@')[0]}</UserName>
+          <ResidentInfo>{ profile.region1 ? profile.region1.split(' ')[2]: ''} 주민</ResidentInfo>
+          <UserName>{profile.username ? profile.username.split('@')[0]: ''}</UserName>
         </UserInfoWrapper>
         <EditRegionButton onClick={handleEditRegion}>지역 정보 관리</EditRegionButton>
       </ProfileWrapper>
