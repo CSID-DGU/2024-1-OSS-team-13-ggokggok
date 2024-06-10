@@ -247,7 +247,11 @@ const MainMap = () => {
   const onvisit =  () => {
     if(centerAdd == userInfo().region1){
       navigate(`/feed`);  
-    }else{
+    }
+    else if(centerAdd == userInfo().region2){
+      navigate(`/feed`);  
+    }
+    else{
       navigate(`/visitor-feed/${centerAdd}`);  
     }
   };

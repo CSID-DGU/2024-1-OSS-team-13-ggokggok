@@ -146,8 +146,17 @@ export default function MainFeed() {
 
   const session = sessionStorage.getItem('user');
   const user = JSON.parse(session);
-  const region1 = user.data.region1;
-  const region2 = user.data.region2;
+  let r1;
+  let r2;
+  if(region1){
+    r1 = user.data.region1.split(" ").slice(0, 2).join(" ");
+  }
+
+  if(region2){
+    r1 = user.data.region2.split(" ").slice(0, 2).join(" ");
+  }
+  const region1 = r1;
+  const region2 = r2;
 
   useEffect(() => {
     fetchData();
@@ -181,7 +190,6 @@ export default function MainFeed() {
       }
       if(search != ''){
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${search}`);
-
         const uniquePlaces = response.data.data.filter((place, index, self) => index === self.findIndex((p) => p.name === place.name));
         setplace(uniquePlaces.slice(0, 3));
       }
