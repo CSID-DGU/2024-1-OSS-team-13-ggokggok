@@ -58,8 +58,8 @@ export default function Testing() {
       setPassword(p);
 
     }else{
-      setid("id");
-      setPassword("1111");
+      setid("oss");
+      setPassword("ej");
     }
 
   },[login]);
