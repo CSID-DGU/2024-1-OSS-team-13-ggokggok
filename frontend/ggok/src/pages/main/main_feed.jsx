@@ -146,8 +146,17 @@ export default function MainFeed() {
 
   const session = sessionStorage.getItem('user');
   const user = JSON.parse(session);
-  const region1 = user.data.region1;
-  const region2 = user.data.region2;
+  let r1;
+  let r2;
+  if(region1){
+    r1 = user.data.region1.split(" ").slice(0, 2).join(" ");
+  }
+
+  if(region2){
+    r1 = user.data.region2.split(" ").slice(0, 2).join(" ");
+  }
+  const region1 = r1;
+  const region2 = r2;
 
   useEffect(() => {
     fetchData();
