@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../styles/Styles"
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -76,7 +76,7 @@ export default function Place_list(){
     const [secret, setSecret] = useState(false);
     const [secretData, setsecretData] = useState([]);
 
-
+    const {id} = useParams();
     const session = sessionStorage.getItem('user');
     const user = JSON.parse(session);
     const region1 = user.data.region1;
@@ -86,8 +86,14 @@ export default function Place_list(){
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response1 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${region1}`);
-          const response2 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?secret=${region1}`);
+          let search ='';
+          if(id == 'true'){
+            search = region2;
+          }else{
+            search = region1;
+          }
+          const response1 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${search}`);
+          const response2 = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/placesinfo/?secret=${search}`);
   
           setGetData(response1.data.data);
           setsecretData(response2.data.data);
