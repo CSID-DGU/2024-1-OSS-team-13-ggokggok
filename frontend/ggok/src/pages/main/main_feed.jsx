@@ -181,7 +181,6 @@ export default function MainFeed() {
       }
       if(search != ''){
         const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?address=${search}`);
-
         const uniquePlaces = response.data.data.filter((place, index, self) => index === self.findIndex((p) => p.name === place.name));
         setplace(uniquePlaces.slice(0, 3));
       }
