@@ -162,8 +162,10 @@ export default function MainFeed() {
       }else{
         search = region2;
       }
-      response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${search}`);
-      setGetData(response.data.data);
+      if(search != ''){
+        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${search}`);
+        setGetData(response.data.data);
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -214,7 +216,7 @@ export default function MainFeed() {
             : (region2 ? region2 : "등록 지역2 없음")}          
           </Button>
       <SubTitle>
-        <Link to="/place-list" style={{ textDecoration: "none" }}>
+        <Link to={`/place-list/${region}`} style={{ textDecoration: "none" }}>
           우리지역 HOT 명소
         </Link>
       </SubTitle>
@@ -244,7 +246,7 @@ export default function MainFeed() {
       </ContentBoxWrapper>
 
       <SubTitle>
-        <Link to="/feed-list" style={{ textDecoration: "none" }}>
+        <Link to={`/feed-list/${region}`} style={{ textDecoration: "none" }}>
           우리 지역 소식
         </Link>
       </SubTitle>

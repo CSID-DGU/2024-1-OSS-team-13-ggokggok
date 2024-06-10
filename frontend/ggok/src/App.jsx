@@ -68,12 +68,12 @@ const router = createBrowserRouter([
         element: <Upload_place/>,
       },
       {
-        path:"feed-list",
+        path:"feed-list/:id",
         element: <Feed_list/>,
 
       },
       {
-        path:"place-list",
+        path:"place-list/:id",
         element: <Place_list/>,
 
       },

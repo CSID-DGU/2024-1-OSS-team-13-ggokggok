@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 import logo from "../../../others/img/logo-icon.png"
 import leftlogo from "../../../others/img/left-button.png"
 import { Wrapper, Title, LogoImage, TitleDiv, ExtraButton } from "../../../styles/Styles"
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
@@ -71,9 +71,7 @@ const WriteBtn = styled.div`
 export default function Feed_list(){
 
     const [getData, setGetData] = useState([]);
-    const [secret, setSecret] = useState(false);
-    const [secretData, setsecretData] = useState([]);
-
+    const {id} = useParams();
 
     const session = sessionStorage.getItem('user');
     const user = JSON.parse(session);
@@ -82,23 +80,22 @@ export default function Feed_list(){
 
     async function fetchData() {
         try {
-          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${region1}`);
+          let search ='';
+          if(id == 'true'){
+            search = region2;
+          }else{
+            search = region1;
+          }
+          const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/community/?region=${search}`);
           setGetData(response.data.data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
     }
 
-    async function fetchSecret() {
-      try {
-        const response = await axios.get(`https://port-0-ggokggok-1cupyg2klvrp1r60.sel5.cloudtype.app/place/?secret=${region1}`);
-        setsecretData(response.data.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-  }
 
-    useEffect(() => {fetchData(); fetchSecret();}, []);
+
+    useEffect(() => {fetchData();}, []);
 
     console.log(getData);
 
