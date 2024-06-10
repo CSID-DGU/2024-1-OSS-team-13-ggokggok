@@ -29,6 +29,7 @@ import V_Place_list from "./pages/community/visitor/list/v_place_list";
 import V_Feed_info from "./pages/community/visitor/info/v_feed_info";
 import V_Place_info from "./pages/community/visitor/info/v_place_info";
 import Protected_visitor from "./components/protected_visitor";
+import Testing from "./pages/login/testing";
 
 
 const Wrapper = styled.div`
@@ -130,7 +131,10 @@ const router = createBrowserRouter([
     path:"/intro",
     element: <Intro/>
   },
-
+  {
+    path:"/testing/:login",
+    element: <Testing/>
+  },
   {
     path:"/set-region",
     element: <Protected_login><SetRegion/></Protected_login> 
