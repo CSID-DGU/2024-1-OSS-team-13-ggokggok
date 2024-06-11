@@ -148,11 +148,11 @@ export default function MainFeed() {
   const user = JSON.parse(session);
   let r1;
   let r2;
-  if(region1){
+  if(user.data.region1){
     r1 = user.data.region1.split(" ").slice(0, 2).join(" ");
   }
 
-  if(region2){
+  if(user.data.region2){
     r1 = user.data.region2.split(" ").slice(0, 2).join(" ");
   }
   const region1 = r1;

@@ -245,10 +245,10 @@ const MainMap = () => {
   };
   
   const onvisit =  () => {
-    if(centerAdd == userInfo().region1){
+    if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region1.split(' ').slice(0,2).join(' ')){
       navigate(`/feed`);  
     }
-    else if(centerAdd == userInfo().region2){
+    else if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region2.split(' ').slice(0,2).join(' ')){
       navigate(`/feed`);  
     }
     else{
