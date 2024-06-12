@@ -2,11 +2,23 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { TitleDiv, LogoImage, Blank, ExtraButton, Wrapper } from "../../styles/Styles";
+import { LogoImage, Blank, ExtraButton, Wrapper } from "../../styles/Styles";
 import logo from "../../others/img/logo-icon.png";
 import profileImage from "../../others/img/profile.png";
 import { formatDistanceToNow } from "date-fns"; // Importing date-fns function
 import { ko } from 'date-fns/locale'; // Importing Korean locale
+
+
+const TitleDiv = styled.div`
+  // width: 80%;
+  align-items: center;
+  text-align: center;
+  display: flex;
+  span { margin-left: 28px; }
+  div { padding-left: 34px}
+  img { margin-bottom: -7px; }
+  font-size: 25px;
+`;
 
 // 초기 프로필 상태 정의
 const initialProfileState = {
@@ -143,7 +155,9 @@ const ContentImg = styled.img`
   width: 60px;
   height: 60px;
   border-radius: 10px;
-  margin: 0 10px 0 10px;
+  overflow:hidden;
+  object-fit: cover;
+padding: 5px 1px;
 `;
 
 const EditRegionButton = styled.button`
@@ -166,7 +180,6 @@ const NoImagePlaceholder = styled.div`
   height: 60px;
   width: 60px;
   border-radius: 10px;
-  margin: 0 10px 0 10px;
   background-color: #E0E0E0; /* Gray background */
 `;
 

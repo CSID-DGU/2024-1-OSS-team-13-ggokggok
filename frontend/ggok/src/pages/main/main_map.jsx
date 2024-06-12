@@ -13,12 +13,16 @@ import Carousel from "../../components/carousel";
 
 const Icon = styled.div`
   margin-right: 10px;
+  position: absolute;
+  top: 105px;
 `;
 
 const LocationInfo = styled.div`
   font-size: 28px;
-  padding-left: 0px;
- 
+  position: absolute;
+  top: 105px;
+  margin: 0 30px;
+
 `;
 
 const TopContainer = styled.div`
@@ -28,6 +32,7 @@ const TopContainer = styled.div`
   div {
      display: flex;
      white-space: nowrap;
+     padding-right: 150px;
   }
 `;
 

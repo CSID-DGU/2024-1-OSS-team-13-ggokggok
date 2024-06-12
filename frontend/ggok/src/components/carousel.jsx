@@ -16,6 +16,7 @@ const CarouselContainer = styled.div`
   height: 40px; 
   overflow: hidden;
   margin-left: auto;
+  padding-left: 200px;
 `;
 
 const CarouselInner = styled.div`
