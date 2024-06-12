@@ -250,14 +250,33 @@ const MainMap = () => {
   };
   
   const onvisit =  () => {
-    if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region1.split(' ').slice(0,2).join(' ')){
-      navigate(`/feed`);  
-    }
-    else if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region2.split(' ').slice(0,2).join(' ')){
-      navigate(`/feed`);  
-    }
-    else{
-      navigate(`/visitor-feed/${centerAdd}`);  
+    if(userInfo.region1 && userInfo.region2){
+
+      if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region1.split(' ').slice(0,2).join(' ')){
+        navigate(`/feed`);  
+      }
+      else if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region2.split(' ').slice(0,2).join(' ')){
+        navigate(`/feed`);  
+      }
+      else{
+        navigate(`/visitor-feed/${centerAdd}`.split(' ').slice(0,2).join(' '));  
+      }
+    }else if(userInfo.region1 && !userInfo.region2){
+      if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region1.split(' ').slice(0,2).join(' ')){
+        navigate(`/feed`);  
+      }
+      else{
+        navigate(`/visitor-feed/${centerAdd}`.split(' ').slice(0,2).join(' '));  
+      }
+    }else if(!userInfo.region1 && userInfo.region2){
+      if(centerAdd.split(' ').slice(0,2).join(' ') == userInfo().region2.split(' ').slice(0,2).join(' ')){
+        navigate(`/feed`);  
+      }
+      else{
+        navigate(`/visitor-feed/${centerAdd}`.split(' ').slice(0,2).join(' '));  
+      }
+    }else{
+      navigate(`/visitor-feed/${centerAdd}`.split(' ').slice(0,2).join(' '));  
     }
   };
   
