@@ -1,0 +1,20 @@
+{
+	"siteId": "63f2aa47-4402-48d9-a944-7eb5ea859581",
+	"geolocation": {
+		"data": {
+			"city": "Seoul",
+			"country": {
+				"code": "KR",
+				"name": "South Korea"
+			},
+			"subdivision": {
+				"code": "11",
+				"name": "Seoul"
+			},
+			"timezone": "Asia/Seoul",
+			"latitude": 37.5576,
+			"longitude": 126.9937
+		},
+		"timestamp": 1717711265601
+	}
+}
