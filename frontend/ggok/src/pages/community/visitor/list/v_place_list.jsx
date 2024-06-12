@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import BackButton from "../../../../components/backbutton";
+import StarRating from "../../../../components/starrating";
 
 const SubTitle = styled.h2`
   font-size: 20px;
@@ -155,8 +156,7 @@ export default function V_Place_list(){
                                 <br/>
                                 <h1>{data.address}</h1>
                                 <br />
-                                <h1>명소 평점</h1>
-                                <StarRating totalStars={5} selectedStars={data.average_review} />                              </div>
+                                </div>
                         </div>
                         </ContentBox>
                       </Link>
