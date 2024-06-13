@@ -1,5 +1,6 @@
 from django.urls import path
 from place.views.base_views import RegionSearch
+from place.views.keyword_views import PlaceFrequentWordsAPIView
 from place.views.post_views import PostListAndCreate, PostDetailUpdateDelete#, PostVote
 from place.views.comment_views import CommentListAndCreate,CommentDetail,CommentVote
 app_name = 'place'
@@ -14,4 +15,7 @@ urlpatterns = [
     path('vote/comment/<int:comment_id>/', CommentVote.as_view(), name='comment_vote'),
     #search
     path('', RegionSearch, name='place_post_list'),
+    #word
+    path('word/', PlaceFrequentWordsAPIView.as_view(), name='place_keyword_list')
+
 ]

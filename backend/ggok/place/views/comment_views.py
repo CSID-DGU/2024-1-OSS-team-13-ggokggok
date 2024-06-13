@@ -70,7 +70,7 @@ class CommentDetail(APIView):
         serializer = PlaceCommentPutSerializer(comment, data=request.data)
         requested_author = request.data.get('author')
         if serializer.is_valid():
-            if requested_author == comment.author:
+            if requested_author == comment.author_id:
                 serializer.save()
                 response_data = {
                     'success': True,
@@ -99,7 +99,7 @@ class CommentDetail(APIView):
     def delete(self, request, comment_id):
         comment = self.get_object(comment_id)
         requested_author = request.data.get('author')
-        if requested_author == comment.author:
+        if requested_author == comment.author_id:
             comment.delete()
             response_data = {
                 'success': True,
@@ -107,13 +107,13 @@ class CommentDetail(APIView):
                 'message': '게시글을 삭제했습니다.',
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        elif requested_author != comment.author:
+        elif requested_author != comment.author_id:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
                 'message': '삭제 권한이 없습니다.',
             }
-            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         else:
             response_data = {
                 'success': False,
@@ -136,7 +136,7 @@ class CommentVote(APIView):
             # requested_author_id로 User 객체를 조회합니다.
             requested_author = get_object_or_404(UserInfo, pk=requested_author_id)
 
-            if requested_author == comment.author:
+            if requested_author == comment.author_id:
                 response_data = {
                     'success': False,
                     'status code': status.HTTP_400_BAD_REQUEST,

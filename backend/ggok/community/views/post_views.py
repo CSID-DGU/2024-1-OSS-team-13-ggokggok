@@ -14,10 +14,10 @@ from drf_yasg import openapi
 
 def extract_region(full_region):
     # 문자열을 공백 기준으로 분할합니다. 최대 2개의 띄어쓰기만 고려하여 분할
-    word = full_region.split(' ', 2)
+    word = full_region.split(' ', 3)
     # 띄어쓰기로 분할된 부분 중 첫 2개만 합침
     # 띄어쓰기가 2번 이하인 경우에는 전체 문자열이나, 해당하는 부분만 반환
-    extracted_region = ' '.join(word[:2])
+    extracted_region = ' '.join(word[:3])
     return extracted_region
 class PostListAndCreate(APIView):
     serializer_class = CommunityPostSerializer
@@ -58,12 +58,12 @@ class PostListAndCreate(APIView):
         temp2 = False
 
         if user_region1 is not None:
-            user_region1 = extract_region(user_region1)
+            requested_region = extract_region(requested_region)
             if user_region1 == requested_region:
                 temp1 = True
 
         if user_region2 is not None:
-            user_region2 = extract_region(user_region2)
+            requested_region = extract_region(requested_region)
             if user_region2 == requested_region:
                 temp2 = True
 
@@ -128,6 +128,7 @@ class PostDetailUpdateDelete(APIView):
         post = self.get_object(post_id)
         serializer = CommunityPostSerializer(post, data=request.data)
         requested_author = request.data.get('author')
+
         if serializer.is_valid():
             if requested_author == post.author:
                 serializer.save()
@@ -158,7 +159,7 @@ class PostDetailUpdateDelete(APIView):
     @swagger_auto_schema(tags=['커뮤니티 게시글 CRUD'])
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
-        requested_author = request.data.get('author')
+        requested_author = str(request.data.get('author'))
         if requested_author == post.author:
             post.delete()
             response_data = {

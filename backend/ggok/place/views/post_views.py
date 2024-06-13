@@ -92,7 +92,7 @@ class PostDetailUpdateDelete(APIView):
         serializer = PlacePostSerializer(post, data=request.data)
         requested_author = request.data.get('author')
         if serializer.is_valid():
-            if requested_author == post.author:
+            if requested_author == post.author_id:
                 serializer.save()
                 response_data = {
                     'success': True,
@@ -122,7 +122,7 @@ class PostDetailUpdateDelete(APIView):
     def delete(self, request, post_id, *args, **kwargs):
         post = self.get_object(post_id)
         requested_author = request.data.get('author')
-        if requested_author == post.author:
+        if requested_author == post.author_id:
             post.delete()
             response_data = {
                 'success': True,
@@ -130,13 +130,13 @@ class PostDetailUpdateDelete(APIView):
                 'message': '게시글을 삭제했습니다.',
             }
             return Response(response_data, status=status.HTTP_200_OK)
-        elif requested_author != post.author:
+        elif requested_author != post.author_id:
             response_data = {
                 'success': False,
                 'status code': status.HTTP_403_FORBIDDEN,
                 'message': '삭제 권한이 없습니다.',
             }
-            return Response(response_data, status=status.HTTP_403_FORBIDDEN)
+            return Response(response_data, status=status.HTTP_400_BAD_REQUEST)
         else:
             response_data = {
                 'success': False,

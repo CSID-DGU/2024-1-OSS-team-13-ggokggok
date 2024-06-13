@@ -8,7 +8,6 @@ class CommunityPostSerializer(serializers.ModelSerializer):
         model = Post
         fields = '__all__'
 
-
 class CommunityPostVoteSerializer(serializers.ModelSerializer):
     voter = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
     class Meta:
